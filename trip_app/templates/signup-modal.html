@@ -1,0 +1,49 @@
+<div class="modal fade" id="modalSignUpForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="/sign-up" method="post" class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Sign up</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="d-flex align-items-baseline box">
+                    <div class="md-form d-flex flex-1">
+                        <i class="fas fa-user prefix grey-text"></i>
+                        <input type="text" id="new-id" class="form-control validate" required>
+                        <label data-error="wrong" data-success="right" for="new-id">New ID</label>
+                    </div>
+                    <input type="button" class="btn btn-amber" value="check" onclick="checkIdDoubled();">
+                </div>
+                <div class="md-form mb-3">
+                    <i class="fas fa-signature prefix grey-text"></i>
+                    <input type="text" id="name" class="form-control validate" required>
+                    <label data-error="wrong" data-success="right" for="name">Your Name</label>
+                </div>
+
+                <div class="md-form">
+                    <i class="fas fa-lock prefix grey-text"></i>
+                    <input type="password"
+                           id="new-password"
+                           class="form-control validate"
+                           onkeyup="confirmPassword();"
+                           required>
+                    <label data-error="wrong" data-success="right" for="new-password">password</label>
+                </div>
+                <div class="md-form">
+                    <i class="fas fa-check-square prefix grey-text"></i>
+                    <input type="password" id="password-confirm"
+                           class="form-control validate"
+                           onkeyup="confirmPassword();"
+                           required>
+                    <label data-error="wrong" data-success="right" for="password-confirm">password repeat</label>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="submit" class="btn btn-deep-orange" id="sign-up">Sign up</button>
+            </div>
+        </form>
+    </div>
+</div>
