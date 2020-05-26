@@ -9,17 +9,22 @@
                 </button>
             </div>
             <div class="modal-body mx-3">
-                <div class="d-flex align-items-baseline box">
-                    <div class="md-form d-flex flex-1">
+                <div class="md-form d-flex align-items-baseline">
+                    <div class="flex-1">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input type="text" id="new-id" class="form-control validate" required>
-                        <label data-error="wrong" data-success="right" for="new-id">New ID</label>
+                        <input type="text" id="new-id"
+                               class="form-control validate"
+                               name="id"
+                               required>
+                        <label for="new-id">New ID</label>
                     </div>
                     <input type="button" class="btn btn-amber" value="check" onclick="checkIdDoubled();">
                 </div>
                 <div class="md-form mb-3">
                     <i class="fas fa-signature prefix grey-text"></i>
-                    <input type="text" id="name" class="form-control validate" required>
+                    <input type="text" id="name"
+                           name="name"
+                           class="form-control validate" required>
                     <label data-error="wrong" data-success="right" for="name">Your Name</label>
                 </div>
 
@@ -27,6 +32,7 @@
                     <i class="fas fa-lock prefix grey-text"></i>
                     <input type="password"
                            id="new-password"
+                           name="password"
                            class="form-control validate"
                            onkeyup="confirmPassword();"
                            required>

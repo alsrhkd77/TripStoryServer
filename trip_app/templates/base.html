@@ -21,6 +21,15 @@
 
 <body>
 {% block navbar %}
+    <nav class="navbar navbar-dark rgba-black-strong fixed-top">
+        <div class="container">
+            <a href="#" class="navbar-brand">
+                <b>Trip Story</b>
+            </a>
+        </div>
+        {% block user_menu %}
+        {% endblock %}
+    </nav>
 {% endblock %}
 
 {% block content %}
