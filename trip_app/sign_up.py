@@ -6,7 +6,7 @@ def is_id_doubled(user_id):
     cursor = conn.cursor()
     rs = None
     try:
-        cursor.execute(f'''SELECT user_id FROM user WHERE user_id = {user_id};''')
+        cursor.execute(f'''SELECT user_id FROM users WHERE user_id = {user_id};''')
         rs = cursor.fetchone()
         if not rs:
             rs = False
@@ -23,12 +23,12 @@ def add_user(id, name, password):
     cursor = conn.cursor()
     try:
         cursor.execute(
-            f'''INSERT INTO user VALUES({id}, {name}, null);'''
+            f'''INSERT INTO users VALUES(\'{id}\', \'{name}\', null);'''
+        )
+        cursor.execute(
+            f'''INSERT INTO auth VALUES(\'{id}\', \'{password}\');'''
         )
         conn.commit()
-        cursor.execute(
-            f'''INSERT INTO auth VALUES({id}, {password});'''
-        )
     except Exception as e:
         return False
     finally:

@@ -1,48 +1,73 @@
-from flask import Flask, render_template, request, redirect, session
-from trip_app import sign_up, sign_in
+from flask import Flask
+from flask import render_template
+from flask import redirect
+from flask import session
+from flask import jsonify
+import logging
+from trip_app import sign_up
+from trip_app import sign_in
+from trip_app import tag
+
 
 application = Flask(__name__)
 application.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 application.config['SECRET_KEY'] = 'asldjfhsadkjfbasdf'
+application.config['UPLOAD_FOLDER'] = '/trip_app/static/upload-images'
+# application.config['JSON_AS_ASCII'] = False
+application.logger.setLevel(logging.DEBUG)
 
 
+# 웹 사이트 초기화면
 @application.route('/')
 def index():
+    application.logger.debug("")
     if 'user_id' in session:
         return redirect('/main')
     return render_template("index.html")
 
 
-@application.route('/login', methods=['POST'])
-def login():
-    user_id = request.form.get('id')
-    password = request.form.get('password')
-    # 로그인한 적 없는 경우
-    if 'user_id' not in session:
-        # 로그인 성공
-        if sign_in.do_login(user_id, password):
-            session['user_id'] = user_id
-            return redirect('/main')
-        # 로그인 실패
-        else:
-            return redirect('/')
-    # 이미 로그인된 경우
-    else:
-        return redirect('/main')
-
-
-@application.route('/id-doubled', methods=['post'])
-def id_check():
-    id = request.data.decode('utf-8')
-    return str(sign_up.is_id_doubled(id))
-
-
-@application.route('/sign-up', methods=['post'])
-def register_user():
-    return str(request.form)
-
-
+# Trip Story 메인 화면
 @application.route('/main')
 def main():
-    cur_user = session['user_id']
-    return render_template("main.html", id=cur_user)
+    user_name = session['user_name']
+    return render_template("main.html", name=user_name)
+
+
+# 프로필 정보 화면
+@application.route('/profile')
+def profile():
+    user_name = session['user_name']
+    return render_template("profile.html", name=user_name)
+
+
+# 좋아요 누른 피드 모음 화면
+@application.route('/likes')
+def like():
+    user_name = session['user_name']
+    return render_template('/likes.html', name=user_name)
+
+
+# 피드(게시물) 추가 페이지
+@application.route('/add-feed')
+def add_feed():
+    user_name = session['user_name']
+    return render_template('/add-feed.html', name=user_name)
+
+
+# 사용자 회원가입, Trip Story 회원 로그인, 구글 로그인, 페이스북 로그인 라우트
+from trip_app import auth_route
+
+
+# 여행 태그 관련 라우트
+from trip_app import tag_route
+
+# 피드(게시물) 관련 라우트
+from trip_app import feed_route
+
+
+@application.route('/dummy-data', methods=['POST'])
+def testww():
+    data = {1: '이종민', 2: '장희숙', 3: '임영호', 4: '권순각', 5: '권오준', 6: '권오준',7: '권오준', 8: '권오준', 9: '권오준', 10: '권오준', 11: '권오준', 12: '권오준', 13: '권오준' ,15: '권오준'}
+    return jsonify(data)
+
+

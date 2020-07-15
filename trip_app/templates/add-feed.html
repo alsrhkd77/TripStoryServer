@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container rgba-black-strong">
+        <form action="/feed" method="post">
+            <input type="file" multiple="multiple" name="images[]">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="images">사진 첨부</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="imgInput"
+                           aria-describedby="imgInput">
+                    <label class="custom-file-label" for="imgInput">
+                        <i class="far fa-image"></i>
+                    </label>
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary" value="게시글 등록">
+        </form>
+    </div>
+{% endblock %}

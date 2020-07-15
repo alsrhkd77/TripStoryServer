@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    {% block title %}{% endblock %}
+    {% block meta %}{% endblock %}
+    {% block title %}<title>Trip Story</title>{% endblock %}
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
@@ -23,11 +24,36 @@
 {% block navbar %}
     <nav class="navbar navbar-dark rgba-black-strong fixed-top">
         <div class="container">
-            <a href="#" class="navbar-brand">
+            <a href="/" class="navbar-brand">
                 <b>Trip Story</b>
             </a>
         </div>
         {% block user_menu %}
+            {% if name %}
+            <div class="text-white d-flex align-items-center mr-5">
+                <!--개인 메뉴 드랍다운-->
+                <div class="nav-item dropdown ml-4 p-3">
+                    <!-- Basic dropdown -->
+                    <a class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true"
+                       aria-expanded="false">
+                        <i class="fas fa-user-circle fa-2x"></i>
+                    </a>
+                    <div class="dropdown-menu" style="float:right; position: absolute">
+                        <a class="dropdown-item" href="/profile-menu">
+                            <i class="fa fa-id-card mr-2"></i>
+                            프로필
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            로그아웃
+                        </a>
+                    </div>
+                </div>
+                <!--개인 메뉴 드랍다운-->
+                <b>{{ name }}</b>
+            </div>
+            {% endif %}
         {% endblock %}
     </nav>
 {% endblock %}

@@ -1,7 +1,91 @@
 {% extends "base.html" %}
 {% block title %}<title>Trip Story!! </title> {% endblock %}
-{% block user_menu %}
-    <div class="text-white">
-    {{ id }}
-    </div>
+{% block main_menu %}
+    <i class="fa fa-home"></i>
 {% endblock %}
+
+
+{% block content %}
+    <div class="rgba-black-strong container rounded shadow d-flex align-items-center p-3" style="height:80%;">
+        <div class="bg-white w-100 h-100 rounded feed-listview">
+            <!-- 게시글 리스트뷰 -->
+            <ul>
+                    <li class="feed">
+                        <div class="tag">
+                            <i class="fas fa-tags"></i> 기타여행
+                        </div>
+                        <div class="card post">
+                            <div class="author">
+                                <i class="far fa-user-circle mr-1"></i>
+                                <b class="name">송민광</b>
+                            </div>
+                            <img src="https://lh3.googleusercontent.com/proxy/vgSC2WOTtlHnPEl3VMLmtLOA2mQUw06_7rZH85mJ3nhH-15KHlphkPn0Vukh9Ym8N6lJOKdeywdP1I_MIfANLDWNJImg1UQwvgy3OgrymXzv3nwEJAraG01MlfMLlfCmMT-xrRv6mPzW8GoLzYuNUIeDNyD1EbfjE8VH7JEctN0XxieqlhAdjpy_78vG" height="300px" width="400px"
+                                 alt="">
+                            <p class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus illum neque
+                                quisquam. Beatae culpa iusto quo unde voluptatem. A aliquam doloremque nam nostrum
+                                qui tempora voluptas. Obcaecati sequi ut veritatis.
+                            </p>
+                            <div class="desc">
+                                    <button class="like mr-2">
+                                        <i class="far fa-heart mr-2"></i>
+                                        30
+                                    </button>
+                                    <div class="date d-flex align-self-center">
+                                        <i class="fas fa-shoe-prints"></i>
+                                        2020.06.19..
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="card comment p-5 border-info">
+                            <label for="comment">댓글</label>
+                            <input id="comment" type="text" placeholder="comment">
+                            <button class="btn btn-primary">OK</button>
+                            <hr>
+                        </div>
+                    </li>
+                <li class="feed">
+                        <div class="tag">
+                            <i class="fas fa-tags"></i> 졸업여행
+                        </div>
+                        <div class="card post">
+                            <div class="author">
+                                <i class="far fa-user-circle mr-1"></i>
+                                <b class="name">전세운</b>
+                            </div>
+                            <img src="https://cdn.pixabay.com/photo/2016/01/19/17/57/car-1149997_960_720.jpg" height="300px" width="400px"
+                                 alt="">
+                            <p class="content">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus illum neque
+                                quisquam. Beatae culpa iusto quo unde voluptatem. A aliquam doloremque nam nostrum
+                                qui tempora voluptas. Obcaecati sequi ut veritatis.
+                            </p>
+                            <div class="desc">
+                                    <button class="like mr-2">
+                                        <i class="far fa-heart mr-2"></i>
+                                        30
+                                    </button>
+                                    <div class="date d-flex align-self-center">
+                                        <i class="fas fa-shoe-prints"></i>
+                                        2020.06.19..
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="card comment p-5 border-info">
+                            <label for="comment">댓글</label>
+                            <input id="comment" type="text" placeholder="comment">
+                            <button class="btn btn-primary">OK</button>
+                            <hr>
+                        </div>
+                    </li>
+            </ul>
+
+            <!-- 게시글 리스트뷰 -->
+        </div>
+    </div>
+    {% include "bottom-nav-menu.html" %}
+    {% block js %}
+        <script src="../static/js/feed/feed-manager.js"></script>
+    {% endblock %}
+{% endblock %}
+
