@@ -1,7 +1,10 @@
 steps:
-- name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '.']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ["push", "gcr.io/tripstory-283605/trip-story"]
+#- name: gcr.io/cloud-builders/docker
+#  args: ['build', '-t', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '.']
+#- name: 'gcr.io/cloud-builders/docker'
+#  args: ["push", "gcr.io/tripstory-283605/trip-story"]
+- name: "gcr.io/kaniko-project/executor:latest"
+  args: ["--cache=true", "--cache-ttl=48h", "--destination=gcr.io/tripstory-283605/trip-story"]
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'trip-story','--platform','managed','--allow-unauthenticated', '--image', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '--region', 'asia-northeast3']
+  args: ['beta', 'run', 'deploy', 'trip-story', '--image', 'gcr.io/tripstory-283605/trip-story', '--region', 'asia-northeast3', '--allow-unauthenticated', '--platform', 'managed']
+#  args: ['beta', 'run', 'deploy', 'trip-story','--platform','managed','--allow-unauthenticated', '--image', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '--region', 'asia-northeast3']
