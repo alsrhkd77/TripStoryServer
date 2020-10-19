@@ -1,15 +1,24 @@
-steps:
-- name: gradle:5.6.2-jdk8
-  entrypoint: gradle
-  args: ["test"]
-- name: gradle:5.6.2-jdk8
-  entrypoint: gradle
-  args: ["assemble"]
+# cloudbuild.yaml
 
-- name: gcr.io/tripstory/docker
-  args: ["build", "-t", "gcr.io/tripstory-283605/trip-story", "--build-arg=JAR_FILE=build/libs/trip-story-1.0.0.jar", "."]
-- name: 'gcr.io/tripstory/docker'
-  args: ["push", "gcr.io/tripstory-283605/trip-story"]
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'trip-story', '--image', 'gcr.io/tripstory-283605/trip-story', '--region', 'asia-northeast3', '--allow-unauthenticated', '--platform', 'managed']
-#  args: ['beta', 'run', 'deploy', 'trip-story','--platform','managed','--allow-unauthenticated', '--image', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '--region', 'asia-northeast3']
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/tripstory-283605/server:$COMMIT_SHA', '.' ]
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'gcr.io/tripstory-283605/server:$COMMIT_SHA' ]
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'tripstory-server'
+      - '--image'
+      - 'gcr.io/tripstory-283605/server:$COMMIT_SHA'
+      - '--region'
+      - 'asia-northeast3'
+      - '--platform'
+      - 'managed'
+images:
+  - 'gcr.io/tripstory-283605/server:$COMMIT_SHA'
