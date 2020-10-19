@@ -1,0 +1,7 @@
+steps:
+- name: gcr.io/cloud-builders/docker
+  args: ['build', '-t', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '.']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/tripstory-283605/trip-story"]
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['beta', 'run', 'deploy', 'trip-story','--platform','managed','--allow-unauthenticated', '--image', 'gcr.io/tripstory-283605/trip-story:$BRANCH_NAME-$COMMIT_SHA', '--region', 'asia-northeast3']
