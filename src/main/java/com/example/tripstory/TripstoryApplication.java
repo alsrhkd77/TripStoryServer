@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class TripstoryApplication {
 
-	@Value("${NAME:World}")
-	String name;
+    @Value("${NAME:World}")
+    String name;
 
-	@RestController
-	class HelloworldController {
-		@GetMapping("/")
-		String hello() {
-			return "Hello " + name + "!";
-		}
-	}
+    @RestController
+    class HelloworldController {
+        @GetMapping("/")
+        String hello() {
+            return "Hello " + name + "!";
+        }
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(TripstoryApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TripstoryApplication.class, args);
+    }
 
 }
