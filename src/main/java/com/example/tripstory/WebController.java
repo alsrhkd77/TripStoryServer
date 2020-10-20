@@ -22,9 +22,9 @@ public class WebController {
     }
 
     @GetMapping("/getTuples")
-    public List<String> getTuples() {
+    public String getTuples() {
         return this.jdbcTemplate.queryForList("SELECT * FROM test").stream()
                 .map((m) -> m.values().toString())
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()).toString();
     }
 }
