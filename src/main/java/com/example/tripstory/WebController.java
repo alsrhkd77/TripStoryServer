@@ -10,14 +10,10 @@ import java.util.stream.Collectors;
 
 @RestController
 public class WebController {
-    private final JdbcTemplate jdbcTemplate;
+    //private final JdbcTemplate jdbcTemplate;
 
     @Autowired
     TestRepository testRepository;
-
-    WebController(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @GetMapping("/insert")
     String pushInsert(){
@@ -29,7 +25,7 @@ public class WebController {
     public String getTuples() {
         List<TestEntitiy> testEntitiys = testRepository.findAll();
         String result ="";
-        result = testEntitiys.get(1).getId().toString() + " " + testEntitiys.get(0).getPw().toString();
+        result = testEntitiys.get(0).getId().toString() + " " + testEntitiys.get(0).getPw().toString();
         return result;
         /*
         return this.jdbcTemplate.queryForList("SELECT * FROM test").stream()
