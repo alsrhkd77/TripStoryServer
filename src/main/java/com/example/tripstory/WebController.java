@@ -29,7 +29,7 @@ public class WebController {
     public String getTuples() {
         List<TestEntitiy> testEntitiys = testRepository.findAll();
         String result ="";
-        result = testEntitiys.get(0).getId().toString() + " " + testEntitiys.get(0).getPw().toString();
+        result = testEntitiys.get(1).getId().toString() + " " + testEntitiys.get(0).getPw().toString();
         return result;
         /*
         return this.jdbcTemplate.queryForList("SELECT * FROM test").stream()
