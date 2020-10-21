@@ -35,7 +35,7 @@ public class WebController {
             //Storage storage = StorageOptions.newBuilder().setProjectId("tripstory-283605").setCredentials(GoogleCredentials.fromStream(new FileInputStream("D:/Capstone/Server/Key/tripstory-283605-5d797a3e119d.json"))).build().getService();
             Storage storage = StorageOptions.getDefaultInstance().getService();
             BlobInfo blobInfo = storage.create(
-                    BlobInfo.newBuilder("tripstory_image", multipartFile.getOriginalFilename()).build(), //get original file name
+                    BlobInfo.newBuilder("tripstory_image", multipartFile.getOriginalFilename()).setContentType(multipartFile.getContentType()).build(), //get original file name
                     multipartFile.getBytes(), // the file
                     Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
             );
