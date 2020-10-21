@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
+@Entity
+@Table(name = "test")
 public class TestEntitiy {
 
     @Id
