@@ -82,11 +82,21 @@
 		</dependency>
 		-->
 
-		<!-- GCP SQL tool -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter</artifactId>
+		</dependency>
 
+		<!-- GCP SQL tool -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
+		</dependency>
+
+		<!-- GCP Storage tool -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-gcp-starter-storage</artifactId>
 		</dependency>
 
 
