@@ -18,7 +18,6 @@
 FROM adoptopenjdk/openjdk11:alpine-slim
 
 # Copy the jar to the production image from the builder stage.
-WORKDIR /app
 COPY /target/tripstory-backend-0.0.1-SNAPSHOT.jar /tripstory.jar
 
 # Run the web service on container startup.
