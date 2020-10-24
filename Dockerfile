@@ -4,7 +4,7 @@
 #FROM maven:3.6-jdk-11 as builder
 #
 ## Copy local code to the container image.
-WORKDIR /app
+#WORKDIR /app
 #COPY pom.xml .
 #COPY src ./src
 #
@@ -18,6 +18,7 @@ WORKDIR /app
 FROM adoptopenjdk/openjdk11:alpine-slim
 
 # Copy the jar to the production image from the builder stage.
+WORKDIR /app
 COPY /target/tripstory-backend-0.0.1-SNAPSHOT.jar /tripstory.jar
 
 # Run the web service on container startup.
