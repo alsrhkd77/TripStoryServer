@@ -4,7 +4,7 @@
 #FROM maven:3.6-jdk-11 as builder
 #
 ## Copy local code to the container image.
-#WORKDIR /app
+WORKDIR /app
 #COPY pom.xml .
 #COPY src ./src
 #
