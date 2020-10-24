@@ -1,0 +1,70 @@
+---
+# common setting
+server:
+  port: ${PORT:8080}
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+
+# dev setting (local pc only)
+spring:
+  profiles: dev
+  jpa:
+    hibernate:
+      ddl-auto: create
+    database: h2
+
+
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:tcp://localhost:1521/tripstory
+    driver-class-name: org.h2.Driver
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+# external resources location and path
+resources:
+  post-image:
+    location: /home/seun/Project/tripstory-images/post-images/
+    path: /post-image
+  profile:
+    location: /home/seun/Project/tripstory-images/profile-images/
+    path: /profile-image
+
+---
+# prod setting (google cloud platform only)
+spring:
+  profiles: prod
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: mysql
+
+  cloud:
+    gcp:
+      sql:
+        enabled: true
+        database-name: tripstory
+        instance-connection-name: tripstory-283605:asia-northeast3:trip-story
+
+  datasource:
+    continue-on-error: true
+    username: root
+    password: tripstory1!
+    url: jdbc:mysql://34.64.171.189:3306/tripstory?characterEncoding=UTF-8
+    initialization-mode: always
