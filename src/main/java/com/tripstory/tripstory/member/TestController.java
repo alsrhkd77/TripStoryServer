@@ -12,13 +12,10 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping(value = {"/{id}/{name}/{email}"})
+    @GetMapping(path = {"/member/{id}/{name}/{email}"})
     public String createMember(@PathVariable String id,
                                @PathVariable String name,
                                @PathVariable String email) {
-        System.out.println("----------------------");
-        System.out.println("받은 값 : " + id + " " + name);
-        System.out.println("----------------------");
         Member member = Member.builder()
                 .id(id)
                 .name(name)
