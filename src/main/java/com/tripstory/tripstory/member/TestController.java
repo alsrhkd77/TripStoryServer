@@ -13,7 +13,7 @@ public class TestController {
 
     @GetMapping("/form")
     public String memberCreateForm() {
-        return "member/signUpForm";
+        return "signUpForm";
     }
 
     @GetMapping("/test")
