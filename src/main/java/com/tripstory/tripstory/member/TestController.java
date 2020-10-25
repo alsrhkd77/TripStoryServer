@@ -12,7 +12,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping("/{id}/{name}/{email}")
+    @GetMapping(value = {"/{id}/{name}/{email}"})
     public String createMember(@PathVariable String id,
                                @PathVariable String name,
                                @PathVariable String email) {
