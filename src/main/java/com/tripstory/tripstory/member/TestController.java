@@ -12,14 +12,17 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping("/{id}/{name}")
-    public String createMember(@PathVariable String id, @PathVariable String name) {
+    @GetMapping("/{id}/{name}/{email}")
+    public String createMember(@PathVariable String id,
+                               @PathVariable String name,
+                               @PathVariable String email) {
         System.out.println("----------------------");
         System.out.println("받은 값 : " + id + " " + name);
         System.out.println("----------------------");
         Member member = Member.builder()
                 .id(id)
                 .name(name)
+                .email(email)
                 .build();
         return "가입된 회원 : " + testService.save(member);
     }
