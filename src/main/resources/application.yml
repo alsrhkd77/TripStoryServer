@@ -64,7 +64,6 @@ spring:
   cloud:
     gcp:
       sql:
-        enabled: true
         database-name: tripstory
         instance-connection-name: tripstory-283605:asia-northeast3:trip-story
 
@@ -72,6 +71,4 @@ spring:
     continue-on-error: true
     username: root
     password: tripstory1!
-#    url: jdbc:mysql://34.64.171.189:3306/tripstory?characterEncoding=UTF-8
     initialization-mode: always
-    driver-class-name: com.mysql.cj.jdbc.Driver
