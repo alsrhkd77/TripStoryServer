@@ -9,25 +9,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.PostConstruct;
 
 @Configuration
-@Profile("dev")
-public class DevApplicationConfig implements WebMvcConfigurer {
-
-    @Value("${resources.post-image.location}")
-    private String postImageLocation;
-
-    @Value("${resources.post-image.path")
-    private String postImagePath;
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(postImagePath + "/**")
-                .addResourceLocations("file:///" + postImageLocation + "/**");
-    }
+@Profile("prod")
+public class ProdApplicationConfig implements WebMvcConfigurer {
 
     @PostConstruct
     public void checkProfile() {
         System.out.println("--------------------------------------------");
-        System.out.println("개발용 환경으로 셋업");
+        System.out.println("운영용 환경으로 셋업");
         System.out.println("--------------------------------------------");
     }
 }
