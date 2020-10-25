@@ -18,7 +18,7 @@
 FROM adoptopenjdk/openjdk11:alpine-slim
 
 # Copy the jar to the production image from the builder stage.
-COPY /target/tripstory-backend-0.0.1-SNAPSHOT.jar /tripstory.jar
+COPY $PWD/target/tripstory-backend-0.0.1-SNAPSHOT.jar /tripstory.jar
 
 # Run the web service on container startup.
 CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=prod", "-jar", "/tripstory.jar"]
