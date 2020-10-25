@@ -57,7 +57,8 @@ spring:
   profiles: prod
   jpa:
     hibernate:
-      ddl-auto: validate
+       ddl-auto: none
+      # ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
 
