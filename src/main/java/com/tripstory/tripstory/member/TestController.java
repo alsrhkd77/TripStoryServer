@@ -2,31 +2,20 @@ package com.tripstory.tripstory.member;
 
 import com.tripstory.tripstory.member.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class TestController {
 
     @Autowired
     private TestService testService;
 
-    @GetMapping("/")
-    @ResponseBody
-    public String test() {
-        return "hello gcp";
-    }
-
-    @GetMapping("/form")
-    public String memberCreateForm() {
-        return "signUpForm";
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public String createMember(@RequestParam String id,
-                               @RequestParam String name,
-                               @RequestParam String email) {
+    @GetMapping("/{id}/{name}/{email}")
+    public String createMember(@PathVariable String id,
+                               @PathVariable String name,
+                               @PathVariable String email) {
         Member member = Member.builder()
                 .id(id)
                 .name(name)
