@@ -14,6 +14,9 @@ public class TestController {
 
     @GetMapping("/{id}/{name}")
     public String createMember(@PathVariable String id, @PathVariable String name) {
+        System.out.println("----------------------");
+        System.out.println("받은 값 : " + id + " " + name);
+        System.out.println("----------------------");
         Member member = Member.builder()
                 .id(id)
                 .name(name)
