@@ -11,6 +11,12 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @GetMapping("/")
+    @ResponseBody
+    public String test() {
+        return "hello gcp";
+    }
+
     @GetMapping("/form")
     public String memberCreateForm() {
         return "signUpForm";
