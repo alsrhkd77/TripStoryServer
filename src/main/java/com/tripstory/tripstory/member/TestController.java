@@ -12,10 +12,10 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping(path = {"/member/{id}/{name}/{email}"})
-    public String createMember(@PathVariable String id,
-                               @PathVariable String name,
-                               @PathVariable String email) {
+    @GetMapping("/{id}/{name}/{email}")
+    public String createMember(@PathVariable("id") String id,
+                               @PathVariable("name") String name,
+                               @PathVariable("email") String email) {
         Member member = Member.builder()
                 .id(id)
                 .name(name)
