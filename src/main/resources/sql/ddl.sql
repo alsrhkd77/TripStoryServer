@@ -13,3 +13,5 @@ CREATE TABLE auth (
     password VARCHAR(18) NOT NULL,
     FOREIGN KEY(id) REFERENCES member(member_id)
 );
+
+INSERT INTO auth values ( 'tester1', 'tesert1' );

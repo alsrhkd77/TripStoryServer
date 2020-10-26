@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class Auth {
 
     @Id
+    @Column(name = "member_id")
     private String id;
 
     @MapsId
