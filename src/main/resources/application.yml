@@ -22,34 +22,32 @@ spring:
   profiles: dev
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     database: h2
 
 
   datasource:
     username: sa
     password:
-    url: jdbc:h2:tcp://localhost:1521/tripstory
+    url: jdbc:h2:tcp://localhost/~/tripstory
     driver-class-name: org.h2.Driver
 
-logging:
-  level:
-    org.hibernate.SQL: error
 
 # external resources location and path
 resources:
   post-image:
     # for window
-    location:
+    location: C:/Users/jeonseun/Desktop/TripStory_Images/Post_Images/
     # for linux
     # location: /home/seun/Project/tripstory-images/post-images/
     path: /post-image
   profile:
     # for window
-    location:
+    location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
     # for linux
     # location: /home/seun/Project/tripstory-images/profile-images/
     path: /profile-image
+
 
 ---
 # prod setting (google cloud platform only)
@@ -57,8 +55,7 @@ spring:
   profiles: prod
   jpa:
     hibernate:
-       ddl-auto: none
-      # ddl-auto: validate
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
 
