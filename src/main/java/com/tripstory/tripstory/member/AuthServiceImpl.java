@@ -5,6 +5,7 @@ import com.tripstory.tripstory.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
 
         newMember.join(password);
         try {
-            return memberRepository.save(newMember);
+            return memberRepository.save(newMember).getId();
         }catch (Exception e) {
             throw new IllegalStateException("이미 존재하는 회원");
         }

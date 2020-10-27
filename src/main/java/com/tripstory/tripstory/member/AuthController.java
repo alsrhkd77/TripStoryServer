@@ -49,7 +49,7 @@ public class AuthController {
         JoinDTO.Response response = new JoinDTO.Response();
         if(bindingResult.hasErrors()) {
             response.setErrors(getBindingErrorResponse(bindingResult));
-            response.setErrors("failed");
+            response.setResult("failed");
             return response;
         }
         try {

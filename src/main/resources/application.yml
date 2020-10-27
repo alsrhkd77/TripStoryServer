@@ -23,16 +23,22 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    database-platform: org.hibernate.dialect.H2Dialect
-    database: h2
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database: mysql
 
 
   datasource:
-    username: sa
-    password:
-    url: jdbc:h2:tcp://localhost/~/tripstory
-    driver-class-name: org.h2.Driver
-
+    # mysql
+    username: root
+    password: mysql
+    url: jdbc:mysql://localhost:13306/tripstory
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # h2
+    # username: sa
+    # password:
+    # url: jdbc:h2:tcp://localhost/~/tripstory
+    # driver-class-name: org.h2.Driver
+    initialization-mode: always
 
 # external resources location and path
 resources:
@@ -48,7 +54,6 @@ resources:
     # for linux
     # location: /home/seun/Project/tripstory-images/profile-images/
     path: /profile-image
-
 
 ---
 # prod setting (google cloud platform only)

@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.member.domain;
 
+import com.tripstory.tripstory.member.dto.MemberDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,5 +38,22 @@ public class Member {
      */
     public void join(String password) {
         this.auth = new Auth(id, this, password);
+    }
+
+
+    /**
+     * 회원 정보 반환을 위한 메소드
+     * @return 해당 회원의 필수 정보만 객체로 만들어 반환 
+     */
+    public MemberDTO.MemberInfo getMemberInfo() {
+        if(this.id == null){
+            return null;
+        }
+        MemberDTO.MemberInfo memberInfo = new MemberDTO.MemberInfo();
+        memberInfo.setMemberId(this.id);
+        memberInfo.setMemberName(this.name);
+        memberInfo.setMemberEmail(this.email);
+        memberInfo.setMemberProfileImagePath(this.profileImagePath);
+        return memberInfo;
     }
 }

@@ -1,5 +1,4 @@
-DROP TABLE IF EXISTS auth;
-DROP TABLE IF EXISTS member;
+USE tripstory;
 
 CREATE TABLE member (
     member_id VARCHAR(12) PRIMARY KEY,
@@ -9,9 +8,24 @@ CREATE TABLE member (
 );
 
 CREATE TABLE auth (
-    id VARCHAR(12) PRIMARY KEY,
+    member_id VARCHAR(12) PRIMARY KEY,
     password VARCHAR(18) NOT NULL,
-    FOREIGN KEY(id) REFERENCES member(member_id)
+    FOREIGN KEY(member_id) REFERENCES member(member_id)
 );
 
-INSERT INTO auth values ( 'tester1', 'tesert1' );
+CREATE TABLE tag (
+    tag_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    member_id VARCHAR(12) NOT NULL,
+    FOREIGN KEY(member_id) REFERENCES member(member_id),
+    CONSTRAINT TAG_NAME_MEMBER_UNIQUE UNIQUE (name, member_id)
+);
+
+CREATE TABLE post (
+    post_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    created_time DATETIME NOT NULL,
+    content VARCHAR(255) ,
+    member_id VARCHAR(12) NOT NULL ,
+    FOREIGN KEY(member_id) REFERENCES member(member_id)
+);
+

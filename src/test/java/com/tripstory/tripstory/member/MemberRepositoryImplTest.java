@@ -29,10 +29,10 @@ public class MemberRepositoryImplTest {
                 .build();
         
         // when
-        String id = (String) memberRepository.save(member);
+        Member savedMember = (Member) memberRepository.save(member);
 
         // then
-        Assert.assertEquals(newId, id);
+        Assert.assertEquals(savedMember, member);
     }
     
     @Test
