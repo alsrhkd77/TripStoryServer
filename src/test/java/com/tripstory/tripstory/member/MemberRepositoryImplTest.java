@@ -48,10 +48,10 @@ public class MemberRepositoryImplTest {
         memberRepository.save(member);
 
         // when
-        Member findMember1 = (Member) memberRepository.findById(newId)
+        Member findMember1 = (Member) memberRepository.findOne(newId)
                 .orElseGet(() -> new Member());
 
-        Member findMember2 = (Member) memberRepository.findById("no")
+        Member findMember2 = (Member) memberRepository.findOne("no")
                 .orElseGet(() -> new Member());
 
         // then

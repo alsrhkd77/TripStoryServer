@@ -3,11 +3,11 @@ package com.tripstory.tripstory.member;
 import com.tripstory.tripstory.member.dto.IdCheckDTO;
 import com.tripstory.tripstory.member.dto.JoinDTO;
 import com.tripstory.tripstory.member.dto.LoginDTO;
+import com.tripstory.tripstory.util.ErrorCatcher;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +31,7 @@ public class AuthController {
         logger.info("----------------ID 중복확인 요청----------------");
         IdCheckDTO.Response response = new IdCheckDTO.Response();
         if (bindingResult.hasErrors()) {
-            response.setErrors(getBindingErrorResponse(bindingResult));
+            response.setErrors(ErrorCatcher.getBindingError((bindingResult)));
             response.setResult("failed");
             return response;
         }
@@ -48,7 +48,7 @@ public class AuthController {
         logger.info("----------------TripStory 회원가입 요청----------------");
         JoinDTO.Response response = new JoinDTO.Response();
         if(bindingResult.hasErrors()) {
-            response.setErrors(getBindingErrorResponse(bindingResult));
+            response.setErrors(ErrorCatcher.getBindingError((bindingResult)));
             response.setResult("failed");
             return response;
         }
@@ -69,7 +69,7 @@ public class AuthController {
     public LoginDTO.Response loginByTS(@Validated @RequestBody LoginDTO.TsRequest request, BindingResult bindingResult) {
         LoginDTO.Response response = new LoginDTO.Response();
         if (bindingResult.hasErrors()) {
-            response.setErrors(getBindingErrorResponse(bindingResult));
+            response.setErrors(ErrorCatcher.getBindingError(bindingResult));
             response.setResult("failed");
             return response;
         }
@@ -86,18 +86,5 @@ public class AuthController {
         return response;
     }
 
-    /**
-     * 바인딩 에러를 하나의 문자열로 만들어 반환
-     * @param bindingResult
-     * @return
-     */
-    private String getBindingErrorResponse(BindingResult bindingResult) {
-        StringBuilder sb = new StringBuilder();
-        bindingResult.getAllErrors().forEach(
-                error -> {
-                    sb.append(error.getDefaultMessage());
-                    sb.append("\n");
-                });
-        return sb.toString();
-    }
+
 }
