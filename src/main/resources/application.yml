@@ -76,3 +76,7 @@ spring:
     username: root
     password: tripstory1!
     initialization-mode: always
+
+resources:
+  post-image:
+    path: https://storage.googleapis.com/tripstory_image/
