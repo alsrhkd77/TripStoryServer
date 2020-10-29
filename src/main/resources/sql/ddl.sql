@@ -51,6 +51,14 @@ CREATE TABLE post_image
     FOREIGN KEY (post_id) REFERENCES post(post_id)
 );
 
+CREATE TABLE travel_post
+(
+    post_id BIGINT PRIMARY KEY,
+    travel_start DATE,
+    travel_end DATE,
+    FOREIGN KEY(post_id) REFERENCES post(post_id)
+);
+
 CREATE TABLE normal_post
 (
     post_id BIGINT PRIMARY KEY,
@@ -59,12 +67,4 @@ CREATE TABLE normal_post
     travel_id BIGINT,
     FOREIGN KEY(post_id) REFERENCES post(post_id),
     FOREIGN KEY(travel_id) REFERENCES travel_post(post_id)
-);
-
-CREATE TABLE travel_post
-(
-    post_id BIGINT PRIMARY KEY,
-    travel_start DATE,
-    travel_end DATE,
-    FOREIGN KEY(post_id) REFERENCES post(post_id)
 );

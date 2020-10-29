@@ -20,7 +20,13 @@ public class GCPFileStorage implements FileStorage{
                     BlobInfo.newBuilder("tripstory_image", "post_image/" + fileName).setContentType(contentType).build(),
                     Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
             );
+            System.out.println("----------------------------");
+            System.out.println(blobInfo.getMediaLink());
             System.out.println(blobInfo.getSelfLink());
+            System.out.println(blobInfo.getBucket());
+            System.out.println(blobInfo.getGeneratedId());
+            System.out.println(blobInfo.getName());
+            System.out.println("----------------------------");
             return blobInfo.getSelfLink(); // Return file url
         }catch(IllegalStateException e){
             throw new RuntimeException(e);
