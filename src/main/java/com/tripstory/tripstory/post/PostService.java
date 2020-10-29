@@ -2,10 +2,7 @@ package com.tripstory.tripstory.post;
 
 import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
-import com.tripstory.tripstory.post.domain.Post;
-import com.tripstory.tripstory.post.domain.PostImage;
-import com.tripstory.tripstory.post.domain.PostTag;
-import com.tripstory.tripstory.post.domain.PostType;
+import com.tripstory.tripstory.post.domain.*;
 import com.tripstory.tripstory.post.dto.PostCreateDTO;
 import com.tripstory.tripstory.tag.TagRepository;
 import com.tripstory.tripstory.tag.domain.Tag;
@@ -18,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,7 +38,9 @@ public class PostService {
     public Long createPost(PostCreateDTO.Request request) {
         logger.info("일반 게시물 저장 시작");
         logger.info("게시물 추가 요청 회원 검증");
+
         Member findMember = memberRepository.findOne(request.getAuthor()).orElseGet(null);
+        System.out.println(findMember);
         if (findMember == null) {
             throw new IllegalStateException("존재하지 않는 회원입니다.");
         }
@@ -59,10 +59,10 @@ public class PostService {
 
         // 일반 게시물 저장
         logger.info("게시물 마무리 저장");
-
+        createNormalPost(request.getVisitStart().get(), request.getVisitEnd().get(), newPost);
         // 생성 완료된 게시물 ID 반환
         logger.info("게시물 생성 성공 및 생성된 게시물 ID 반환");
-        return null;
+        return newPost.getId();
     }
 
     public Post savePost(Member member, String content) {
@@ -108,12 +108,22 @@ public class PostService {
                                 .build());
                     } catch (Exception e) {
                         logger.error("이미지 파일 저장 중 오류발생");
-                        e.printStackTrace();
+                        throw new IllegalStateException("이미지 파일 저장 중 오류발생");
                     }
                 });
     }
 
-    public Long createNormalPost(LocalDateTime visitStart, LocalDateTime visitEnd) {
-        return null;
+    public void createNormalPost(LocalDate visitStart, LocalDate visitEnd, Post post) {
+        if (visitStart != null && visitEnd != null) {
+            post.setNormalPost(NormalPost.builder()
+                    .post(post)
+                    .visitStart(visitStart)
+                    .visitEnd(visitEnd)
+                    .build());
+        }else {
+            post.setNormalPost(NormalPost.builder()
+                    .post(post)
+                    .build());
+        }
     }
 }

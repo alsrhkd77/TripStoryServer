@@ -15,19 +15,21 @@ public class LocalFileStorage implements FileStorage{
     @Value("${resources.post-image.location}")
     private String location;
 
+    @Value("${resources.post-image.path}")
+    private String path;
+
     @Override
     public String saveFile(byte[] bytes, String fileName, String contentType) {
         String randomUUID = UUID.randomUUID().toString();
         String uploadTargetName = randomUUID + fileName;
-        String path = location + uploadTargetName;
-        File file = new File(path);
+        File file = new File(location + uploadTargetName);
 
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(bytes);
         } catch (Exception e) {
             throw new IllegalStateException(fileName + "이미지 파일 저장중 오류가 발생했습니다.");
         }
-        return path;
+        return path + "/" +uploadTargetName;
     }
 
     @Override

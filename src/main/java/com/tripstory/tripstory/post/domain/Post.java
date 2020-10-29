@@ -4,6 +4,7 @@ import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -42,8 +44,16 @@ public class Post {
             cascade = CascadeType.ALL)
     private List<PostImage> images = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "post_id")
+    private NormalPost normalPost;
+
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setNormalPost(NormalPost normalPost) {
+        this.normalPost = normalPost;
     }
 
     public void addTag(PostTag tag) {
@@ -53,4 +63,5 @@ public class Post {
     public void addImage(PostImage image) {
         this.images.add(image);
     }
+
 }

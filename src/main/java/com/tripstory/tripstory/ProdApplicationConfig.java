@@ -1,9 +1,10 @@
 package com.tripstory.tripstory;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.tripstory.tripstory.util.FileStorage;
+import com.tripstory.tripstory.util.GCPFileStorage;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,11 @@ import javax.annotation.PostConstruct;
 @Configuration
 @Profile("prod")
 public class ProdApplicationConfig implements WebMvcConfigurer {
+
+    @Bean
+    public FileStorage fileStorage() {
+        return new GCPFileStorage();
+    }
 
     @PostConstruct
     public void checkProfile() {

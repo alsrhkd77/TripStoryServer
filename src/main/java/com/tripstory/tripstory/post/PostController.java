@@ -20,7 +20,15 @@ public class PostController {
             response.setErrors(ErrorCatcher.getBindingError(bindingResult));
             response.setResult("failed");
         }
-        postService.createPost(request);
-        return null;
+        try {
+            response.setPostId(postService.createPost(request));
+            response.setResult("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            response.setErrors(e.getMessage());
+            response.setResult("failed");
+        }
+        return response;
     }
 }

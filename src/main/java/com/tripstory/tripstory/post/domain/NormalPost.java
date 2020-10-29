@@ -1,8 +1,15 @@
 package com.tripstory.tripstory.post.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class NormalPost {
 

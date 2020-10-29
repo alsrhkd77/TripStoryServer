@@ -33,6 +33,6 @@ public class PostCreateDTO {
     public static class Response {
         private String result;
         private String errors;
-        private String postId;
+        private Long postId;
     }
 }
