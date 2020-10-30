@@ -8,6 +8,7 @@ server:
       enabled: true
       force: true
 
+
 spring:
   jpa:
     show-sql: true
@@ -15,6 +16,9 @@ spring:
       hibernate:
         format_sql: true
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
 ---
 
 # dev setting (local pc only)

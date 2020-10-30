@@ -1,6 +1,6 @@
 package com.tripstory.tripstory.member;
 
-import com.tripstory.tripstory.member.dto.IdCheckDTO;
+import com.tripstory.tripstory.member.dto.CheckDTO;
 import com.tripstory.tripstory.member.dto.JoinDTO;
 import com.tripstory.tripstory.member.dto.LoginDTO;
 import com.tripstory.tripstory.util.ErrorCatcher;
@@ -26,16 +26,33 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/check")
-    public IdCheckDTO.Response checkIdDuplication(@Validated @RequestBody IdCheckDTO.Request request, BindingResult bindingResult) {
+    @PostMapping("/check/id")
+    public CheckDTO.Response checkIdDuplication(@Validated @RequestBody CheckDTO.IdCheckRequest idCheckRequest, BindingResult bindingResult) {
         logger.info("----------------ID 중복확인 요청----------------");
-        IdCheckDTO.Response response = new IdCheckDTO.Response();
+        CheckDTO.Response response = new CheckDTO.Response();
         if (bindingResult.hasErrors()) {
             response.setErrors(ErrorCatcher.getBindingError((bindingResult)));
             response.setResult("failed");
             return response;
         }
-        if (authService.isIdDuplicate(request.getMemberId())) {
+        if (authService.isIdDuplicate(idCheckRequest.getMemberId())) {
+            response.setResult("duplicated");
+        } else {
+            response.setResult("success");
+        }
+        return response;
+    }
+
+    @PostMapping("/check/nickname")
+    public CheckDTO.Response checkNickNameDuplication(@Validated @RequestBody CheckDTO.NickCheckRequest nickCheckRequest, BindingResult bindingResult) {
+        logger.info("----------------닉네님 중복확인 요청----------------");
+        CheckDTO.Response response = new CheckDTO.Response();
+        if (bindingResult.hasErrors()) {
+            response.setErrors(ErrorCatcher.getBindingError(bindingResult));
+            response.setResult("failed");
+            return response;
+        }
+        if (authService.isNickNameDuplicate(nickCheckRequest.getMemberNickName())) {
             response.setResult("duplicated");
         } else {
             response.setResult("success");
@@ -53,7 +70,7 @@ public class AuthController {
             return response;
         }
         try {
-            String joinedMemberId = authService.join(request.getMemberId(), request.getMemberPw(), request.getMemberName(), request.getMemberEmail());
+            String joinedMemberId = authService.join(request.getMemberId(), request.getMemberPw(), request.getMemberName(), request.getMemberEmail(), request.getMemberNickName());
             response.setResult("success");
             response.setJoinedId(joinedMemberId);
         } catch (Exception e) {
@@ -62,8 +79,6 @@ public class AuthController {
         }
         return response;
     }
-
-
 
     @PostMapping("/login/ts")
     public LoginDTO.Response loginByTS(@Validated @RequestBody LoginDTO.TsRequest request, BindingResult bindingResult) {

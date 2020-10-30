@@ -4,6 +4,8 @@ import com.tripstory.tripstory.post.dto.PostCreateDTO;
 import com.tripstory.tripstory.util.ErrorCatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,5 +32,10 @@ public class PostController {
             response.setResult("failed");
         }
         return response;
+    }
+
+    @GetMapping("/post/no-travel/{memberId}")
+    public void getPostNotIncludedInTheTravel(@PathVariable String memberId) {
+
     }
 }

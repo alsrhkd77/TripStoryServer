@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,13 +58,13 @@ public class PostService {
 
         // 일반 게시물 저장
         logger.info("게시물 마무리 저장");
-        createNormalPost(request.getVisitStart().get(), request.getVisitEnd().get(), newPost);
+        saveNormalPost(request.getVisitStart(), request.getVisitEnd(), newPost);
         // 생성 완료된 게시물 ID 반환
         logger.info("게시물 생성 성공 및 생성된 게시물 ID 반환");
         return newPost.getId();
     }
 
-    public Post savePost(Member member, String content) {
+    private Post savePost(Member member, String content) {
         Post post = Post.builder()
                 .content(content)
                 .createdTime(LocalDateTime.now())
@@ -76,7 +75,7 @@ public class PostService {
         return post;
     }
 
-    public void savePostTag(List<String> tags, Member member, Post post) {
+    private void savePostTag(List<String> tags, Member member, Post post) {
         tags.forEach(
                 (tag) -> {
                     Tag newTag;
@@ -97,7 +96,7 @@ public class PostService {
         );
     }
 
-    public void saveImageFile(List<MultipartFile> images, Post post) {
+    private void saveImageFile(List<MultipartFile> images, Post post) {
         images.forEach(
                 (image) -> {
                     try {
@@ -113,7 +112,7 @@ public class PostService {
                 });
     }
 
-    public void createNormalPost(LocalDate visitStart, LocalDate visitEnd, Post post) {
+    private void saveNormalPost(LocalDate visitStart, LocalDate visitEnd, Post post) {
         if (visitStart != null && visitEnd != null) {
             post.setNormalPost(NormalPost.builder()
                     .post(post)
@@ -126,4 +125,5 @@ public class PostService {
                     .build());
         }
     }
+
 }

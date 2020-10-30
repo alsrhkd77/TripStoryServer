@@ -16,9 +16,24 @@ public class MemberDTO {
 
     @Setter
     @Getter
-    public static class Response {
+    public static class MemberInfoResponse {
         private String result;
         private String errors;
         private MemberInfo memberInfo;
+    }
+
+    @Setter
+    @Getter
+    public static class ChangeNickNameRequest {
+        private String memberId;
+        private String memberNickName;
+    }
+
+    @Setter
+    @Getter
+    public static class ChangeNickNameResponse {
+        private String result;
+        private String errors;
+        private String changedName;
     }
 }

@@ -18,8 +18,22 @@ public class ErrorCatcher {
         return sb.toString();
     }
 
+    /**
+     * 해당 파일 타입이 사용가능한 타입인지 확인함
+     * @param contentType
+     * @return 사용가능하면 true, 불가능하면 false 반환
+     */
     public static boolean isUsableImageContentType(String contentType) {
-
-        return true;
+        if(contentType.split("/")[0] != "image") {
+            return false;
+        }
+        switch (contentType.split("/")[1]) {
+            case "jpg":
+            case "png":
+            case "gif":
+                return true;
+            default:
+                return false;
+        }
     }
 }

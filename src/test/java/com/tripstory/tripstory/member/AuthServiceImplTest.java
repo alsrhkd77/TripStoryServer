@@ -33,6 +33,7 @@ public class AuthServiceImplTest {
                 .id("member1")
                 .name("철수")
                 .email("ironwater@test.com")
+                .nickName("해달별")
                 .build();
 
         member.join("test1234");
@@ -65,9 +66,10 @@ public class AuthServiceImplTest {
         String newPw = "pw1";
         String newName = "영희";
         String newEmail = "zerohe@test.com";
+        String newNickName = "해달별";
 
         // when
-        String result = authService.join(newId, newPw, newName, newEmail);
+        String result = authService.join(newId, newPw, newName, newEmail, newNickName);
 
         // then
         Assert.assertEquals(newId, result);
@@ -82,9 +84,9 @@ public class AuthServiceImplTest {
         String existPw = "pw1";
         String existName = "철수";
         String existEmail = "ironwater@test.com";
-        
+        String existNickName = "해달별";
         // when
-        String result1 = authService.join(existId, existPw, existName, existEmail);
+        String result1 = authService.join(existId, existPw, existName, existEmail, existNickName);
 
         // then
         

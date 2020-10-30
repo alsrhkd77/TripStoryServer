@@ -23,20 +23,27 @@ public class AuthService {
                 .isEmpty();
     }
 
+    public boolean isNickNameDuplicate(String nickName) {
+        logger.info("중복확인 대상 닉네님 : " + nickName + " 중복확인");
+        return !memberRepository.findByNickName(nickName)
+                .isEmpty();
+    }
+
     @Transactional
-    public String join(String id, String password, String name, String email) {
-        logger.info("가입 정보 [ID : " + id + ", PW : " + password + ", NAME : " + name + ", EMAIL : " + email + "]");
+    public String join(String id, String password, String name, String email, String nickName) {
+        logger.info("가입 정보 [ID : " + id + ", PW : " + password + ", NAME : " + name + ", EMAIL : " + email + ", NICKNAME : " + nickName + "]");
         Member newMember = Member.builder()
                 .id(id)
                 .name(name)
                 .email(email)
+                .nickName(nickName)
                 .build();
 
         newMember.join(password);
         try {
             return memberRepository.save(newMember).getId();
         }catch (Exception e) {
-            throw new IllegalStateException("이미 존재하는 회원");
+            throw new IllegalStateException("회원가입중 오류발생");
         }
     }
 

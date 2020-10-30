@@ -35,6 +35,11 @@ public class JoinDTO {
         @Email
         @NonNull
         private String memberEmail;
+
+        @Size(min = 1, max = 10, message = "닉네임은 1자에서 10자까지 가능")
+        @NotEmpty(message = "닉네임은 비어있는 문자열 사용이 불가능")
+        @NonNull
+        private String memberNickName;
     }
 
     @Setter

@@ -22,4 +22,9 @@ public class MemberService {
     public void updateProfileImage(byte[] image, String fileName, String contentType) {
 
     }
+
+    public void changeMemberNickName(String memberId, String newNickName){
+        memberRepository.findOne(memberId)
+                .ifPresent(member -> member.changeNickName(newNickName));
+    }
 }

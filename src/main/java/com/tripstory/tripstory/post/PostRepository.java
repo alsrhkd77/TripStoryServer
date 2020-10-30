@@ -19,8 +19,15 @@ public class PostRepository  {
     private final EntityManager em;
 
     public Post save(Post post) {
+        logger.info("게시물 생성 대상 회원 " + post.getMember().getId());
         em.persist(post);
         return post;
+    }
+
+    public void delete(String postId) {
+        logger.info("게시물 제거 대상 : " + postId);
+        Optional.of(em.find(Post.class, postId))
+                .ifPresent(em::remove);
     }
 
     public Optional<Post> fineOne(Long id) {
@@ -32,4 +39,12 @@ public class PostRepository  {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public List<Post> findByNickName(String nickName) {
+        return em.createQuery("SELECT p FROM Post p WHERE p.member.nickName = :nickName")
+                .setParameter("nickName", nickName)
+                .getResultList();
+    }
+    
+    
 }

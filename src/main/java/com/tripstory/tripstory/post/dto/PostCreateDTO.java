@@ -21,10 +21,10 @@ public class PostCreateDTO {
         private List<MultipartFile> images;
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private Optional<LocalDate> visitStart;
+        private LocalDate visitStart;
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private Optional<LocalDate> visitEnd;
+        private LocalDate visitEnd;
 
     }
 
