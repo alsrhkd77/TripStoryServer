@@ -44,9 +44,11 @@ public class PostRepository {
                 "JOIN p.normalPost n " +
                 "ON p.type = 'NORMAL' " +
                 "JOIN p.images i " +
+                "WHERE p.member.id = :memberId " +
                 "GROUP BY p.id " +
                 "ORDER BY p.createdTime DESC ";
         return em.createQuery(query, PostThumbnail.class)
+                .setParameter("memberId", memberId)
                 .getResultList();
     }
 
