@@ -32,6 +32,7 @@ CREATE TABLE post
     content      VARCHAR(255),
     member_id    VARCHAR(255) NOT NULL,
     type         VARCHAR(10)  NOT NULL,
+    scope VARCHAR(10) NOT NULL DEFAULT 'PUBLIC',
     FOREIGN KEY (member_id) REFERENCES member (member_id) ON DELETE CASCADE
 );
 
@@ -68,4 +69,23 @@ CREATE TABLE normal_post
     travel_id   BIGINT,
     FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE CASCADE,
     FOREIGN KEY (travel_id) REFERENCES travel_post (post_id)
+);
+
+CREATE TABLE post_like
+(
+    post_id   BIGINT NOT NULL,
+    member_id VARCHAR(255) NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES post (post_id) ON DELETE CASCADE,
+    FOREIGN KEY (member_id) REFERENCES member (member_id) ON DELETE CASCADE,
+    PRIMARY KEY (post_id, member_id)
+);
+
+CREATE TABLE travel_course
+(
+    travel_id BIGINT NOT NULL,
+    lat DOUBLE NOT NULL ,
+    lng DOUBLE NOT NULL ,
+    pass_date DATETIME NOT NULL,
+    FOREIGN KEY (travel_id) REFERENCES post(post_id),
+    PRIMARY KEY (lat, lng, pass_date)
 );

@@ -25,4 +25,8 @@ public class NormalPost {
     private LocalDate visitStart;
 
     private LocalDate visitEnd;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "travel_id")
+    private TravelPost travel;
 }

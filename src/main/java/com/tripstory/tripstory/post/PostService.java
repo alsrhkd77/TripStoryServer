@@ -4,6 +4,7 @@ import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.*;
 import com.tripstory.tripstory.post.dto.PostCreateDTO;
+import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.tag.TagRepository;
 import com.tripstory.tripstory.tag.domain.Tag;
 import com.tripstory.tripstory.util.FileStorage;
@@ -62,6 +63,10 @@ public class PostService {
         // 생성 완료된 게시물 ID 반환
         logger.info("게시물 생성 성공 및 생성된 게시물 ID 반환");
         return newPost.getId();
+    }
+
+    public List<PostThumbnail> getMyPostThumbnailAll(String memberId) {
+        return postRepository.findByMemberId(memberId);
     }
 
     private Post savePost(Member member, String content) {

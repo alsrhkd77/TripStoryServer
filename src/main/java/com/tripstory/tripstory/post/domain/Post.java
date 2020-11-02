@@ -34,6 +34,9 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostType type;
 
+    @Enumerated(EnumType.STRING)
+    private DisclosureScope scope = DisclosureScope.PUBLIC;
+
     @Builder.Default
     @OneToMany(mappedBy = "post",
             cascade = CascadeType.ALL, orphanRemoval = true)
@@ -62,6 +65,11 @@ public class Post {
 
     public void addImage(PostImage image) {
         this.images.add(image);
+    }
+
+    public void changeScope(String scope) {
+        DisclosureScope changedScope = DisclosureScope.valueOf(scope);
+        this.scope = changedScope;
     }
 
 }
