@@ -33,7 +33,7 @@ public class PostRepository {
                 .ifPresent(em::remove);
     }
 
-    public Optional<Post> fineOne(Long id) {
+    public Optional<Post> findOne(Long id) {
         return Optional.ofNullable(em.find(Post.class, id));
     }
 

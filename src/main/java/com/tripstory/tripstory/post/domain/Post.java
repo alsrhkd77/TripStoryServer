@@ -34,6 +34,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostType type;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     private DisclosureScope scope = DisclosureScope.PUBLIC;
 
@@ -47,9 +48,11 @@ public class Post {
             cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostImage> images = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private NormalPost normalPost;
+
 
     public void setMember(Member member) {
         this.member = member;

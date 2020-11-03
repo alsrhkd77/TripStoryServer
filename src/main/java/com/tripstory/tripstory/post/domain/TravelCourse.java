@@ -1,8 +1,14 @@
 package com.tripstory.tripstory.post.domain;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @IdClass(TravelCourseId.class)
 public class TravelCourse {
@@ -19,4 +25,5 @@ public class TravelCourse {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
     private TravelPost travel;
+
 }

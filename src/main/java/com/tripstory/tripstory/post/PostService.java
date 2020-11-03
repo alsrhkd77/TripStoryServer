@@ -34,20 +34,21 @@ public class PostService {
 
     private final FileStorage fileStorage;
 
+
     @Transactional
     public Long createPost(PostCreateDTO.Request request) {
         logger.info("일반 게시물 저장 시작");
         logger.info("게시물 추가 요청 회원 검증");
 
         Member findMember = memberRepository.findOne(request.getAuthor()).orElseGet(null);
-        System.out.println(findMember);
         if (findMember == null) {
+            logger.info("회원 검증 실패 존재하지 않는 회원");
             throw new IllegalStateException("존재하지 않는 회원입니다.");
         }
 
         // 게시물 저장
         logger.info("게시물 기본내용 저장");
-        Post newPost = savePost(findMember, request.getContent().orElseGet(null));
+        Post newPost = savePost(findMember, request.getContent());
 
         // 게시물-태그 저장
         logger.info("게시물 태그 저장");

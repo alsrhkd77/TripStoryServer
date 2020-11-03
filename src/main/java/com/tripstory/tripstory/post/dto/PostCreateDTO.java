@@ -16,7 +16,7 @@ public class PostCreateDTO {
     @Getter
     public static class Request {
         private String author;
-        private Optional<String> content;
+        private String content;
         private List<String> tags;
         private List<MultipartFile> images;
 

@@ -6,8 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public class TravelCreateDTO {
 
@@ -15,9 +15,11 @@ public class TravelCreateDTO {
     @Getter
     public static class Request {
         private String author;
-        private Optional<String> content;
+        private String content;
         private List<String> tags;
         private List<MultipartFile> images;
+        private List<String> courses;
+        private List<Long> posts;
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate travelStart;
@@ -27,10 +29,6 @@ public class TravelCreateDTO {
 
     }
 
-    private class TravelCourse {
-        private Double lat;
-        private Double lng;
-    }
 
     @Setter
     @Getter

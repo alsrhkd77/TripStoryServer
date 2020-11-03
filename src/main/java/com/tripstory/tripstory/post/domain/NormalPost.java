@@ -1,12 +1,17 @@
 package com.tripstory.tripstory.post.domain;
 
+import com.tripstory.tripstory.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -29,4 +34,5 @@ public class NormalPost {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "travel_id")
     private TravelPost travel;
+
 }
