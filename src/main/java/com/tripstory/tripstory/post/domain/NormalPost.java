@@ -35,4 +35,7 @@ public class NormalPost {
     @JoinColumn(name = "travel_id")
     private TravelPost travel;
 
+    public void setTravel(TravelPost travel) {
+        this.travel = travel;
+    }
 }

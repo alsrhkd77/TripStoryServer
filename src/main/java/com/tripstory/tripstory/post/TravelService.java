@@ -172,6 +172,7 @@ public class TravelService {
                     .post(post)
                     .build();
         }
+        posts.forEach(item -> item.setTravel(travelPost));
         courses.forEach(course -> travelPost.addCourse(course));
         travelRepository.save(travelPost);
     }
