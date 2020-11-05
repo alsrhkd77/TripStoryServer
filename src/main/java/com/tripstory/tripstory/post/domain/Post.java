@@ -53,6 +53,10 @@ public class Post {
     @JoinColumn(name = "post_id")
     private NormalPost normalPost;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true,
+    fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private TravelPost travelPost;
 
     public void setMember(Member member) {
         this.member = member;

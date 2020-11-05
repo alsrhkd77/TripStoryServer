@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.*;
+import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.post.dto.TravelCreateDTO;
 import com.tripstory.tripstory.tag.TagRepository;
 import com.tripstory.tripstory.tag.domain.Tag;
@@ -79,6 +80,10 @@ public class TravelService {
         logger.info("여행 게시물 마무리 저장");
         saveTravelPost(request.getTravelStart(), request.getTravelEnd(), newPost, includedPost, travelCourse);
         return newPost.getId();
+    }
+
+    public List<PostThumbnail> getMyTravelThumbnailAll(String memberId) {
+        return travelRepository.findByMemberId(memberId);
     }
 
     private Post savePost(Member member, String content) {

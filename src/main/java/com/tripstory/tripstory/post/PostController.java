@@ -42,8 +42,8 @@ public class PostController {
     }
 
     @GetMapping("/{member-id}")
-    public PostSearchDTO.MyPostDTO getMyPostAll(@PathVariable("member-id") String memberId) {
-        PostSearchDTO.MyPostDTO response = new PostSearchDTO.MyPostDTO();
+    public PostSearchDTO.MyPostsDTO getMyPostAll(@PathVariable("member-id") String memberId) {
+        PostSearchDTO.MyPostsDTO response = new PostSearchDTO.MyPostsDTO();
         try {
             List<PostThumbnail> findPosts = postService.getMyPostThumbnailAll(memberId);
 

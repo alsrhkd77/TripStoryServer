@@ -12,10 +12,22 @@ public class PostSearchDTO {
     @Builder
     @Getter
     @Setter
-    public static class MyPostDTO {
+    public static class MyPostsDTO {
         private String result;
         private String errors;
         private int postCount;
         private List<PostThumbnail> postThumbnails;
     }
+
+//    public static class MyPostDetailDTO {
+//        private Long postId;
+//        private String author;
+//        private String content;
+//
+//    }
+//
+//    public static class OtherPostDetailDTO {
+//        private Long postId;
+//        private String nickName;
+//    }
 }
