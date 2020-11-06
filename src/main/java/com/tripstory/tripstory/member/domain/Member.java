@@ -1,13 +1,11 @@
 package com.tripstory.tripstory.member.domain;
 
 import com.tripstory.tripstory.member.dto.MemberDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@ToString
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

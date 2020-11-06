@@ -38,4 +38,14 @@ public class MemberController {
         return response;
     }
 
+    @GetMapping("/profile/image/{nickname}")
+    public void getProfileImagePath(@PathVariable String nickname) {
+
+    }
+
+    @GetMapping("/profile/{nickname}")
+    public void getProfileInfo(@PathVariable String nickname) {
+
+    }
+
 }

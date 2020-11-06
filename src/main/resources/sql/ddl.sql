@@ -89,3 +89,13 @@ CREATE TABLE travel_course
     FOREIGN KEY (travel_id) REFERENCES post(post_id),
     PRIMARY KEY (lat, lng, pass_date)
 );
+
+CREATE TABLE follow
+(
+    follow_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id VARCHAR(255) ,
+    nick_name VARCHAR(30)  ,
+    FOREIGN KEY (member_id) REFERENCES member(member_id) ON DELETE CASCADE,
+    FOREIGN KEY (nick_name) REFERENCES member(nick_name) ON DELETE CASCADE ON UPDATE CASCADE ,
+    CONSTRAINT MEMBER_ID_NICK_NAME_UNIQUE UNIQUE (member_id, nick_name)
+);

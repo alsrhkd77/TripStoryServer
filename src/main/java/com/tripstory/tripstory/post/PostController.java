@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.post;
 
 import com.tripstory.tripstory.post.dto.PostCreateDTO;
+import com.tripstory.tripstory.post.dto.PostDetailDTO;
 import com.tripstory.tripstory.post.dto.PostSearchDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.util.ErrorCatcher;
@@ -37,8 +38,9 @@ public class PostController {
     }
 
     @GetMapping("/{post-id}/{member-id}")
-    public void test(@PathVariable("post-id") String postId, @PathVariable("member-id") String memberId) {
-
+    public PostDetailDTO test(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        postService.getPostDetail(postId, memberId);
+        return null;
     }
 
     @GetMapping("/{member-id}")

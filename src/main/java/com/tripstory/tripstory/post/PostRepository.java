@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.post;
 
 import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.post.dto.PostDetailDTO;
 import com.tripstory.tripstory.post.dto.PostSearchDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 import java.util.Optional;
@@ -52,11 +54,13 @@ public class PostRepository {
                 .getResultList();
     }
 
-    public List<Post> findByNickName(String nickName) {
-        return em.createQuery("SELECT p FROM Post p WHERE p.member.nickName = :nickName", Post.class)
-                .setParameter("nickName", nickName)
-                .getResultList();
+    public int getLikeCount(Long postId) {
+        String query = "SELECT COUNT(l) " +
+                " FROM PostLike l " +
+                "WHERE PostLike.post.id = :postId";
+        Integer likeCount = em.createQuery(query, Integer.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
+        return likeCount.intValue();
     }
-
-
 }

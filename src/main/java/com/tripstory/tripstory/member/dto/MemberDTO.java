@@ -36,4 +36,5 @@ public class MemberDTO {
         private String errors;
         private String changedName;
     }
+
 }

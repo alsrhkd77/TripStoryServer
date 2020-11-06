@@ -19,15 +19,4 @@ public class PostSearchDTO {
         private List<PostThumbnail> postThumbnails;
     }
 
-//    public static class MyPostDetailDTO {
-//        private Long postId;
-//        private String author;
-//        private String content;
-//
-//    }
-//
-//    public static class OtherPostDetailDTO {
-//        private Long postId;
-//        private String nickName;
-//    }
 }

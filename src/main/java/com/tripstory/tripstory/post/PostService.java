@@ -4,6 +4,7 @@ import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.*;
 import com.tripstory.tripstory.post.dto.PostCreateDTO;
+import com.tripstory.tripstory.post.dto.PostDetailDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.tag.TagRepository;
 import com.tripstory.tripstory.tag.domain.Tag;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -68,6 +70,47 @@ public class PostService {
 
     public List<PostThumbnail> getMyPostThumbnailAll(String memberId) {
         return postRepository.findByMemberId(memberId);
+    }
+
+    public PostDetailDTO.DetailInfo getPostDetail(Long postId, String memberId) {
+        Optional<Post> findPost = postRepository.findOne(postId);
+        if(findPost.isEmpty()) {
+            return null;
+        }
+        Post post = findPost.get();
+        // 비공개 게시물일 경우 post 식별자를 null 로 주어서
+        // controller 에서 판단하며 비공개 게시물임을 알려야함
+        if (post.getScope() == DisclosureScope.PRIVATE && post.getMember().getId() != memberId) {
+            return PostDetailDTO.DetailInfo.builder()
+                    .postId(null)
+                    .build();
+        }
+
+        // 친구 공개 게시물일 경우 조회를 요청한 회원과 작성자의 관계를 추적
+        // 추적결과 친구이면 공개 아닐경우 비공개 게시물과 동일하게 처리
+
+        // 공개해야할 경우의 DTO 구성
+        int likeCount = postRepository.getLikeCount(postId);
+        PostDetailDTO.DetailInfo postDetailDTO = PostDetailDTO.DetailInfo.builder()
+                .postId(post.getId())
+                .nickName(post.getMember().getNickName())
+                .content(post.getContent())
+                .createTime(post.getCreatedTime())
+                .likes(likeCount)
+                .visitStart(post.getNormalPost().getVisitStart())
+                .visitEnd(post.getNormalPost().getVisitEnd())
+                .build();
+        post.getTags().forEach(
+                tag -> {
+                    postDetailDTO.getTags().add(tag.getTag().getName());
+                }
+        );
+        post.getImages().forEach(
+                image -> {
+                    postDetailDTO.getImagePaths().add(image.getPath());
+                }
+        );
+        return postDetailDTO;
     }
 
     private Post savePost(Member member, String content) {
