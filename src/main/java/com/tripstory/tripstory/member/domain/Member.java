@@ -57,6 +57,7 @@ public class Member {
         memberInfo.setMemberName(this.name);
         memberInfo.setMemberEmail(this.email);
         memberInfo.setMemberProfileImagePath(this.profileImagePath);
+        memberInfo.setMemberNickName(this.nickName);
         return memberInfo;
     }
 

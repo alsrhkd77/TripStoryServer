@@ -12,6 +12,7 @@ public class MemberDTO {
         private String memberName;
         private String memberEmail;
         private String memberProfileImagePath;
+        private String memberNickName;
     }
 
     @Setter
