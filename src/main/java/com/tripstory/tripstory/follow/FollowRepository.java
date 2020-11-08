@@ -2,6 +2,7 @@ package com.tripstory.tripstory.follow;
 
 import com.tripstory.tripstory.follow.domain.Follow;
 import com.tripstory.tripstory.follow.dto.FollowDTO;
+import com.tripstory.tripstory.follow.dto.FollowerInfo;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public class FollowRepository {
 
     /**
      * 새로운 팔로잉 추가
+     *
      * @param follow
      * @return
      */
@@ -31,6 +33,7 @@ public class FollowRepository {
 
     /**
      * 기존 팔로잉 취소
+     *
      * @param follow
      */
     public void delete(Follow follow) {
@@ -39,7 +42,6 @@ public class FollowRepository {
     }
 
     /**
-     * 
      * @param memberId 본인 계정 ID
      * @param nickName 팔로잉 닉네임
      */
@@ -56,31 +58,31 @@ public class FollowRepository {
 
     /**
      * 내가 팔로우 하는 회원의 프로필 정보 조회
+     *
      * @param memberId
      * @return
      */
-    public List<FollowDTO.FollowerInfo> findByMemberId(String memberId) {
-        String query = "SELECT new com.tripstory.tripstory.follow.dto.FollowDTO.FollowerInfo(f.member.name, f.member.nickName, f.member.profileImagePath) " +
+    public List<String> findByMemberId(String memberId) {
+        String query = "SELECT f.nickName " +
                 "FROM Follow f " +
-                "JOIN FETCH f.member " +
                 "WHERE f.member.id = :memberId";
-        return em.createQuery(query, FollowDTO.FollowerInfo.class)
+        return em.createQuery(query, String.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
 
     /**
      * 나를 팔로우 하는 회원의 프로필 정보 조회
+     *
      * @param nickName
      * @return
      */
-    public List<FollowDTO.FollowerInfo> findByNickName(String nickName) {
-        String query = "SELECT new com.tripstory.tripstory.follow.dto.FollowDTO.FollowerInfo(f.member.name, f.member.nickName, f.member.profileImagePath) " +
+    public List<String> findByNickName(String nickName) {
+        String query = "SELECT f.nickName " +
                 "FROM Follow f " +
-                "JOIN FETCH f.member " +
                 "WHERE f.nickName = :nickName";
-        em.createQuery(query)
-        .setParameter("nickName", nickName);
-        return null;
+        return em.createQuery(query, String.class)
+                .setParameter("nickName", nickName)
+                .getResultList();
     }
 }

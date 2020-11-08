@@ -4,6 +4,7 @@ import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.*;
 import com.tripstory.tripstory.post.dto.PostCreateDTO;
+import com.tripstory.tripstory.post.dto.PostDeleteDTO;
 import com.tripstory.tripstory.post.dto.PostDetailDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.tag.TagRepository;
@@ -67,6 +68,22 @@ public class PostService {
         // 생성 완료된 게시물 ID 반환
         logger.info("게시물 생성 성공 및 생성된 게시물 ID 반환");
         return newPost.getId();
+    }
+
+    @Transactional
+    public void deletePost(Long postId, String memberId) {
+        postRepository.findOne(postId).ifPresent(
+                post -> {
+                    System.out.println(post.getId());
+                    if(post.getMember().getId() == memberId) {
+                        System.out.println(post.getMember().getId());
+                        System.out.println(memberId);
+                        postRepository.delete(post);
+                    } else {
+                        throw new IllegalStateException("삭제 권한이 없음");
+                    }
+                }
+        );
     }
 
     public List<PostThumbnail> getMyPostThumbnailAll(String memberId) {

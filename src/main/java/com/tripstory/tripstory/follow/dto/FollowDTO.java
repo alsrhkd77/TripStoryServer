@@ -15,14 +15,7 @@ public class FollowDTO {
         private String nickName;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Getter
-    public static class FollowerInfo {
-        private String name;
-        private String nickName;
-        private String profilePath;
-    }
+
     @Getter
     @Setter
     public static class FollowResponse {
@@ -30,6 +23,8 @@ public class FollowDTO {
         private String errors;
     }
 
+    @Setter
+    @Getter
     public static class FollowerResponse {
         private String result;
         private String errors;

@@ -1,8 +1,11 @@
 package com.tripstory.tripstory.follow;
 
 import com.tripstory.tripstory.follow.dto.FollowDTO;
+import com.tripstory.tripstory.follow.dto.FollowerInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/follow")
@@ -38,12 +41,31 @@ public class FollowController {
     }
 
     @GetMapping("/following/{member-id}")
-    public void getMyFollowing(@PathVariable("member-id") String memberId) {
-
+    public FollowDTO.FollowerResponse getMyFollowing(@PathVariable("member-id") String memberId) {
+        FollowDTO.FollowerResponse response = new FollowDTO.FollowerResponse();
+        try {
+            List<FollowerInfo> myFollowings = followService.getMyFollowings(memberId);
+            response.setResult("success");
+            response.setFollowerInfos(myFollowings);
+        } catch (Exception e) {
+            response.setResult(e.getMessage());
+            response.setResult("failed");
+        }
+        return response;
     }
 
     @GetMapping("/follower/{member-id}")
-    public void getMyFollower(@PathVariable("member-id") String memberId) {
-
+    public FollowDTO.FollowerResponse getMyFollower(@PathVariable("member-id") String memberId) {
+        FollowDTO.FollowerResponse response = new FollowDTO.FollowerResponse();
+        try {
+            List<FollowerInfo> myFollowings = followService.getMyFollowers(memberId);
+            response.setResult("success");
+            response.setFollowerInfos(myFollowings);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setResult(e.getMessage());
+            response.setResult("failed");
+        }
+        return response;
     }
 }

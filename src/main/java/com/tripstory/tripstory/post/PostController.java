@@ -1,9 +1,6 @@
 package com.tripstory.tripstory.post;
 
-import com.tripstory.tripstory.post.dto.PostCreateDTO;
-import com.tripstory.tripstory.post.dto.PostDetailDTO;
-import com.tripstory.tripstory.post.dto.PostSearchDTO;
-import com.tripstory.tripstory.post.dto.PostThumbnail;
+import com.tripstory.tripstory.post.dto.*;
 import com.tripstory.tripstory.util.ErrorCatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -64,5 +61,18 @@ public class PostController {
     @GetMapping("/no-travel/{memberId}")
     public void getPostNotIncludedInTheTravel(@PathVariable String memberId) {
 
+    }
+
+    @DeleteMapping("/{post-id}/{member-id}")
+    public PostDeleteDTO deletePost(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        PostDeleteDTO response = new PostDeleteDTO();
+        try {
+            postService.deletePost(postId, memberId);
+            response.setResult("success");
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
+        }
+        return response;
     }
 }

@@ -29,10 +29,9 @@ public class PostRepository {
         return post;
     }
 
-    public void delete(String postId) {
-        logger.info("게시물 제거 대상 : " + postId);
-        Optional.of(em.find(Post.class, postId))
-                .ifPresent(em::remove);
+    public void delete(Post post) {
+        logger.info("게시물 제거 대상 : " + post.getId());
+        em.remove(post);
     }
 
     public Optional<Post> findOne(Long id) {
