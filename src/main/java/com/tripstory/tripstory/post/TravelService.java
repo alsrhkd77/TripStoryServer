@@ -94,6 +94,7 @@ public class TravelService {
         return newPost.getId();
     }
 
+
     public List<PostThumbnail> getMyTravelThumbnailAll(String memberId) {
         return travelRepository.findByMemberId(memberId);
     }

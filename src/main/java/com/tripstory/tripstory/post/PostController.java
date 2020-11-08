@@ -70,6 +70,7 @@ public class PostController {
             postService.deletePost(postId, memberId);
             response.setResult("success");
         } catch (Exception e) {
+            e.printStackTrace();
             response.setResult("failed");
             response.setErrors(e.getMessage());
         }

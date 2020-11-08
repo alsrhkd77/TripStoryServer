@@ -10,6 +10,7 @@ server:
 
 
 spring:
+
   jpa:
     show-sql: true
     properties:

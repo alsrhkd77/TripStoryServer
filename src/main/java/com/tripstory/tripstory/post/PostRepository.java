@@ -1,8 +1,6 @@
 package com.tripstory.tripstory.post;
 
 import com.tripstory.tripstory.post.domain.Post;
-import com.tripstory.tripstory.post.dto.PostDetailDTO;
-import com.tripstory.tripstory.post.dto.PostSearchDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -10,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -31,11 +26,13 @@ public class PostRepository {
 
     public void delete(Post post) {
         logger.info("게시물 제거 대상 : " + post.getId());
-        em.remove(post);
+        Long postId = post.getId();
+        String query = "DELETE FROM Post p WHERE p.id = : postId";
+        em.createQuery(query).setParameter("postId", postId).executeUpdate();
     }
 
-    public Optional<Post> findOne(Long id) {
-        return Optional.ofNullable(em.find(Post.class, id));
+    public Post findOne(Long id) {
+        return em.find(Post.class, id);
     }
 
 
@@ -62,4 +59,5 @@ public class PostRepository {
                 .getSingleResult();
         return likeCount.intValue();
     }
+
 }

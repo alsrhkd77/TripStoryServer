@@ -25,6 +25,7 @@ public class TravelRepository {
         return travel;
     }
 
+
     public List<PostThumbnail> findByMemberId(String memberId) {
         String query = "SELECT new com.tripstory.tripstory.post.dto.PostThumbnail(p.id, p.content, p.createdTime, MAX(i.path), p.type) " +
                 "FROM Post p " +

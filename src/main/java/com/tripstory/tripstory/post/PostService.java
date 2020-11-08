@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -71,19 +72,14 @@ public class PostService {
     }
 
     @Transactional
-    public void deletePost(Long postId, String memberId) {
-        postRepository.findOne(postId).ifPresent(
-                post -> {
-                    System.out.println(post.getId());
-                    if(post.getMember().getId() == memberId) {
-                        System.out.println(post.getMember().getId());
-                        System.out.println(memberId);
-                        postRepository.delete(post);
-                    } else {
-                        throw new IllegalStateException("삭제 권한이 없음");
-                    }
-                }
-        );
+    public void deletePost(Long postId, String memberId) throws InterruptedException {
+        Post findPost = postRepository.findOne(postId);
+        if (findPost.getMember().getId().equals(memberId)) {
+            postRepository.delete(findPost);
+        } else {
+            throw new IllegalStateException("삭제 권한이 없음");
+        }
+
     }
 
     public List<PostThumbnail> getMyPostThumbnailAll(String memberId) {
@@ -91,14 +87,13 @@ public class PostService {
     }
 
     public PostDetailDTO.DetailInfo getPostDetail(Long postId, String memberId) {
-        Optional<Post> findPost = postRepository.findOne(postId);
-        if(findPost.isEmpty()) {
+        Post findPost = postRepository.findOne(postId);
+        if (findPost != null) {
             return null;
         }
-        Post post = findPost.get();
         // 비공개 게시물일 경우 post 식별자를 null 로 주어서
         // controller 에서 판단하며 비공개 게시물임을 알려야함
-        if (post.getScope() == DisclosureScope.PRIVATE && post.getMember().getId() != memberId) {
+        if (findPost.getScope() == DisclosureScope.PRIVATE && findPost.getMember().getId() != memberId) {
             return PostDetailDTO.DetailInfo.builder()
                     .postId(null)
                     .build();
@@ -110,22 +105,22 @@ public class PostService {
         // 공개해야할 경우의 DTO 구성
         int likeCount = postRepository.getLikeCount(postId);
         PostDetailDTO.DetailInfo postDetailDTO = PostDetailDTO.DetailInfo.builder()
-                .postId(post.getId())
-                .nickName(post.getMember().getNickName())
-                .content(post.getContent())
-                .createTime(post.getCreatedTime())
+                .postId(findPost.getId())
+                .nickName(findPost.getMember().getNickName())
+                .content(findPost.getContent())
+                .createTime(findPost.getCreatedTime())
                 .likes(likeCount)
-                .visitStart(post.getNormalPost().getVisitStart())
-                .visitEnd(post.getNormalPost().getVisitEnd())
+                .visitStart(findPost.getNormalPost().getVisitStart())
+                .visitEnd(findPost.getNormalPost().getVisitEnd())
                 .build();
-        if(post.getTags() != null) {
-            post.getTags().forEach(
+        if (findPost.getTags() != null) {
+            findPost.getTags().forEach(
                     tag -> {
                         postDetailDTO.getTags().add(tag.getTag().getName());
                     }
             );
         }
-        post.getImages().forEach(
+        findPost.getImages().forEach(
                 image -> {
                     postDetailDTO.getImagePaths().add(image.getPath());
                 }
@@ -188,7 +183,7 @@ public class PostService {
                     .visitStart(visitStart)
                     .visitEnd(visitEnd)
                     .build());
-        }else {
+        } else {
             post.setNormalPost(NormalPost.builder()
                     .post(post)
                     .build());

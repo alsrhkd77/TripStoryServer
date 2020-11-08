@@ -1,9 +1,6 @@
 package com.tripstory.tripstory.post;
 
-import com.tripstory.tripstory.post.dto.PostCreateDTO;
-import com.tripstory.tripstory.post.dto.PostSearchDTO;
-import com.tripstory.tripstory.post.dto.PostThumbnail;
-import com.tripstory.tripstory.post.dto.TravelCreateDTO;
+import com.tripstory.tripstory.post.dto.*;
 import com.tripstory.tripstory.util.ErrorCatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
@@ -18,6 +15,8 @@ public class TravelController {
 
 
     private final TravelService travelService;
+
+    private final PostService postService;
 
     @PostMapping
     public PostCreateDTO.Response createPost(TravelCreateDTO.Request request, BindingResult bindingResult) {
@@ -50,6 +49,20 @@ public class TravelController {
             response.setResult("failed");
             response.setErrors(e.getMessage());
             response.setPostCount(0);
+        }
+        return response;
+    }
+
+    @DeleteMapping("/{post-id}/{member-id}")
+    public PostDeleteDTO deletePost(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        PostDeleteDTO response = new PostDeleteDTO();
+        try {
+            postService.deletePost(postId, memberId);
+            response.setResult("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
         }
         return response;
     }
