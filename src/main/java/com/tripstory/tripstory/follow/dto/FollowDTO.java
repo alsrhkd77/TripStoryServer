@@ -12,7 +12,7 @@ public class FollowDTO {
     @Getter
     public static class Follow {
         private String memberId;
-        private String memberNickName;
+        private String nickName;
     }
 
     @AllArgsConstructor

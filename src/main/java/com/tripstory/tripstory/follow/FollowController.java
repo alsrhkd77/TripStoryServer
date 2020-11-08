@@ -15,7 +15,7 @@ public class FollowController {
     public FollowDTO.FollowResponse follow(@RequestBody FollowDTO.Follow request) {
         FollowDTO.FollowResponse response = new FollowDTO.FollowResponse();
         try {
-            followService.follow(request.getMemberId(), request.getMemberNickName());
+            followService.follow(request.getMemberId(), request.getNickName());
             response.setResult("success");
         } catch (Exception e) {
             response.setErrors(e.getMessage());
@@ -25,8 +25,16 @@ public class FollowController {
     }
 
     @DeleteMapping
-    public void unFollow() {
-
+    public FollowDTO.FollowResponse unFollow(@RequestBody FollowDTO.Follow request) {
+        FollowDTO.FollowResponse response = new FollowDTO.FollowResponse();
+        try {
+            followService.unFollow(request.getMemberId(), request.getNickName());
+            response.setResult("success");
+        } catch (Exception e){
+            response.setErrors(e.getMessage());
+            response.setResult("failed");
+        }
+        return response;
     }
 
     @GetMapping("/following/{member-id}")

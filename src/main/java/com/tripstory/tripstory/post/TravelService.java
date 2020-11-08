@@ -61,20 +61,32 @@ public class TravelService {
         Post newPost = savePost(findMember, request.getContent());
 
         // 게시물-태그 저장
-        logger.info("게시물 태그 저장");
-        savePostTag(request.getTags(), findMember, newPost);
-
+        if (request.getTags() != null) {
+            logger.info("게시물 태그 저장");
+            savePostTag(request.getTags(), findMember, newPost);
+        }
         // 이미지 파일 저장
         logger.info("게시물 이미지 파일 저장 및 경로 DB에 저장");
         saveImageFile(request.getImages(), newPost);
 
         // 여행에 포함될 게시물 사용가능 여부 조회 및 엔티티 검색
-        logger.info("포함을 희망하는 게시물이 사용가능한지 조회");
-        List<NormalPost> includedPost = getIncludeTargetPost(request.getPosts());
+        List<NormalPost> includedPost;
+        if(request.getPosts() != null){
+            logger.info("포함을 희망하는 게시물이 사용가능한지 조회");
+            includedPost = getIncludeTargetPost(request.getPosts());
+        } else {
+            includedPost = null;
+        }
+
 
         // 여행에 포함되는 코스 엔티티로 변경
-        logger.info("전달받은 여행 코스 엔티티로 변환");
-        List<TravelCourse> travelCourse = getTravelCourse(request.getCourses());
+        List<TravelCourse> travelCourse;
+        if(request.getCourses() != null) {
+            logger.info("전달받은 여행 코스 엔티티로 변환");
+            travelCourse = getTravelCourse(request.getCourses());
+        } else {
+            travelCourse = null;
+        }
 
         // 여행 게시물 저장
         logger.info("여행 게시물 마무리 저장");
@@ -155,6 +167,8 @@ public class TravelService {
             });
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            travelCourses = null;
         }
         return travelCourses;
     }
@@ -177,8 +191,12 @@ public class TravelService {
                     .post(post)
                     .build();
         }
-        posts.forEach(item -> item.setTravel(travelPost));
-        courses.forEach(course -> travelPost.addCourse(course));
+        if(posts != null) {
+            posts.forEach(item -> item.setTravel(travelPost));
+        }
+        if(courses != null) {
+            courses.forEach(course -> travelPost.addCourse(course));
+        }
         travelRepository.save(travelPost);
     }
 }

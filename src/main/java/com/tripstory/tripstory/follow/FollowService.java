@@ -5,6 +5,8 @@ import com.tripstory.tripstory.follow.dto.FollowDTO;
 import com.tripstory.tripstory.member.MemberRepository;
 import com.tripstory.tripstory.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +18,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FollowService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     private final FollowRepository followRepository;
 
     private final MemberRepository memberRepository;
 
     @Transactional
     public void follow(String memberId, String nickName) {
+        logger.info(memberId + " 님이 " + nickName + " 님을 팔로우 요청합니다");
         Optional<Member> me = memberRepository.findOne(memberId);
         Optional<Member> newFollowing = memberRepository.findByNickName(nickName);
         if(me.isEmpty() || newFollowing.isEmpty() ) {
@@ -38,7 +43,11 @@ public class FollowService {
         followRepository.save(follow);
     }
 
+    @Transactional
     public void unFollow(String memberId, String nickName) {
+        logger.info(memberId + " 님이 " + nickName + " 님을 언팔로우 요청합니다.");
+        Follow findFollow = followRepository.findByMemberIdWithNickName(memberId, nickName);
+        followRepository.delete(findFollow);
     }
 
     public List<FollowDTO.FollowerInfo> getMyFollowings(String memberId) {

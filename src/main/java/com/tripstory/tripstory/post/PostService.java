@@ -36,7 +36,6 @@ public class PostService {
 
     private final FileStorage fileStorage;
 
-
     @Transactional
     public Long createPost(PostCreateDTO.Request request) {
         logger.info("일반 게시물 저장 시작");
@@ -52,9 +51,11 @@ public class PostService {
         logger.info("게시물 기본내용 저장");
         Post newPost = savePost(findMember, request.getContent());
 
-        // 게시물-태그 저장
-        logger.info("게시물 태그 저장");
-        savePostTag(request.getTags(), findMember, newPost);
+        if (request.getTags() != null) {
+            // 게시물-태그 저장
+            logger.info("게시물 태그 저장");
+            savePostTag(request.getTags(), findMember, newPost);
+        }
 
         // 이미지 파일 저장
         logger.info("게시물 이미지 파일 저장 및 경로 DB에 저장");
@@ -100,11 +101,13 @@ public class PostService {
                 .visitStart(post.getNormalPost().getVisitStart())
                 .visitEnd(post.getNormalPost().getVisitEnd())
                 .build();
-        post.getTags().forEach(
-                tag -> {
-                    postDetailDTO.getTags().add(tag.getTag().getName());
-                }
-        );
+        if(post.getTags() != null) {
+            post.getTags().forEach(
+                    tag -> {
+                        postDetailDTO.getTags().add(tag.getTag().getName());
+                    }
+            );
+        }
         post.getImages().forEach(
                 image -> {
                     postDetailDTO.getImagePaths().add(image.getPath());
