@@ -72,7 +72,7 @@ public class FollowService {
             Member findMember = memberRepository.findByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByMemberId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toInfo)
+                    .map(Follow::toFollowingInfo)
                     .collect(Collectors.toList());
             return infos;
         } catch (Exception e) {
@@ -88,7 +88,7 @@ public class FollowService {
             Member findMember = memberRepository.findByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByFollowingId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toInfo)
+                    .map(Follow::toFollowerInfo)
                     .collect(Collectors.toList());
             return infos;
         } catch (
