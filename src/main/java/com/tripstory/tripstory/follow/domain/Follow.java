@@ -1,27 +1,34 @@
 package com.tripstory.tripstory.follow.domain;
 
+import com.tripstory.tripstory.follow.dto.FollowerInfoDTO;
 import com.tripstory.tripstory.member.domain.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-@Getter
 @Entity
+@IdClass(FollowId.class)
 public class Follow {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "follow_id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Id
+    @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member memberId;
 
-    @Column(name = "nick_name")
-    private String nickName;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "following_id")
+    private Member followingId;
 
-
+    // 내가 팔로우 하는 사람 정보를 요약하여 반환
+    public FollowerInfoDTO toInfo() {
+        FollowerInfoDTO infoDTO = new FollowerInfoDTO();
+        infoDTO.setName(this.followingId.getName());
+        infoDTO.setNickName(this.followingId.getNickName());
+        infoDTO.setProfilePath(this.followingId.getProfileImagePath());
+        return infoDTO;
+    }
 }

@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.post;
 
+import com.tripstory.tripstory.post.domain.NormalPost;
 import com.tripstory.tripstory.post.domain.Post;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +20,17 @@ public class PostRepository {
     private final EntityManager em;
 
     public Post save(Post post) {
-        logger.info("게시물 생성 대상 회원 " + post.getMember().getId());
+        logger.info("게시물 생성 대상 회원 " + post.getMember().getMemberId());
         em.persist(post);
         return post;
     }
 
     public void delete(Post post) {
-        logger.info("게시물 제거 대상 : " + post.getId());
-        Long postId = post.getId();
-        String query = "DELETE FROM Post p WHERE p.id = : postId";
-        em.createQuery(query).setParameter("postId", postId).executeUpdate();
+        em.remove(post);
+    }
+
+    public void delete(NormalPost post) {
+        em.remove(post);
     }
 
     public Post findOne(Long id) {
@@ -42,7 +44,7 @@ public class PostRepository {
                 "JOIN p.normalPost n " +
                 "ON p.type = 'NORMAL' " +
                 "JOIN p.images i " +
-                "WHERE p.member.id = :memberId " +
+                "WHERE p.member.memberId = :memberId " +
                 "GROUP BY p.id " +
                 "ORDER BY p.createdTime DESC ";
         return em.createQuery(query, PostThumbnail.class)

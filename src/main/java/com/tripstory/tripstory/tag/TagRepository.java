@@ -32,7 +32,7 @@ public class TagRepository {
      */
     public Optional<Tag> findByMemberIdAndTagName(String memberId, String tagName) {
         try {
-            return Optional.ofNullable(em.createQuery("SELECT t FROM Tag t WHERE t.member.id = :memberId AND t.name = :tagName", Tag.class)
+            return Optional.ofNullable(em.createQuery("SELECT t FROM Tag t WHERE t.member.memberId = :memberId AND t.name = :tagName", Tag.class)
                     .setParameter("memberId", memberId)
                     .setParameter("tagName", tagName)
                     .getSingleResult());
@@ -48,7 +48,7 @@ public class TagRepository {
      * @return 해당 회원이 사용한 Tag 를 List 에 담아서 반환
      */
     public List<Tag> findByMemberId(String memberId) {
-        return em.createQuery("SELECT t FROM Tag t WHERE t.member.id = :memberId", Tag.class)
+        return em.createQuery("SELECT t FROM Tag t WHERE t.member.memberId = :memberId", Tag.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

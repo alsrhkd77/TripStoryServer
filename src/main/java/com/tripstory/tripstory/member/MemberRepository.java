@@ -7,38 +7,43 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
 public class MemberRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
     private final EntityManager em;
 
-    public Member save(Member member) {
-        logger.info("추가대상 회원 ID : " + member.getId() + " 회원 추가");
+    /**
+     * 새로운 회원 저장
+     * @param member
+     */
+    public void save(Member member) {
         em.persist(member);
-        return member;
     }
 
-    public Optional<Member> findOne(String id) {
-        logger.info("검색 대상 회원 ID : " + id);
-        Optional<Member> result = Optional.ofNullable(em.find(Member.class, id));
-        return result;
+    /**
+     * 회원 ID로 해당 회원 검색
+     * @param id
+     * @return 회원 존재 시 해당 회원 Entity, 없는 경우 null
+     */
+    public Member findOne(String id) {
+        return em.find(Member.class, id);
     }
 
-    public Optional<Member> findByNickName(String nickName) {
-        logger.info("검색 대상 회원 NickName : " + nickName);
-        try {
-            return Optional.ofNullable(em.createQuery("SELECT m FROM Member m WHERE m.nickName = :nickName", Member.class)
-                    .setParameter("nickName", nickName)
-                    .getSingleResult());
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-
+    /**
+     * 닉네임으로 해당 회원 검색
+     * @throws NoResultException 검색 결과가 없는 경우
+     * @param nickName
+     * @return 회원 존재 시 해당 회원 Entity, 없는 경우 오류 발생
+     */
+    public Member findByNickName(String nickName) {
+        String query = "SELECT m FROM Member m WHERE m.nickName = :nickName";
+        return em.createQuery(query, Member.class)
+                .setParameter("nickName", nickName)
+                .getSingleResult();
     }
 
 }

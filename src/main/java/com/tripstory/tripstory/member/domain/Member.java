@@ -15,7 +15,7 @@ public class Member {
 
     @Id
     @Column(name = "member_id")
-    private String id;
+    private String memberId;
 
     private String name;
 
@@ -39,7 +39,7 @@ public class Member {
      * @param password
      */
     public void join(String password) {
-        this.auth = new Auth(id, this, password);
+        this.auth = new Auth(memberId, this, password);
     }
 
 
@@ -49,11 +49,11 @@ public class Member {
      * @return 해당 회원의 필수 정보만 객체로 만들어 반환
      */
     public MemberDTO.MemberInfo getMemberInfo() {
-        if (this.id == null) {
+        if (this.memberId == null) {
             return null;
         }
         MemberDTO.MemberInfo memberInfo = new MemberDTO.MemberInfo();
-        memberInfo.setMemberId(this.id);
+        memberInfo.setMemberId(this.memberId);
         memberInfo.setMemberName(this.name);
         memberInfo.setMemberEmail(this.email);
         memberInfo.setMemberProfileImagePath(this.profileImagePath);

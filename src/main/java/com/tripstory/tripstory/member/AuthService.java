@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
@@ -19,21 +21,29 @@ public class AuthService {
 
     public boolean isIdDuplicate(String id) {
         logger.info("중복확인 대상 ID : " + id + " 중복확인");
-        return !memberRepository.findOne(id)
-                .isEmpty();
+        Member findMember = memberRepository.findOne(id);
+        if (findMember != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean isNickNameDuplicate(String nickName) {
         logger.info("중복확인 대상 닉네님 : " + nickName + " 중복확인");
-        return !memberRepository.findByNickName(nickName)
-                .isEmpty();
+        Member findMember = memberRepository.findByNickName(nickName);
+        if (findMember != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Transactional
     public String join(String id, String password, String name, String email, String nickName) {
         logger.info("가입 정보 [ID : " + id + ", PW : " + password + ", NAME : " + name + ", EMAIL : " + email + ", NICKNAME : " + nickName + "]");
         Member newMember = Member.builder()
-                .id(id)
+                .memberId(id)
                 .name(name)
                 .email(email)
                 .nickName(nickName)
@@ -41,7 +51,8 @@ public class AuthService {
 
         newMember.join(password);
         try {
-            return memberRepository.save(newMember).getId();
+            memberRepository.save(newMember);
+            return newMember.getMemberId();
         }catch (Exception e) {
             throw new IllegalStateException("회원가입중 오류발생");
         }
@@ -49,7 +60,7 @@ public class AuthService {
 
     public boolean loginByTS(String id, String password) {
         logger.info("로그인 유형 : TripStory 회원");
-        return memberRepository.findOne(id)
+        return Optional.ofNullable(memberRepository.findOne(id))
                 .map(Member::getAuth)
                 .filter((auth) -> auth.getId().equals(id))
                 .filter((auth -> auth.getPassword().equals(password)))

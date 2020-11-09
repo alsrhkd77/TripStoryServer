@@ -25,6 +25,9 @@ public class TravelRepository {
         return travel;
     }
 
+    public void delete(TravelPost post) {
+        em.remove(post);
+    }
 
     public List<PostThumbnail> findByMemberId(String memberId) {
         String query = "SELECT new com.tripstory.tripstory.post.dto.PostThumbnail(p.id, p.content, p.createdTime, MAX(i.path), p.type) " +
@@ -32,7 +35,7 @@ public class TravelRepository {
                 "JOIN p.travelPost t " +
                 "ON p.type = 'TRAVEL' " +
                 "JOIN p.images i " +
-                "WHERE p.member.id = :memberId " +
+                "WHERE p.member.memberId = :memberId " +
                 "GROUP BY p.id " +
                 "ORDER BY p.createdTime DESC ";
         return em.createQuery(query, PostThumbnail.class)

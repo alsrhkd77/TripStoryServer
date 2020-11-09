@@ -36,6 +36,8 @@ public class PostService {
 
     private final TagRepository tagRepository;
 
+    private final TravelRepository travelRepository;
+
     private final FileStorage fileStorage;
 
     @Transactional
@@ -43,7 +45,7 @@ public class PostService {
         logger.info("일반 게시물 저장 시작");
         logger.info("게시물 추가 요청 회원 검증");
 
-        Member findMember = memberRepository.findOne(request.getAuthor()).orElseGet(null);
+        Member findMember = memberRepository.findOne(request.getAuthor());
         if (findMember == null) {
             logger.info("회원 검증 실패 존재하지 않는 회원");
             throw new IllegalStateException("존재하지 않는 회원입니다.");
@@ -74,7 +76,8 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId, String memberId) throws InterruptedException {
         Post findPost = postRepository.findOne(postId);
-        if (findPost.getMember().getId().equals(memberId)) {
+        if (findPost.getMember().getMemberId().equals(memberId)) {
+            postRepository.delete(findPost.getNormalPost());
             postRepository.delete(findPost);
         } else {
             throw new IllegalStateException("삭제 권한이 없음");
@@ -93,7 +96,7 @@ public class PostService {
         }
         // 비공개 게시물일 경우 post 식별자를 null 로 주어서
         // controller 에서 판단하며 비공개 게시물임을 알려야함
-        if (findPost.getScope() == DisclosureScope.PRIVATE && findPost.getMember().getId() != memberId) {
+        if (findPost.getScope() == DisclosureScope.PRIVATE && findPost.getMember().getMemberId() != memberId) {
             return PostDetailDTO.DetailInfo.builder()
                     .postId(null)
                     .build();
@@ -143,14 +146,14 @@ public class PostService {
         tags.forEach(
                 (tag) -> {
                     Tag newTag;
-                    if (tagRepository.findByMemberIdAndTagName(member.getId(), tag).isEmpty()) {
+                    if (tagRepository.findByMemberIdAndTagName(member.getMemberId(), tag).isEmpty()) {
                         newTag = Tag.builder()
                                 .name(tag)
                                 .member(member)
                                 .build();
                         tagRepository.save(newTag);
                     } else {
-                        newTag = tagRepository.findByMemberIdAndTagName(member.getId(), tag).get();
+                        newTag = tagRepository.findByMemberIdAndTagName(member.getMemberId(), tag).get();
                     }
                     post.addTag(PostTag.builder()
                             .post(post)

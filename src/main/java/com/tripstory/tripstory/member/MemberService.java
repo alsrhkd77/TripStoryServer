@@ -14,8 +14,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberDTO.MemberInfo getMemberInfo(String id) {
-        Member findMember = memberRepository.findOne(id)
-                .orElseThrow(() -> new IllegalStateException("존재 하지 않는 회원"));
+        Member findMember = memberRepository.findOne(id);
+        if (findMember == null) {
+            new IllegalStateException("존재 하지 않는 회원입니다.");
+        }
         return findMember.getMemberInfo();
     }
 
@@ -23,8 +25,10 @@ public class MemberService {
 
     }
 
-    public void changeMemberNickName(String memberId, String newNickName){
-        memberRepository.findOne(memberId)
-                .ifPresent(member -> member.changeNickName(newNickName));
+    public void changeMemberNickName(String memberId, String newNickName) {
+        Member findMember = memberRepository.findOne(memberId);
+        if(findMember != null) {
+            findMember.changeNickName(newNickName);
+        }
     }
 }

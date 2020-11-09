@@ -22,7 +22,7 @@ public class TravelPost {
     private Long id;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "post_id")
     private Post post;
 
