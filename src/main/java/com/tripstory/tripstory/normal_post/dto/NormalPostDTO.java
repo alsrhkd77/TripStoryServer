@@ -1,20 +1,19 @@
-package com.tripstory.tripstory.post.dto;
+package com.tripstory.tripstory.normal_post.dto;
 
+import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-public class PostCreateDTO {
+public class NormalPostDTO {
 
     @Setter
     @Getter
-    public static class Request {
+    public static class Create {
         private String author;
         private String content;
         private List<String> tags;
@@ -25,14 +24,26 @@ public class PostCreateDTO {
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate visitEnd;
-
     }
 
     @Setter
     @Getter
-    public static class Response {
+    public static class CreateResponse{
         private String result;
         private String errors;
         private Long postId;
     }
+
+    @Setter
+    @Getter
+    public static class ThumbnailResponse {
+        private String result;
+        private String errors;
+        private int postCount;
+        private List<PostThumbnail> postThumbnails;
+    }
 }
+
+
+
+

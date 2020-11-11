@@ -1,6 +1,7 @@
-package com.tripstory.tripstory.post.domain;
+package com.tripstory.tripstory.normal_post.domain;
 
-import com.tripstory.tripstory.member.domain.Member;
+import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.travel_post.domain.TravelPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -19,8 +18,7 @@ import java.util.List;
 public class NormalPost {
 
     @Id
-    @Column(name = "post_id")
-    private Long id;
+    private Long postId;
 
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
@@ -35,7 +33,7 @@ public class NormalPost {
     @JoinColumn(name = "travel_id")
     private TravelPost travel;
 
-    public void setTravel(TravelPost travel) {
-        this.travel = travel;
+    public void changeTravelPost(TravelPost post) {
+        this.travel = post;
     }
 }

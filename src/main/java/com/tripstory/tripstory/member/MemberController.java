@@ -1,51 +1,44 @@
 package com.tripstory.tripstory.member;
 
+import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.member.dto.MemberDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
+@RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/{id}")
-    public MemberDTO.MemberInfoResponse getMemberInfo(@PathVariable String id) {
-        MemberDTO.MemberInfoResponse memberInfoResponse = new MemberDTO.MemberInfoResponse();
-        try {
-            memberInfoResponse.setMemberInfo(memberService.getMemberInfo(id));
-            memberInfoResponse.setResult("success");
-        } catch (Exception e) {
-            memberInfoResponse.setResult("failed");
-            memberInfoResponse.setErrors(e.getMessage());
+    @GetMapping("/{member-id}")
+    public ResponseEntity<MemberDTO.MemberInfoResponse> getMyProfileInfo(@PathVariable("member-id") String memberId) {
+        ResponseEntity<MemberDTO.MemberInfoResponse> response = new ResponseEntity<>(new MemberDTO.MemberInfoResponse(), HttpStatus.OK);
+        Member findMember = memberService.getMember(memberId);
+        if (findMember == null) {
+            response.getBody().setResult("failed");
+            response.getBody().setErrors("존재하지 않는 회원");
+            return response;
         }
-        return memberInfoResponse;
-    }
-
-    @PutMapping("/nickname")
-    public MemberDTO.ChangeNickNameResponse updateMemberNickName(MemberDTO.ChangeNickNameRequest request) {
-        MemberDTO.ChangeNickNameResponse response = new MemberDTO.ChangeNickNameResponse();
-        try {
-            memberService.changeMemberNickName(request.getMemberId(), request.getMemberNickName());
-            response.setChangedName(request.getMemberNickName());
-            response.setResult("success");
-        } catch (Exception e) {
-            response.setErrors(e.getMessage());
-            response.setResult("failed");
-        }
+        response.getBody().setMemberInfo(findMember.toMemberInfo());
+        response.getBody().setResult("success");
         return response;
     }
 
-    @GetMapping("/profile/image/{nickname}")
-    public void getProfileImagePath(@PathVariable String nickname) {
-
+    @PutMapping("/nickname")
+    public ResponseEntity<MemberDTO.NickNameChangeResponse> changeNickName(@RequestBody MemberDTO.NickNameChangeRequest request) {
+        ResponseEntity<MemberDTO.NickNameChangeResponse> response = new ResponseEntity<>(new MemberDTO.NickNameChangeResponse(), HttpStatus.OK);
+        try {
+            String changedNickName = memberService.changeNickName(request.getMemberId(), request.getMemberNickName());
+            response.getBody().setResult("success");
+            response.getBody().setChangedName(changedNickName);
+        } catch (Exception e) {
+            response.getBody().setResult("failed");
+            response.getBody().setErrors(e.getMessage());
+        }
+        return response;
     }
-
-    @GetMapping("/profile/{nickname}")
-    public void getProfileInfo(@PathVariable String nickname) {
-
-    }
-
 }

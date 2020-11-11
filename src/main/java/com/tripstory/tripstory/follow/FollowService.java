@@ -2,7 +2,7 @@ package com.tripstory.tripstory.follow;
 
 import com.tripstory.tripstory.follow.domain.Follow;
 import com.tripstory.tripstory.follow.dto.FollowerInfoDTO;
-import com.tripstory.tripstory.member.MemberRepository;
+import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class FollowService {
 
     private final FollowRepository followRepository;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     /**
      * 다른 사용자 팔로우
@@ -28,22 +28,20 @@ public class FollowService {
     @Transactional
     public void follow(String memberId, String followingNickName) {
         // 요청 보낸 사용자 존재 유무 확인
-        Member findMember = memberRepository.findOne(memberId);
-        if (findMember == null) {
+        if (!memberService.isMemberExist(memberId)) {
             throw new IllegalStateException("요청한 사람의 회원 ID가 잘못 되었습니다.");
         }
-
-        try {
-            // 팔로우 대상 사용자 존재 유무 확인
-            Member findFollowingMember = memberRepository.findByNickName(followingNickName);
-            // 새로운 팔로우 Entity 생성
-            Follow newFollow = new Follow(findMember, findFollowingMember);
-            // 팔로잉 저장
-            followRepository.save(newFollow);
-        } catch (Exception e) {
+        // 팔로우 대상 사용자 존재 유무 확인
+        if (!memberService.isMemberExistByNickName(followingNickName)) {
             throw new IllegalStateException("해당 닉네임을 가진 회원이 존재하지 않습니다.");
         }
+        // 새로운 팔로우 Entity 생성
+        Follow newFollow = new Follow(memberService.getMember(memberId), memberService.getMemberByNickName(followingNickName));
+
+        // 팔로잉 저장
+        followRepository.save(newFollow);
     }
+
 
     /**
      * 팔로우된 사용자 팔로우 취소
@@ -69,26 +67,28 @@ public class FollowService {
      */
     public List<FollowerInfoDTO> getFollowings(String nickName) {
         try {
-            Member findMember = memberRepository.findByNickName(nickName);
+            Member findMember = memberService.getMemberByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByMemberId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toFollowingInfo)
+                    .map(Follow::toInfo)
                     .collect(Collectors.toList());
             return infos;
         } catch (Exception e) {
             throw new IllegalStateException("조회 도중 오류가 발생했습니다.");
         }
     }
-
+    
     /**
-     * 나를 팔로우 하는 회원목록 가졍오기 (팔로워 목록)
+     * 나를 팔로우 하는 회원목록 가져오기 (팔로워 목록)
+     * @param nickName
+     * @return 팔로워 정보 객체 리스트
      */
     public List<FollowerInfoDTO> getFollowers(String nickName) {
         try {
-            Member findMember = memberRepository.findByNickName(nickName);
+            Member findMember = memberService.getMemberByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByFollowingId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toFollowerInfo)
+                    .map(Follow::toInfo)
                     .collect(Collectors.toList());
             return infos;
         } catch (
@@ -96,4 +96,5 @@ public class FollowService {
             throw new IllegalStateException("조회 도중 오류가 발생했습니다.");
         }
     }
+
 }

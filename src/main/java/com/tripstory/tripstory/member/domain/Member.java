@@ -1,70 +1,53 @@
 package com.tripstory.tripstory.member.domain;
 
-import com.tripstory.tripstory.member.dto.MemberDTO;
-import lombok.*;
+import com.tripstory.tripstory.member.dto.MemberInfo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
-@ToString
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 @Entity
 public class Member {
 
     @Id
-    @Column(name = "member_id")
+    @Column(name = "member_id", length = 255)
     private String memberId;
 
+    @Column(name = "name", length = 20)
     private String name;
 
+    @Column(name = "email", length = 40)
     private String email;
 
-    private String profileImagePath;
+    @Column(name = "profile_image_path", length = 200)
+    @Builder.Default
+    private String profileImagePath = "https://i.stack.imgur.com/l60Hf.png";
 
+    @Column(name = "nick_name", unique = true, length = 30)
     private String nickName;
 
-    @OneToOne(mappedBy = "member",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true)
-    private Auth auth;
-
     /**
-     * 인증 테이블에 값을 넣기 위한 엔티티 작업
-     * 생성된 member 엔티티를 바탕으로 auth 엔티티 객체를 생성하여
-     * 연관관계를 이어줌
-     *
-     * @param password
+     * 회원 정보 형태로 변경하여 반환
+     * @return MemberInfo 객체
      */
-    public void join(String password) {
-        this.auth = new Auth(memberId, this, password);
-    }
-
-
-    /**
-     * 회원 정보 반환을 위한 메소드
-     *
-     * @return 해당 회원의 필수 정보만 객체로 만들어 반환
-     */
-    public MemberDTO.MemberInfo getMemberInfo() {
-        if (this.memberId == null) {
-            return null;
-        }
-        MemberDTO.MemberInfo memberInfo = new MemberDTO.MemberInfo();
-        memberInfo.setMemberId(this.memberId);
-        memberInfo.setMemberName(this.name);
-        memberInfo.setMemberEmail(this.email);
-        memberInfo.setMemberProfileImagePath(this.profileImagePath);
-        memberInfo.setMemberNickName(this.nickName);
+    public MemberInfo toMemberInfo() {
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMemberId(this.getMemberId());
+        memberInfo.setMemberName(this.getName());
+        memberInfo.setMemberEmail(this.getEmail());
+        memberInfo.setMemberNickName(this.getNickName());
+        memberInfo.setMemberProfileImagePath(this.getProfileImagePath());
         return memberInfo;
     }
 
-    /**
-     * 새로운 닉네임을 입력 받아 회원의 닉네임을 변경하는 메소드
-     * @param nickName
-     */
     public void changeNickName(String nickName) {
         this.nickName = nickName;
     }

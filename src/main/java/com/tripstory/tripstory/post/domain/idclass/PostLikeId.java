@@ -1,4 +1,4 @@
-package com.tripstory.tripstory.post.domain;
+package com.tripstory.tripstory.post.domain.idclass;
 
 import lombok.Getter;
 
@@ -7,21 +7,20 @@ import java.util.Objects;
 
 @Getter
 public class PostLikeId implements Serializable {
-
-    private Long post;
-    private String member;
+    private Long postId;
+    private String memberId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PostLikeId that = (PostLikeId) o;
-        return Objects.equals(getPost(), that.getPost()) &&
-                Objects.equals(getMember(), that.getMember());
+        return Objects.equals(getPostId(), that.getPostId()) &&
+                Objects.equals(getMemberId(), that.getMemberId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPost(), getMember());
+        return Objects.hash(getPostId(), getMemberId());
     }
 }

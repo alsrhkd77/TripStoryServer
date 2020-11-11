@@ -24,19 +24,11 @@ public class Follow {
     private Member followingId;
 
     // 내가 팔로우 하는 사람 정보를 요약하여 반환
-    public FollowerInfoDTO toFollowingInfo() {
+    public FollowerInfoDTO toInfo() {
         FollowerInfoDTO infoDTO = new FollowerInfoDTO();
         infoDTO.setName(this.followingId.getName());
         infoDTO.setNickName(this.followingId.getNickName());
         infoDTO.setProfilePath(this.followingId.getProfileImagePath());
-        return infoDTO;
-    }
-
-    public FollowerInfoDTO toFollowerInfo() {
-        FollowerInfoDTO infoDTO = new FollowerInfoDTO();
-        infoDTO.setName(this.memberId.getName());
-        infoDTO.setNickName(this.memberId.getNickName());
-        infoDTO.setProfilePath(this.memberId.getProfileImagePath());
         return infoDTO;
     }
 }

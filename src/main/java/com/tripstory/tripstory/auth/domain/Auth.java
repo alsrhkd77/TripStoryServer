@@ -1,27 +1,28 @@
-package com.tripstory.tripstory.member.domain;
+package com.tripstory.tripstory.auth.domain;
 
+import com.tripstory.tripstory.member.domain.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Auth {
 
     @Id
-    @Column(name = "member_id")
-    private String id;
+    private String memberId;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(length = 18, nullable = false)
+    @Column(name = "password", length = 18)
     private String password;
 }

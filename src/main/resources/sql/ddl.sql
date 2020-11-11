@@ -5,7 +5,7 @@ CREATE TABLE member
     member_id          VARCHAR(255) PRIMARY KEY,
     name               VARCHAR(20) NOT NULL,
     email              VARCHAR(40) NOT NULL,
-    profile_image_path VARCHAR(200) DEFAULT 'https://i.stack.imgur.com/l60Hf.png',
+    profile_image_path VARCHAR(200) NOT NULL DEFAULT 'https://i.stack.imgur.com/l60Hf.png',
     nick_name          VARCHAR(30) NOT NULL UNIQUE
 );
 
@@ -53,9 +53,9 @@ CREATE TABLE post
 # (태그 이름 + 회원 ID)은 중복될 수 없음
 CREATE TABLE tag
 (
+    tag_id    BIGINT AUTO_INCREMENT PRIMARY KEY,
     tag_name  VARCHAR(30)  NOT NULL,
     member_id VARCHAR(255) NOT NULL,
-    CONSTRAINT PRIMARY KEY PK_tagTBL (tag_name, member_id),
     FOREIGN KEY (member_id) REFERENCES member (member_id)
         ON DELETE CASCADE
 );
@@ -110,4 +110,29 @@ CREATE TABLE normal_post
     FOREIGN KEY (post_id) REFERENCES post (post_id)
         ON DELETE CASCADE,
     FOREIGN KEY (travel_id) REFERENCES travel_post (post_id)
-)
+        ON DELETE SET NULL
+);
+
+# 여행 게시물 정보 테이블
+# 다른 일반 게시물을 포함할 수 있음
+CREATE TABLE travel_post
+(
+    post_id      BIGINT PRIMARY KEY,
+    travel_start DATE,
+    travel_end   DATE,
+    FOREIGN KEY (post_id) REFERENCES post (post_id)
+        ON DELETE CASCADE
+);
+
+# 여행 코스 정보 테이블
+# 위도, 경도, 방문일 정보를 가짐
+CREATE TABLE travel_course
+(
+    travel_course_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    travel_id        BIGINT   NOT NULL,
+    lat              DOUBLE   NOT NULL,
+    lng              DOUBLE   NOT NULL,
+    pass_date        DATETIME NOT NULL,
+    FOREIGN KEY (travel_id) REFERENCES travel_post (post_id)
+        ON DELETE CASCADE
+);

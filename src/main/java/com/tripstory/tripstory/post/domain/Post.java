@@ -1,39 +1,35 @@
 package com.tripstory.tripstory.post.domain;
 
 import com.tripstory.tripstory.member.domain.Member;
-import com.tripstory.tripstory.tag.domain.Tag;
+import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
+import com.tripstory.tripstory.post.domain.enums.PostType;
+import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.OptimisticLock;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@OptimisticLocking(type = OptimisticLockType.VERSION)
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
-    private Long id;
+    private Long postId;
 
-    private LocalDateTime createdTime;
+    @Builder.Default
+    private LocalDateTime createdTime = LocalDateTime.now();
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -45,44 +41,38 @@ public class Post {
     private DisclosureScope scope = DisclosureScope.PUBLIC;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post",
-            cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostTag> tags = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
+    private List<PostImage> postImages = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post",
-            cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostImage> images = new ArrayList<>();
-
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    private NormalPost normalPost;
+    private List<PostLike> postLikes = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "post_id")
-    private TravelPost travelPost;
+    private List<PostTag> postTags = new ArrayList<>();
 
 
-
-    public void setMember(Member member) {
-        this.member = member;
+    public void addImage(PostImage postImage) {
+        this.postImages.add(postImage);
+        postImage.changePost(this);
     }
 
-    public void setNormalPost(NormalPost normalPost) {
-        this.normalPost = normalPost;
+    public void addTag(PostTag postTag) {
+        this.postTags.add(postTag);
+        postTag.changePost(this);
     }
 
-    public void addTag(PostTag tag) {
-        this.tags.add(tag);
+    public PostThumbnail toThumbnail() {
+        return PostThumbnail.builder()
+                .postId(postId)
+                .content(content)
+                .createTime(createdTime)
+                .thumbnailPath(postImages.get(0).getPath())
+                .type(type)
+                .build();
     }
-
-    public void addImage(PostImage image) {
-        this.images.add(image);
-    }
-
-    public void changeScope(String scope) {
-        DisclosureScope changedScope = DisclosureScope.valueOf(scope);
-        this.scope = changedScope;
-    }
-
 }

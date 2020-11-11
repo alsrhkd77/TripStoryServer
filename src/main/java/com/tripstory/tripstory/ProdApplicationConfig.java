@@ -2,6 +2,8 @@ package com.tripstory.tripstory;
 
 import com.tripstory.tripstory.util.FileStorage;
 import com.tripstory.tripstory.util.GCPFileStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,6 +15,8 @@ import javax.annotation.PostConstruct;
 @Profile("prod")
 public class ProdApplicationConfig implements WebMvcConfigurer {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     @Bean
     public FileStorage fileStorage() {
         return new GCPFileStorage();
@@ -20,8 +24,6 @@ public class ProdApplicationConfig implements WebMvcConfigurer {
 
     @PostConstruct
     public void checkProfile() {
-        System.out.println("--------------------------------------------");
-        System.out.println("운영용 환경으로 셋업");
-        System.out.println("--------------------------------------------");
+        logger.info("운영환경으로 실행");
     }
 }

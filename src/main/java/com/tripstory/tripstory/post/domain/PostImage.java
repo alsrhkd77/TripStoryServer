@@ -13,14 +13,16 @@ import javax.persistence.*;
 @Builder
 @Entity
 public class PostImage {
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_image_id")
-    private Long id;
+    private Long postImageId;
 
     private String path;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public void changePost(Post post) {
+        this.post = post;
+    }
 }

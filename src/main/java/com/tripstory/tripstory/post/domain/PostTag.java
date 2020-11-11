@@ -1,29 +1,32 @@
 package com.tripstory.tripstory.post.domain;
 
+import com.tripstory.tripstory.post.domain.idclass.PostTagId;
 import com.tripstory.tripstory.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@IdClass(PostTagId.class)
 public class PostTag {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_tag_id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Id
+    @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Id
+    @ManyToOne
     @JoinColumn(name = "tag_id")
     private Tag tag;
+
+    public void changePost(Post post) {
+        this.post = post;
+    }
 }
