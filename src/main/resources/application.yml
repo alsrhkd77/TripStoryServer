@@ -12,7 +12,7 @@ server:
 spring:
 
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -27,7 +27,7 @@ spring:
   profiles: dev
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5Dialect
     database: mysql
 
@@ -35,28 +35,24 @@ spring:
   datasource:
     # mysql
     username: root
-    password: mysql
-    url: jdbc:mysql://localhost:13306/tripstory
+    password: 1234
+    url: jdbc:mysql://localhost:3306/tripstory
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # h2
-    # username: sa
-    # password:
-    # url: jdbc:h2:tcp://localhost/~/tripstory
-    # driver-class-name: org.h2.Driver
     initialization-mode: always
+
 # external resources location and path
 resources:
   post-image:
     # for window
-    location: C:/Users/jeonseun/Desktop/TripStory_Images/Post_Images/
+    # location: C:/Users/jeonseun/Desktop/TripStory_Images/Post_Images/
     # for linux
-    # location: /home/seun/Project/tripstory-images/post-images/
+    location: /home/seun/Project/tripstory-images/post-images/
     path: /post-image
   profile:
     # for window
-    location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
+    # location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
     # for linux
-    # location: /home/seun/Project/tripstory-images/profile-images/
+    location: /home/seun/Project/tripstory-images/profile-images/
     path: /profile-image
 
 

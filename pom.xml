@@ -83,13 +83,6 @@
 					<version>1.5.6</version>
 				</dependency>
 
-				<!-- h2 driver -->
-				<dependency>
-					<groupId>com.h2database</groupId>
-					<artifactId>h2</artifactId>
-					<version>1.4.199</version>
-				</dependency>
-
 				<!-- mysql driver -->
 				<dependency>
 					<groupId>mysql</groupId>

@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -33,12 +35,7 @@ public class AuthService {
      * @return 사용중이면 true, 미사용이면 false
      */
     public boolean isNickNameDuplicate(String nickName) {
-        try {
-            memberService.getMemberByNickName(nickName);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return memberService.isMemberExistByNickName(nickName);
     }
 
     /**

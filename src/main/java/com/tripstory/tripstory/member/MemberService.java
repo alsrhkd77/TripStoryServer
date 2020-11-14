@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -44,7 +46,7 @@ public class MemberService {
      */
     public boolean isMemberExistByNickName(String nickName) {
         try {
-            Member findMember = memberRepository.findByNickName(nickName);
+            memberRepository.findByNickName(nickName);
             return true;
         } catch (Exception e) {
             return false;
