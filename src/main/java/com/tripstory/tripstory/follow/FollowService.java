@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,4 +98,18 @@ public class FollowService {
         }
     }
 
+    /**
+     * 자신이 팔로우 하는 사람인지 확인하는 메서드
+     * @param memberId
+     * @param nickName
+     * @return 자신이 팔로우 하는경우 true, 자신이 팔로우 하지 않는 경우 false
+     */
+    public boolean isMyFollowing(String memberId, String nickName) {
+        try {
+            followRepository.findOne(memberId, nickName);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

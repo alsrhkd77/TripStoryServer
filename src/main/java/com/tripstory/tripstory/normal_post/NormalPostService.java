@@ -84,4 +84,11 @@ public class NormalPostService {
                 .filter(postThumbnail -> postThumbnail.getType().equals(PostType.NORMAL))
                 .collect(Collectors.toList());
     }
+
+    /**
+     *
+     */
+    public void getNormalPostDetail(Long postId, String memberId) {
+
+    }
 }
