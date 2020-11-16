@@ -13,11 +13,11 @@ public class TimeLineRepository {
 
     private final EntityManager em;
 
-//    public List<Post> findAll(int offset, int limit) {
-//        String query = "SELECT p FROM Post p JOIN PostLike l GROUP BY p.postId";
-//        return em.createQuery(query, Post.class)
-//                .setFirstResult(offset)
-//                .setMaxResults(limit)
-//                .getResultList();
-//    }
+    public List<Object[]> findAll(int offset, int limit) {
+        String query = "SELECT p, COUNT(l) FROM Post p JOIN p.postLikes l GROUP BY p.postId";
+        return em.createQuery(query)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

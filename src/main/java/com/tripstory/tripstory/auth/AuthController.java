@@ -102,7 +102,7 @@ public class AuthController {
             response.getBody().setMemberId(loginId);
         } catch (Exception e) {
             response.getBody().setResult("failed");
-            response.getBody().setResult(e.getMessage());
+            response.getBody().setErrors(e.getMessage());
         }
         return response;
     }
