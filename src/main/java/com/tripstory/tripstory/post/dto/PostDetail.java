@@ -20,6 +20,6 @@ public class PostDetail {
     private LocalDateTime createdTime;
     private DisclosureScope scope;
     private int likes;
-    private boolean isLiked;
+    private boolean liked;
 
 }

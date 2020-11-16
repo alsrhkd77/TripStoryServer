@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.normal_post;
 
 import com.tripstory.tripstory.follow.FollowService;
+import com.tripstory.tripstory.like.LikeService;
 import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.domain.NormalPost;
@@ -26,6 +27,7 @@ public class NormalPostService {
     private final PostService postService;
     private final MemberService memberService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     /**
      * 작성자 존재 유무를 확인
@@ -114,6 +116,7 @@ public class NormalPostService {
                 normalPostDetailDTO.setResult("success");
                 normalPostDetailDTO.setPostDetail(post.toPostDetail());
                 normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                 break;
             // 비공개 게시물은 본인을 제외하고 열람 불가능     
             case PRIVATE:
@@ -121,6 +124,7 @@ public class NormalPostService {
                     normalPostDetailDTO.setResult("success");
                     normalPostDetailDTO.setPostDetail(post.toPostDetail());
                     normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                    normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                 } else {
                     normalPostDetailDTO.setResult("unAuthorized");
                 }
@@ -132,6 +136,7 @@ public class NormalPostService {
                     normalPostDetailDTO.setResult("success");
                     normalPostDetailDTO.setPostDetail(post.toPostDetail());
                     normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                    normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                 } else {
                     normalPostDetailDTO.setResult("unAuthorized");
                 }
