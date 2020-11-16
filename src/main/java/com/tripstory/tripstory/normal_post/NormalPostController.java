@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.normal_post;
 
 import com.tripstory.tripstory.normal_post.dto.NormalPostDTO;
+import com.tripstory.tripstory.normal_post.dto.NormalPostDetailDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,5 +44,10 @@ public class NormalPostController {
             response.getBody().setErrors(e.getMessage());
         }
         return response;
+    }
+
+    @GetMapping("/{post-id}/{member-id}")
+    public NormalPostDetailDTO getNormalPostDetail(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        return normalPostService.getNormalPostDetail(postId, memberId);
     }
 }

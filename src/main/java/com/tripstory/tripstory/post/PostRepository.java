@@ -34,6 +34,14 @@ public class PostRepository {
     }
 
     /**
+     * 게시물 ID로 게시물 단건 조회
+     * @param postId
+     * @return 조회된 게시물 엔티티 반환
+     */ 
+    public Post findOne(Long postId) {
+        return em.find(Post.class, postId);
+    }
+    /**
      * 회원 ID로 해당 회원이 작성한 게시물을 전부 가져옴
      * @param memberId
      * @return

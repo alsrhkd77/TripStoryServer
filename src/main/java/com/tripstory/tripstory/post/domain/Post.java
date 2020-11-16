@@ -1,18 +1,23 @@
 package com.tripstory.tripstory.post.domain;
 
+import com.tripstory.tripstory.like.domain.PostLike;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
+import com.tripstory.tripstory.post.dto.PostDetail;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -73,6 +78,22 @@ public class Post {
                 .createTime(createdTime)
                 .thumbnailPath(postImages.get(0).getPath())
                 .type(type)
+                .build();
+    }
+
+    public PostDetail toPostDetail() {
+        return PostDetail.builder()
+                .author(member.getNickName())
+                .content(content)
+                .createdTime(createdTime)
+                .imagePaths(postImages.stream()
+                        .map(PostImage::getImagePath)
+                        .collect(Collectors.toList()))
+                .likes(postLikes.size())
+                .tags(postTags.stream()
+                        .map(PostTag::getTagName)
+                        .collect(Collectors.toList()))
+                .scope(scope)
                 .build();
     }
 }

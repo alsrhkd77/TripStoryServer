@@ -42,6 +42,7 @@ public class NormalPostDTO {
         private int postCount;
         private List<PostThumbnail> postThumbnails;
     }
+
 }
 
 

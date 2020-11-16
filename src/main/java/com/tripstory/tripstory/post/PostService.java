@@ -107,4 +107,13 @@ public class PostService {
     public List<Post> getMyPost(String memberId) {
         return postRepository.findByMemberId(memberId);
     }
+
+    /**
+     * 게시물 ID로 게시물 하나 조회
+     * @param postId
+     * @return 조회된 게시물
+     */
+    public Post getOne(Long postId) {
+        return postRepository.findOne(postId);
+    }
 }

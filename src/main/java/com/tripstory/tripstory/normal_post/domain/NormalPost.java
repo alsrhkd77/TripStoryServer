@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.normal_post.domain;
 
+import com.tripstory.tripstory.normal_post.dto.NormalPostInfo;
 import com.tripstory.tripstory.post.domain.Post;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
 import lombok.AllArgsConstructor;
@@ -35,5 +36,13 @@ public class NormalPost {
 
     public void changeTravelPost(TravelPost post) {
         this.travel = post;
+    }
+
+    public NormalPostInfo toInfo() {
+        return NormalPostInfo.builder()
+                .visitStart(visitStart)
+                .visitEnd(visitEnd)
+                .linkedTravel(travel != null ? travel.getId() : null)
+                .build();
     }
 }

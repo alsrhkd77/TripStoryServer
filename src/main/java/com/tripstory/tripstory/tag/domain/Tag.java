@@ -3,10 +3,12 @@ package com.tripstory.tripstory.tag.domain;
 import com.tripstory.tripstory.member.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

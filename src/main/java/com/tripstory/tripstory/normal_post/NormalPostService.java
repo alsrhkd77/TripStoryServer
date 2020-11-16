@@ -1,9 +1,11 @@
 package com.tripstory.tripstory.normal_post;
 
+import com.tripstory.tripstory.follow.FollowService;
 import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.domain.NormalPost;
 import com.tripstory.tripstory.normal_post.dto.NormalPostDTO;
+import com.tripstory.tripstory.normal_post.dto.NormalPostDetailDTO;
 import com.tripstory.tripstory.post.PostService;
 import com.tripstory.tripstory.post.domain.Post;
 import com.tripstory.tripstory.post.domain.enums.PostType;
@@ -23,6 +25,7 @@ public class NormalPostService {
     private final NormalPostRepository normalPostRepository;
     private final PostService postService;
     private final MemberService memberService;
+    private final FollowService followService;
 
     /**
      * 작성자 존재 유무를 확인
@@ -85,10 +88,55 @@ public class NormalPostService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     *
-     */
-    public void getNormalPostDetail(Long postId, String memberId) {
 
+    /**
+     * 게시물 ID와 요청 회원 ID로 게시물 공개 범위에 맞게 게시물 디테일 정보 조회
+     * @param postId
+     * @param memberId
+     * @return 요청 클라이언트로 반환될 DTO 객체 반환
+     */
+    public NormalPostDetailDTO getNormalPostDetail(Long postId, String memberId) {
+        NormalPost findPost = normalPostRepository.findOne(postId);
+        if (findPost == null) {
+            throw new IllegalStateException("존재하지 않는 게시물");
+        }
+        Post post = findPost.getPost();
+        NormalPostDetailDTO normalPostDetailDTO = new NormalPostDetailDTO();
+        if(post.getMember().getMemberId().equals(memberId)) {
+            normalPostDetailDTO.setResult("success");
+            normalPostDetailDTO.setPostDetail(post.toPostDetail());
+            normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+            return normalPostDetailDTO;
+        }
+        switch (findPost.getPost().getScope()) {
+            // 공개 게시물은 요청 대상에 관계없이 게시물 정보 제공
+            case PUBLIC:
+                normalPostDetailDTO.setResult("success");
+                normalPostDetailDTO.setPostDetail(post.toPostDetail());
+                normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                break;
+            // 비공개 게시물은 본인을 제외하고 열람 불가능     
+            case PRIVATE:
+                if (post.getMember().getMemberId().equals(memberId)) {
+                    normalPostDetailDTO.setResult("success");
+                    normalPostDetailDTO.setPostDetail(post.toPostDetail());
+                    normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                } else {
+                    normalPostDetailDTO.setResult("unAuthorized");
+                }
+                break;
+            // 친구 공개 게시물은 작성자가 팔로우 중인 사람에게만 공개 가능
+            case FRIEND:
+                Member requestMember = memberService.getMember(memberId);
+                if (followService.isMyFollowing(post.getMember().getMemberId(), requestMember.getNickName())) {
+                    normalPostDetailDTO.setResult("success");
+                    normalPostDetailDTO.setPostDetail(post.toPostDetail());
+                    normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+                } else {
+                    normalPostDetailDTO.setResult("unAuthorized");
+                }
+                break;
+        }
+        return normalPostDetailDTO;
     }
 }

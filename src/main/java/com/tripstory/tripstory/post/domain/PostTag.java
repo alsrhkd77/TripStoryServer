@@ -29,4 +29,8 @@ public class PostTag {
     public void changePost(Post post) {
         this.post = post;
     }
+
+    public String getTagName() {
+        return tag.getTagName();
+    }
 }

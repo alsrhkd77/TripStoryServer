@@ -25,4 +25,8 @@ public class PostImage {
     public void changePost(Post post) {
         this.post = post;
     }
+
+    public String getImagePath() {
+        return path;
+    }
 }
