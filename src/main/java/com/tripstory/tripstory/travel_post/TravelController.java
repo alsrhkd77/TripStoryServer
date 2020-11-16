@@ -2,6 +2,7 @@ package com.tripstory.tripstory.travel_post;
 
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.travel_post.dto.TravelPostDTO;
+import com.tripstory.tripstory.travel_post.dto.TravelPostDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,5 +44,10 @@ public class TravelController {
             response.getBody().setErrors(e.getMessage());
         }
         return response;
+    }
+
+    @GetMapping("/{post-id}/{member-id}")
+    public TravelPostDetailDTO getTravelPostDetail(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        return travelService.getTravelPostDetail(postId, memberId);
     }
 }

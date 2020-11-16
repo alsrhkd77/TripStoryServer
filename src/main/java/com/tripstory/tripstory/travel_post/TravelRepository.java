@@ -16,4 +16,8 @@ public class TravelRepository {
         em.persist(post);
         return post;
     }
+
+    public TravelPost findOne(Long postId) {
+        return em.find(TravelPost.class, postId);
+    }
 }

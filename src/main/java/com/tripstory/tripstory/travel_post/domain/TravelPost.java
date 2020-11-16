@@ -2,6 +2,7 @@ package com.tripstory.tripstory.travel_post.domain;
 
 import com.tripstory.tripstory.normal_post.domain.NormalPost;
 import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.travel_post.dto.TravelPostInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -47,5 +49,15 @@ public class TravelPost {
     public void addTravelCourse(TravelCourse course) {
         this.travelCourses.add(course);
         course.changeTravel(this);
+    }
+
+    public TravelPostInfo toTravelPostInfo() {
+        return TravelPostInfo.builder()
+                .travelStart(travelStart)
+                .travelEnd(travelEnd)
+                .courses(travelCourses.stream()
+                                      .map(TravelCourse::toCourseInfo)
+                                      .collect(Collectors.toList()))
+                .build();
     }
 }

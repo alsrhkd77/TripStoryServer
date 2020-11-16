@@ -2,6 +2,7 @@ package com.tripstory.tripstory.travel_post;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tripstory.tripstory.follow.FollowService;
 import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.NormalPostService;
@@ -12,6 +13,8 @@ import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
 import com.tripstory.tripstory.travel_post.dto.TravelCourseDTO;
 import com.tripstory.tripstory.travel_post.dto.TravelPostDTO;
+import com.tripstory.tripstory.travel_post.dto.TravelPostDetailDTO;
+import com.tripstory.tripstory.travel_post.dto.TravelPostInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +34,8 @@ public class TravelService {
     private final PostService postService;
     private final ObjectMapper objectMapper;
     private final NormalPostService normalPostService;
+    private final FollowService followService;
+
     /**
      * 작성자 존재 유무를 확인
      * 여행 게시물 생성
@@ -39,6 +44,7 @@ public class TravelService {
      * 여행 코스 저장
      * 포함되는 여행 게시물 존재 여부 검증
      * 포함되는 여행 게시물 연관관계 생성
+     *
      * @param createData
      * @return 생성되는 Post Id
      */
@@ -49,7 +55,7 @@ public class TravelService {
             throw new IllegalStateException("해당 작성자는 존재하지 않습니다.");
         }
         Post newPost = postService.savePost(findMember, createData.getContent(), PostType.TRAVEL);
-        TravelPost newTravelPost =  TravelPost.builder()
+        TravelPost newTravelPost = TravelPost.builder()
                 .post(newPost)
                 .travelStart(createData.getTravelStart())
                 .travelEnd(createData.getTravelEnd())
@@ -58,7 +64,7 @@ public class TravelService {
                 .forEach(postTag -> newPost.addTag(postTag));
         postService.saveImages(createData.getImages()).stream()
                 .forEach(image -> newPost.addImage(image));
-        if(createData.getPosts() != null) {
+        if (createData.getPosts() != null) {
             createData.getPosts().stream()
                     .filter(normalPostService::isPostExist)
                     .map(normalPostService::getNormalPostByPostId)
@@ -73,6 +79,7 @@ public class TravelService {
 
     /**
      * JSON 리스트로 전송된 문자열을 여행 코스 DTO 객체로 변환하여 반환
+     *
      * @param courses
      * @return List<TravelCourseDTO>, JSON 변경 오류 혹은 여행 코스가 없는 경우 비어있는 컬렉션 반환
      */
@@ -102,11 +109,55 @@ public class TravelService {
 
     /**
      * 게시물 ID와 요청 회원 ID로 여행 게시물 상세 조회
+     *
      * @param postId
      * @param memberId
      * @return 여행게시물 상세 정보
      */
-    public void getTravelPostDetail(Long postId, String memberId) {
-        
+    public TravelPostDetailDTO getTravelPostDetail(Long postId, String memberId) {
+        TravelPost findPost = travelRepository.findOne(postId);
+        if (findPost == null) {
+            throw new IllegalStateException("존재하지 않는 게시물");
+        }
+        Post post = findPost.getPost();
+        TravelPostDetailDTO travelPostDetailDTO = new TravelPostDetailDTO();
+        if (post.getMember().getMemberId().equals(memberId)) {
+            travelPostDetailDTO.setResult("success");
+            travelPostDetailDTO.setPostDetail(post.toPostDetail());
+            travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
+            travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+            return travelPostDetailDTO;
+        }
+
+        switch (post.getScope()) {
+            case PUBLIC:
+                travelPostDetailDTO.setResult("success");
+                travelPostDetailDTO.setPostDetail(post.toPostDetail());
+                travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
+                travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                break;
+            case PRIVATE:
+                if (post.getMember().getMemberId().equals(memberId)) {
+                    travelPostDetailDTO.setResult("success");
+                    travelPostDetailDTO.setPostDetail(post.toPostDetail());
+                    travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
+                    travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                } else {
+                    travelPostDetailDTO.setResult("unAuthorized");
+                }
+                break;
+            case FRIEND:
+                Member requestMember = memberService.getMember(memberId);
+                if (followService.isMyFollowing(post.getMember().getMemberId(), requestMember.getNickName())) {
+                    travelPostDetailDTO.setResult("success");
+                    travelPostDetailDTO.setPostDetail(post.toPostDetail());
+                    travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
+                    travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                } else {
+                    travelPostDetailDTO.setResult("unAuthorized");
+                }
+                break;
+        }
+        return travelPostDetailDTO;
     }
 }
