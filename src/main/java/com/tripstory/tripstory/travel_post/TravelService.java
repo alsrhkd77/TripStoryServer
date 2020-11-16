@@ -99,4 +99,14 @@ public class TravelService {
                 .filter(postThumbnail -> postThumbnail.getType().equals(PostType.TRAVEL))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * 게시물 ID와 요청 회원 ID로 여행 게시물 상세 조회
+     * @param postId
+     * @param memberId
+     * @return 여행게시물 상세 정보
+     */
+    public void getTravelPostDetail(Long postId, String memberId) {
+        
+    }
 }

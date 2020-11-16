@@ -108,6 +108,7 @@ public class NormalPostService {
             normalPostDetailDTO.setResult("success");
             normalPostDetailDTO.setPostDetail(post.toPostDetail());
             normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+            normalPostDetailDTO.getPostDetail().setPostId(findPost.getPostId());
             return normalPostDetailDTO;
         }
         switch (findPost.getPost().getScope()) {
@@ -117,6 +118,7 @@ public class NormalPostService {
                 normalPostDetailDTO.setPostDetail(post.toPostDetail());
                 normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
                 normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
+                normalPostDetailDTO.getPostDetail().setPostId(findPost.getPostId());
                 break;
             // 비공개 게시물은 본인을 제외하고 열람 불가능     
             case PRIVATE:
@@ -125,6 +127,7 @@ public class NormalPostService {
                     normalPostDetailDTO.setPostDetail(post.toPostDetail());
                     normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
                     normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
+                    normalPostDetailDTO.getPostDetail().setPostId(findPost.getPostId());
                 } else {
                     normalPostDetailDTO.setResult("unAuthorized");
                 }
@@ -137,6 +140,7 @@ public class NormalPostService {
                     normalPostDetailDTO.setPostDetail(post.toPostDetail());
                     normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
                     normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
+                    normalPostDetailDTO.getPostDetail().setPostId(findPost.getPostId());
                 } else {
                     normalPostDetailDTO.setResult("unAuthorized");
                 }

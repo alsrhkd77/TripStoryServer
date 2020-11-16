@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.member.domain;
 
 import com.tripstory.tripstory.member.dto.MemberInfo;
+import com.tripstory.tripstory.member.dto.MemberProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +47,18 @@ public class Member {
         memberInfo.setMemberNickName(this.getNickName());
         memberInfo.setMemberProfileImagePath(this.getProfileImagePath());
         return memberInfo;
+    }
+
+    /**
+     * 회원 프로필 형태로 변경하여 반환
+     * @return MemberProfile 객체
+     */
+    public MemberProfile toMemberProfile() {
+        return MemberProfile.builder()
+                .nickName(nickName)
+                .name(name)
+                .profileImagePath(profileImagePath)
+                .build();
     }
 
     public void changeNickName(String nickName) {

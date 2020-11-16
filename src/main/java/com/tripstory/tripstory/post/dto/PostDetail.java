@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class PostDetail {
-
+    private Long postId;
     private String author;
     private String content;
     private List<String> tags;

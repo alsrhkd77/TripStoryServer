@@ -2,6 +2,7 @@ package com.tripstory.tripstory.member;
 
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.member.dto.MemberDTO;
+import com.tripstory.tripstory.member.dto.MemberProfile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,10 @@ public class MemberController {
             response.getBody().setErrors(e.getMessage());
         }
         return response;
+    }
+
+    @GetMapping("/profile/{nickname}")
+    public MemberProfile getMemberProfile(@PathVariable String nickname) {
+        return memberService.getMemberProfile(nickname);
     }
 }
