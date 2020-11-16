@@ -48,6 +48,13 @@ public class TravelController {
 
     @GetMapping("/{post-id}/{member-id}")
     public TravelPostDetailDTO getTravelPostDetail(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
-        return travelService.getTravelPostDetail(postId, memberId);
+        TravelPostDetailDTO travelPostDetail = new TravelPostDetailDTO();
+        try {
+            travelPostDetail = travelService.getTravelPostDetail(postId, memberId);
+        } catch (Exception e) {
+            travelPostDetail.setResult("failed");
+            travelPostDetail.setErrors(e.getMessage());
+        }
+        return travelPostDetail;
     }
 }

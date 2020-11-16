@@ -48,6 +48,13 @@ public class NormalPostController {
 
     @GetMapping("/{post-id}/{member-id}")
     public NormalPostDetailDTO getNormalPostDetail(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
-        return normalPostService.getNormalPostDetail(postId, memberId);
+        NormalPostDetailDTO normalPostDetail = new NormalPostDetailDTO();
+        try {
+            normalPostDetail = normalPostService.getNormalPostDetail(postId, memberId);
+        } catch (Exception e) {
+            normalPostDetail.setResult("failed");
+            normalPostDetail.setErrors(e.getMessage());
+        }
+        return normalPostDetail;
     }
 }
