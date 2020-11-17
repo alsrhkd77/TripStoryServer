@@ -124,6 +124,9 @@ public class Post {
                 .endDate(normalPost != null ? normalPost.getVisitEnd() : travelPost.getTravelEnd())
                 .likes(postLikes.size())
                 .type(type)
+                .imagePaths(postImages.stream().map(PostImage::getImagePath).collect(Collectors.toList()))
+                .tags(postTags.stream().map(PostTag::getTagName).collect(Collectors.toList()))
+                .comments(postComments.size())
                 .build();
     }
 }

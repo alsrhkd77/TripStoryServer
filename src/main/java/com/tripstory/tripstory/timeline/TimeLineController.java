@@ -1,6 +1,7 @@
 package com.tripstory.tripstory.timeline;
 
 import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.timeline.dto.TimeLineDTO;
 import com.tripstory.tripstory.timeline.dto.TimeLineItem;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,16 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TimeLineController {
 
-    private final TimeLineRepository timeLineRepository;
+    private final TimeLineService timeLineService;
 
-    @GetMapping("/{offset}/{limit}")
-    public List<TimeLineItem> getTimeLine(@PathVariable Integer offset, @PathVariable Integer limit) {
-        return timeLineRepository.findAll(offset, limit).stream()
-                .map(Post::toTimeLineItem)
-                .collect(Collectors.toList());
+    @GetMapping("/{member-id}/{offset}/{limit}")
+    public TimeLineDTO getTimeLine(@PathVariable("member-id") String memberId, @PathVariable int offset, @PathVariable int limit) {
+        List<TimeLineItem> timeLine = timeLineService.getTimeLine(offset, limit, memberId);
+        TimeLineDTO timeLineDTO = new TimeLineDTO();
+        timeLineDTO.setCurrentItemCount(timeLine.size());
+        timeLineDTO.setTotalRequestItemCount(offset + timeLine.size());
+        timeLineDTO.setResult("success");
+        timeLineDTO.setItems(timeLine);
+        return timeLineDTO;
     }
 }
