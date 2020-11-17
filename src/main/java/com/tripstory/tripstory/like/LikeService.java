@@ -8,9 +8,11 @@ import com.tripstory.tripstory.post.PostService;
 import com.tripstory.tripstory.post.domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LikeService {
 
     private final LikeRepository likeRepository;
@@ -22,6 +24,7 @@ public class LikeService {
      * @param postId
      * @param memberId
      */
+    @Transactional
     public void like(Long postId, String memberId) {
         Post findPost = postService.getOne(postId);
         Member findMember = memberService.getMember(memberId);
@@ -36,6 +39,7 @@ public class LikeService {
      * @param postId
      * @param memberId
      */
+    @Transactional
     public void unLike(Long postId, String memberId) {
         PostLike findPostLike = likeRepository.findOne(new PostLikeId(postId, memberId));
         likeRepository.delete(findPostLike);
