@@ -28,7 +28,7 @@ public class Follow {
         FollowerInfoDTO infoDTO = new FollowerInfoDTO();
         infoDTO.setName(this.followingId.getName());
         infoDTO.setNickName(this.followingId.getNickName());
-        infoDTO.setProfilePath(this.followingId.getProfileImagePath());
+        infoDTO.setProfileImagePath(this.followingId.getProfileImagePath());
         return infoDTO;
     }
 }

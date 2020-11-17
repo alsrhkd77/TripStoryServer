@@ -2,10 +2,13 @@ package com.tripstory.tripstory.post.domain;
 
 import com.tripstory.tripstory.like.domain.PostLike;
 import com.tripstory.tripstory.member.domain.Member;
+import com.tripstory.tripstory.normal_post.domain.NormalPost;
 import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.post.dto.PostDetail;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
+import com.tripstory.tripstory.timeline.dto.TimeLineItem;
+import com.tripstory.tripstory.travel_post.domain.TravelPost;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,6 +63,13 @@ public class Post {
     @JoinColumn(name = "post_id")
     private List<PostTag> postTags = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "post_id")
+    private NormalPost normalPost;
+
+    @OneToOne
+    @JoinColumn(name = "post_id")
+    private TravelPost travelPost;
 
     public void addImage(PostImage postImage) {
         this.postImages.add(postImage);
@@ -94,6 +104,19 @@ public class Post {
                         .map(PostTag::getTagName)
                         .collect(Collectors.toList()))
                 .scope(scope)
+                .build();
+    }
+
+    public TimeLineItem toTimeLineItem() {
+        return TimeLineItem.builder()
+                .postId(postId)
+                .author(member.getNickName())
+                .content(content)
+                .createdTime(createdTime)
+                .startDate(normalPost != null ? normalPost.getVisitStart() : travelPost.getTravelStart())
+                .endDate(normalPost != null ? normalPost.getVisitEnd() : travelPost.getTravelEnd())
+                .likes(postLikes.size())
+                .type(type)
                 .build();
     }
 }

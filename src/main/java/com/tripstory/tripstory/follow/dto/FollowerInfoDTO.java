@@ -8,5 +8,5 @@ import lombok.Setter;
 public class FollowerInfoDTO {
     private String name;
     private String nickName;
-    private String profilePath;
+    private String profileImagePath;
 }

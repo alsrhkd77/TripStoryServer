@@ -58,6 +58,9 @@ public class TravelPost {
                 .courses(travelCourses.stream()
                                       .map(TravelCourse::toCourseInfo)
                                       .collect(Collectors.toList()))
+                .posts(normalPosts.stream()
+                        .map(NormalPost::getPostId)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

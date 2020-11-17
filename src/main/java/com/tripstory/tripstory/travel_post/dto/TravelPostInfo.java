@@ -15,4 +15,5 @@ public class TravelPostInfo {
     private LocalDate travelStart;
     private LocalDate travelEnd;
     private List<TravelCourseInfo> courses;
+    private List<Long> posts;
 }
