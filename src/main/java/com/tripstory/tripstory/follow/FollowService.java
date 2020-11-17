@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,7 +70,7 @@ public class FollowService {
             Member findMember = memberService.getMemberByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByMemberId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toInfo)
+                    .map(Follow::toFollowingInfo)
                     .collect(Collectors.toList());
             return infos;
         } catch (Exception e) {
@@ -89,7 +88,7 @@ public class FollowService {
             Member findMember = memberService.getMemberByNickName(nickName);
             List<Follow> findFollowers = followRepository.findByFollowingId(findMember.getMemberId());
             List<FollowerInfoDTO> infos = findFollowers.stream()
-                    .map(Follow::toInfo)
+                    .map(Follow::toFollowerIngo)
                     .collect(Collectors.toList());
             return infos;
         } catch (
