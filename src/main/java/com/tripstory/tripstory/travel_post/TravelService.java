@@ -128,6 +128,7 @@ public class TravelService {
             travelPostDetailDTO.setPostDetail(post.toPostDetail());
             travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
             travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+            travelPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
             travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
                     .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
             return travelPostDetailDTO;
@@ -139,6 +140,7 @@ public class TravelService {
                 travelPostDetailDTO.setPostDetail(post.toPostDetail());
                 travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                 travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                travelPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                 travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
                         .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 break;
@@ -148,6 +150,7 @@ public class TravelService {
                     travelPostDetailDTO.setPostDetail(post.toPostDetail());
                     travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                     travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                    travelPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                     travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
                             .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 } else {
@@ -161,6 +164,7 @@ public class TravelService {
                     travelPostDetailDTO.setPostDetail(post.toPostDetail());
                     travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                     travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                    travelPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
                     travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
                             .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 } else {
