@@ -108,6 +108,7 @@ public class NormalPostService {
             normalPostDetailDTO.setResult("success");
             normalPostDetailDTO.setPostDetail(post.toPostDetail());
             normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
+            normalPostDetailDTO.getPostDetail().setLiked(likeService.isLiked(post.getPostId(), memberId));
             normalPostDetailDTO.getPostDetail().setPostId(findPost.getPostId());
             return normalPostDetailDTO;
         }
