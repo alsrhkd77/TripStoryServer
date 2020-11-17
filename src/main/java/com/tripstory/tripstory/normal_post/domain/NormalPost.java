@@ -3,6 +3,7 @@ package com.tripstory.tripstory.normal_post.domain;
 import com.tripstory.tripstory.normal_post.dto.NormalPostInfo;
 import com.tripstory.tripstory.post.domain.Post;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
+import com.tripstory.tripstory.travel_post.dto.NestedPostInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,6 +44,15 @@ public class NormalPost {
                 .visitStart(visitStart)
                 .visitEnd(visitEnd)
                 .linkedTravel(travel != null ? travel.getId() : null)
+                .build();
+    }
+
+    public NestedPostInfo toNestedPostInfo() {
+        return NestedPostInfo.builder()
+                .postId(postId)
+                .likes(post.getPostLikes().size())
+                .thumbnailImagePath(post.getPostImages().get(0).getImagePath())
+                .comments(post.getPostComments().size())
                 .build();
     }
 }

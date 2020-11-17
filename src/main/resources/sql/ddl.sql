@@ -136,3 +136,18 @@ CREATE TABLE travel_course
     FOREIGN KEY (travel_id) REFERENCES travel_post (post_id)
         ON DELETE CASCADE
 );
+
+# 댓글 정보 테이블
+# 작성자와 댓글이 달린 게시물, 작성일시 정보를 가짐
+CREATE TABLE post_comment
+(
+    post_comment_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id VARCHAR(255) NOT NULL ,
+    content TEXT NOT NULL ,
+    created_time DATETIME NOT NULL ,
+    post_id BIGINT NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES post(post_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (member_id) REFERENCES member(member_id)
+        ON DELETE CASCADE
+);

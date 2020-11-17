@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.post.domain;
 
+import com.tripstory.tripstory.comment.domain.PostComment;
 import com.tripstory.tripstory.like.domain.PostLike;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.domain.NormalPost;
@@ -63,6 +64,11 @@ public class Post {
     @JoinColumn(name = "post_id")
     private List<PostTag> postTags = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "post_id")
+    private List<PostComment> postComments = new ArrayList<>();
+
     @OneToOne
     @JoinColumn(name = "post_id")
     private NormalPost normalPost;
@@ -104,6 +110,7 @@ public class Post {
                         .map(PostTag::getTagName)
                         .collect(Collectors.toList()))
                 .scope(scope)
+                .comments(postComments.size())
                 .build();
     }
 

@@ -21,5 +21,6 @@ public class PostDetail {
     private DisclosureScope scope;
     private int likes;
     private boolean liked;
+    private int comments;
 
 }

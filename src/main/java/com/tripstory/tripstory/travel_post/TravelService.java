@@ -3,6 +3,7 @@ package com.tripstory.tripstory.travel_post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tripstory.tripstory.follow.FollowService;
+import com.tripstory.tripstory.like.LikeService;
 import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.NormalPostService;
@@ -35,6 +36,7 @@ public class TravelService {
     private final ObjectMapper objectMapper;
     private final NormalPostService normalPostService;
     private final FollowService followService;
+    private final LikeService likeService;
 
     /**
      * 작성자 존재 유무를 확인
@@ -126,6 +128,8 @@ public class TravelService {
             travelPostDetailDTO.setPostDetail(post.toPostDetail());
             travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
             travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+            travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
+                    .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
             return travelPostDetailDTO;
         }
 
@@ -135,6 +139,8 @@ public class TravelService {
                 travelPostDetailDTO.setPostDetail(post.toPostDetail());
                 travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                 travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
+                        .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 break;
             case PRIVATE:
                 if (post.getMember().getMemberId().equals(memberId)) {
@@ -142,6 +148,8 @@ public class TravelService {
                     travelPostDetailDTO.setPostDetail(post.toPostDetail());
                     travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                     travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                    travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
+                            .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 } else {
                     travelPostDetailDTO.setResult("unAuthorized");
                 }
@@ -153,6 +161,8 @@ public class TravelService {
                     travelPostDetailDTO.setPostDetail(post.toPostDetail());
                     travelPostDetailDTO.setTravelPostInfo(findPost.toTravelPostInfo());
                     travelPostDetailDTO.getPostDetail().setPostId(post.getPostId());
+                    travelPostDetailDTO.getTravelPostInfo().getPosts().stream()
+                            .forEach(nestedPostInfo -> nestedPostInfo.setLiked(likeService.isLiked(nestedPostInfo.getPostId(), memberId)));
                 } else {
                     travelPostDetailDTO.setResult("unAuthorized");
                 }

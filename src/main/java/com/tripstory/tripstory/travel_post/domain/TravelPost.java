@@ -59,7 +59,7 @@ public class TravelPost {
                                       .map(TravelCourse::toCourseInfo)
                                       .collect(Collectors.toList()))
                 .posts(normalPosts.stream()
-                        .map(NormalPost::getPostId)
+                        .map(NormalPost::toNestedPostInfo)
                         .collect(Collectors.toList()))
                 .build();
     }
