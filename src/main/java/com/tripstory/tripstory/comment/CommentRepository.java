@@ -30,6 +30,14 @@ public class CommentRepository {
     }
 
     /**
+     * 댓글 ID로 댓글 단건 조회
+     * @param commentId
+     */
+    public PostComment findOne(Long commentId) {
+        return em.find(PostComment.class, commentId);
+    }
+    
+    /**
      * 게시물에 작성된 모든 댓글을 가져옴
      * @param postId
      * @return PostComment 리스트

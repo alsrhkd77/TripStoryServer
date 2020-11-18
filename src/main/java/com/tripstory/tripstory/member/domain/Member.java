@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.member.domain;
 
+import com.tripstory.tripstory.comment.dto.AuthorProfile;
 import com.tripstory.tripstory.member.dto.MemberInfo;
 import com.tripstory.tripstory.member.dto.MemberProfile;
 import lombok.AllArgsConstructor;
@@ -63,5 +64,16 @@ public class Member {
 
     public void changeNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    /**
+     * 회원 댓글 작성자 형태로 변경하여 반환
+     * @return AuthorProfile 객체
+     */
+    public AuthorProfile toAuthorProfile() {
+        return AuthorProfile.builder()
+                .author(nickName)
+                .profileImagePath(profileImagePath)
+                .build();
     }
 }

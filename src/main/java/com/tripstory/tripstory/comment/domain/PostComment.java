@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.comment.domain;
 
+import com.tripstory.tripstory.comment.dto.PostCommentDetail;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.Post;
 import lombok.*;
@@ -30,4 +31,12 @@ public class PostComment {
     private String content;
 
     private LocalDateTime createdTime;
+
+    public PostCommentDetail toCommentDetail() {
+        return PostCommentDetail.builder()
+                .commentId(id)
+                .content(content)
+                .createdTime(createdTime)
+                .build();
+    }
 }
