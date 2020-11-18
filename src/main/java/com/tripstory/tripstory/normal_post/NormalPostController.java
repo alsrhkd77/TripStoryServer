@@ -2,10 +2,12 @@ package com.tripstory.tripstory.normal_post;
 
 import com.tripstory.tripstory.normal_post.dto.NormalPostDTO;
 import com.tripstory.tripstory.normal_post.dto.NormalPostDetailDTO;
+import com.tripstory.tripstory.post.PostService;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -69,6 +71,19 @@ public class NormalPostController {
         } catch (Exception e) {
             response.getBody().setResult("failed");
             response.getBody().setErrors(e.getMessage());
+        }
+        return response;
+    }
+
+    @DeleteMapping("/{post-id}/{member-id}")
+    public NormalPostDTO.DeleteResponse deleteNormalPost(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        NormalPostDTO.DeleteResponse response = new NormalPostDTO.DeleteResponse();
+        try {
+            normalPostService.deleteNormalPost(postId, memberId);
+            response.setResult("success");
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
         }
         return response;
     }

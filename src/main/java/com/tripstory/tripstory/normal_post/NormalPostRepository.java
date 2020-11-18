@@ -23,6 +23,14 @@ public class NormalPostRepository {
     }
 
     /**
+     * 일반 게시물 삭제
+     * @param post
+     */
+    public void delete(NormalPost post) {
+        em.remove(post);
+    }
+
+    /**
      * 게시물 ID로 일반 게시물 조회
      * @param id
      * @return 존재하면 검색된 게시물, 없으면 null

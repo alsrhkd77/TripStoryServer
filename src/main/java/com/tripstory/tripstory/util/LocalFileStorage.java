@@ -34,6 +34,15 @@ public class LocalFileStorage implements FileStorage{
 
     @Override
     public void deleteFile(String filePath) {
-
+        System.out.println(filePath);
+        String fileName = location + filePath;
+        System.out.println(fileName);
+        File deleteTarget = new File(fileName.replace("/post-image", "").replace("/", "\\"));
+        System.out.println(fileName.replace("/post-image", "").replace("/", "\\"));
+        if (deleteTarget.exists()) {
+            deleteTarget.delete();
+        } else {
+            throw new IllegalStateException("존재하지 않는 파일");
+        }
     }
 }

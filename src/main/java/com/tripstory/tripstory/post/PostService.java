@@ -10,6 +10,7 @@ import com.tripstory.tripstory.tag.domain.Tag;
 import com.tripstory.tripstory.util.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -124,5 +125,15 @@ public class PostService {
      */
     public List<Post> getOtherPost(String nickName) {
         return postRepository.findByNickName(nickName);
+    }
+
+
+    @Transactional
+    public void deletePost(Long postId) {
+        Post findPost = postRepository.findOne(postId);
+        findPost.getPostImages().stream()
+        .map(PostImage::getImagePath)
+        .forEach(filePath -> fileStorage.deleteFile(filePath.replaceFirst("/", "")));
+        postRepository.delete(findPost);
     }
 }

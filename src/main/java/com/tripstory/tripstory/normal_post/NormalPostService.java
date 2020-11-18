@@ -180,4 +180,19 @@ public class NormalPostService {
         }
         return thumbnails;
     }
+
+    /**
+     * 게시물 작성자가 게시물 삭제 요청시 해당 게시물 삭제
+     * @param postId
+     * @param memberId
+     * @return
+     */
+    @Transactional
+    public void deleteNormalPost(Long postId, String memberId) {
+        Post findPost = postService.getOne(postId);
+        if(!findPost.getMember().getMemberId().equals(memberId)) {
+            throw new IllegalStateException("삭제 권한이 없는 사용자입니다.");
+        }
+        postService.deletePost(postId);
+    }
 }

@@ -1,5 +1,6 @@
 package com.tripstory.tripstory.travel_post;
 
+import com.tripstory.tripstory.normal_post.dto.NormalPostDTO;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.travel_post.dto.TravelPostDTO;
 import com.tripstory.tripstory.travel_post.dto.TravelPostDetailDTO;
@@ -69,6 +70,19 @@ public class TravelController {
         } catch (Exception e) {
             response.getBody().setResult("failed");
             response.getBody().setErrors(e.getMessage());
+        }
+        return response;
+    }
+
+    @DeleteMapping("/{post-id}/{member-id}")
+    public TravelPostDTO.DeleteResponse deleteNormalPost(@PathVariable("post-id") Long postId, @PathVariable("member-id") String memberId) {
+        TravelPostDTO.DeleteResponse response = new TravelPostDTO.DeleteResponse();
+        try {
+            travelService.deleteTravelPost(postId, memberId);
+            response.setResult("success");
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
         }
         return response;
     }

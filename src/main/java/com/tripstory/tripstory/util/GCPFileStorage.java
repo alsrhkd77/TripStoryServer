@@ -36,6 +36,8 @@ public class GCPFileStorage implements FileStorage{
 
     @Override
     public void deleteFile(String filePath) {
-
+        String objectName = filePath.split("/")[5];
+        Storage storage = StorageOptions.getDefaultInstance().getService();
+        storage.delete("tripstory_image", "post_image/" + objectName);
     }
 }

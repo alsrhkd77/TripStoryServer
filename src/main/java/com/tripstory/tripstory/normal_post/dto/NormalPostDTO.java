@@ -43,6 +43,12 @@ public class NormalPostDTO {
         private List<PostThumbnail> postThumbnails;
     }
 
+    @Setter
+    @Getter
+    public static class DeleteResponse {
+        private String result;
+        private String errors;
+    }
 }
 
 
