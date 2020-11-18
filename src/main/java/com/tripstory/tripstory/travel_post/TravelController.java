@@ -35,7 +35,7 @@ public class TravelController {
     public ResponseEntity<TravelPostDTO.ThumbnailResponse> getMyTravelPostAll(@PathVariable("member-id") String memberId) {
         ResponseEntity<TravelPostDTO.ThumbnailResponse> response = new ResponseEntity<>(new TravelPostDTO.ThumbnailResponse(), HttpStatus.OK);
         try {
-            List<PostThumbnail> thumbnails = travelService.getMyNormalTravelThumbnailAll(memberId);
+            List<PostThumbnail> thumbnails = travelService.getMyTravelThumbnailAll(memberId);
             response.getBody().setResult("success");
             response.getBody().setPostCount(thumbnails.size());
             response.getBody().setPostThumbnails(thumbnails);
@@ -56,5 +56,20 @@ public class TravelController {
             travelPostDetail.setErrors(e.getMessage());
         }
         return travelPostDetail;
+    }
+
+    @GetMapping("/other/{nickName}/{member-id}")
+    public ResponseEntity<TravelPostDTO.ThumbnailResponse> getOtherTravelThumbnailAll(@PathVariable String nickName, @PathVariable("member-id") String memberId) {
+        ResponseEntity<TravelPostDTO.ThumbnailResponse> response = new ResponseEntity<>(new TravelPostDTO.ThumbnailResponse(), HttpStatus.OK);
+        try {
+            List<PostThumbnail> thumbnails = travelService.getOtherTravelThumbnailAll(nickName, memberId);
+            response.getBody().setResult("success");
+            response.getBody().setPostCount(thumbnails.size());
+            response.getBody().setPostThumbnails(thumbnails);
+        } catch (Exception e) {
+            response.getBody().setResult("failed");
+            response.getBody().setErrors(e.getMessage());
+        }
+        return response;
     }
 }

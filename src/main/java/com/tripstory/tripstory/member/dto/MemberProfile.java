@@ -16,5 +16,6 @@ public class MemberProfile {
     private int followings;
     private int followers;
     private String profileImagePath;
+    private boolean followed;
 
 }

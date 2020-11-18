@@ -103,7 +103,7 @@ public class MemberService {
      * @param nickName
      * @return 회원 프로필 정보 객체 반환
      */
-    public MemberProfile getMemberProfile(String nickName) {
+    public MemberProfile getMemberProfile(String nickName, String memberId) {
         Member findMember = memberRepository.findByNickName(nickName);
         if (findMember == null) {
             throw new IllegalStateException("존재하지 않는 회원입니다.");
@@ -112,9 +112,14 @@ public class MemberService {
         try {
             memberProfile.setFollowers(followRepository.findByFollowingId(findMember.getMemberId()).size());
             memberProfile.setFollowings(followRepository.findByMemberId(findMember.getMemberId()).size());
-
+            try {
+                memberProfile.setFollowed(followRepository.findOne(memberId, nickName) != null);
+            } catch (Exception e) {
+                memberProfile.setFollowed(false);
+            }
             memberProfile.setResult("success");
         } catch (Exception e) {
+            e.printStackTrace();
             memberProfile.setFollowers(0);
             memberProfile.setFollowings(0);
         }

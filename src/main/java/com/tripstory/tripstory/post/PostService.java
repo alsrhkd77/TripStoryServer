@@ -116,4 +116,13 @@ public class PostService {
     public Post getOne(Long postId) {
         return postRepository.findOne(postId);
     }
+
+    /**
+     * 회원 닉네임으로 해당 회원이 작성한 게시물 리스트 반환
+     * @param nickName
+     * @return
+     */
+    public List<Post> getOtherPost(String nickName) {
+        return postRepository.findByNickName(nickName);
+    }
 }

@@ -57,4 +57,19 @@ public class NormalPostController {
         }
         return normalPostDetail;
     }
+
+    @GetMapping("/other/{nickName}/{member-id}")
+    public ResponseEntity<NormalPostDTO.ThumbnailResponse> getOtherNormalPostAll(@PathVariable String nickName, @PathVariable("member-id") String memberId) {
+        ResponseEntity<NormalPostDTO.ThumbnailResponse> response = new ResponseEntity<>(new NormalPostDTO.ThumbnailResponse(), HttpStatus.OK);
+        try {
+            List<PostThumbnail> thumbnails = normalPostService.getOtherNormalPostThumbnailAll(nickName, memberId);
+            response.getBody().setResult("success");
+            response.getBody().setPostCount(thumbnails.size());
+            response.getBody().setPostThumbnails(thumbnails);
+        } catch (Exception e) {
+            response.getBody().setResult("failed");
+            response.getBody().setErrors(e.getMessage());
+        }
+        return response;
+    }
 }

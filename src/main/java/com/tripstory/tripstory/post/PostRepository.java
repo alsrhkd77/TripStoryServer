@@ -52,4 +52,16 @@ public class PostRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    /**
+     * 회원 닉네임으로 해당 회원이 작성한 게시물을 전부 가져옴
+     * @param nickName
+     * @return
+     */
+    public List<Post> findByNickName(String nickName) {
+        String query = "SELECT p FROM Post p WHERE p.member.nickName = :nickName";
+        return em.createQuery(query, Post.class)
+                .setParameter("nickName", nickName)
+                .getResultList();
+    }
 }

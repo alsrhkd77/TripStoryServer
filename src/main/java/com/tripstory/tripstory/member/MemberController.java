@@ -43,8 +43,8 @@ public class MemberController {
         return response;
     }
 
-    @GetMapping("/profile/{nickname}")
-    public MemberProfile getMemberProfile(@PathVariable String nickname) {
-        return memberService.getMemberProfile(nickname);
+    @GetMapping("/profile/{nickname}/{member-id}")
+    public MemberProfile getMemberProfile(@PathVariable String nickname, @PathVariable("member-id") String memberId) {
+        return memberService.getMemberProfile(nickname, memberId);
     }
 }

@@ -9,6 +9,7 @@ import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.normal_post.NormalPostService;
 import com.tripstory.tripstory.post.PostService;
 import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
@@ -102,7 +103,7 @@ public class TravelService {
      * @param memberId
      * @return 여행 게시물의 썸네일 리스트
      */
-    public List<PostThumbnail> getMyNormalTravelThumbnailAll(String memberId) {
+    public List<PostThumbnail> getMyTravelThumbnailAll(String memberId) {
         return postService.getMyPost(memberId).stream()
                 .map(Post::toThumbnail)
                 .filter(postThumbnail -> postThumbnail.getType().equals(PostType.TRAVEL))
@@ -173,5 +174,32 @@ public class TravelService {
                 break;
         }
         return travelPostDetailDTO;
+    }
+
+    /**
+     * 회원 닉네임으로 해당 회원이 작성한 여행 게시물 썸네일 전체 조회후 반환
+     * @param nickName
+     * @param memberId
+     * @return 여행 게시물 썸네일 리스트
+     */
+    public List<PostThumbnail> getOtherTravelThumbnailAll(String nickName, String memberId) {
+        Member requestMember = memberService.getMember(memberId);
+        List<Post> otherPosts = postService.getOtherPost(nickName);
+        List<PostThumbnail> thumbnails = new ArrayList<>();
+        for (Post otherPost : otherPosts) {
+            if(otherPost.getType() == PostType.NORMAL) {
+                continue;
+            }
+            if (otherPost.getScope() == DisclosureScope.PUBLIC) {
+                thumbnails.add(otherPost.toThumbnail());
+            } else if (otherPost.getScope() == DisclosureScope.PRIVATE) {
+                continue;
+            } else {
+                if (followService.isMyFollowing(otherPost.getMember().getMemberId(), requestMember.getNickName())) {
+                    thumbnails.add(otherPost.toThumbnail());
+                }
+            }
+        }
+        return thumbnails;
     }
 }

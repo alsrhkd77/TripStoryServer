@@ -9,12 +9,14 @@ import com.tripstory.tripstory.normal_post.dto.NormalPostDTO;
 import com.tripstory.tripstory.normal_post.dto.NormalPostDetailDTO;
 import com.tripstory.tripstory.post.PostService;
 import com.tripstory.tripstory.post.domain.Post;
+import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,6 +95,7 @@ public class NormalPostService {
 
     /**
      * 게시물 ID와 요청 회원 ID로 게시물 공개 범위에 맞게 게시물 디테일 정보 조회
+     *
      * @param postId
      * @param memberId
      * @return 요청 클라이언트로 반환될 DTO 객체 반환
@@ -104,7 +107,7 @@ public class NormalPostService {
         }
         Post post = findPost.getPost();
         NormalPostDetailDTO normalPostDetailDTO = new NormalPostDetailDTO();
-        if(post.getMember().getMemberId().equals(memberId)) {
+        if (post.getMember().getMemberId().equals(memberId)) {
             normalPostDetailDTO.setResult("success");
             normalPostDetailDTO.setPostDetail(post.toPostDetail());
             normalPostDetailDTO.setNormalPostInfo(findPost.toInfo());
@@ -148,5 +151,33 @@ public class NormalPostService {
                 break;
         }
         return normalPostDetailDTO;
+    }
+
+    /**
+     * 타인 닉네임과 본인 ID로 타인의 일반 게시물 썸내일 리스트 가져와 반환
+     *
+     * @param nickName
+     * @param memberId
+     * @return 일반 게시물 썸네일 리스트
+     */
+    public List<PostThumbnail> getOtherNormalPostThumbnailAll(String nickName, String memberId) {
+        Member requestMember = memberService.getMember(memberId);
+        List<Post> otherPosts = postService.getOtherPost(nickName);
+        List<PostThumbnail> thumbnails = new ArrayList<>();
+        for (Post otherPost : otherPosts) {
+            if(otherPost.getType() == PostType.TRAVEL) {
+                continue;
+            }
+            if (otherPost.getScope() == DisclosureScope.PUBLIC) {
+                thumbnails.add(otherPost.toThumbnail());
+            } else if (otherPost.getScope() == DisclosureScope.PRIVATE) {
+                continue;
+            } else {
+                if (followService.isMyFollowing(otherPost.getMember().getMemberId(), requestMember.getNickName())) {
+                    thumbnails.add(otherPost.toThumbnail());
+                }
+            }
+        }
+        return thumbnails;
     }
 }
