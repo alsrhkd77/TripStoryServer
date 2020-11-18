@@ -133,7 +133,7 @@ public class PostService {
         Post findPost = postRepository.findOne(postId);
         findPost.getPostImages().stream()
         .map(PostImage::getImagePath)
-        .forEach(filePath -> fileStorage.deleteFile(filePath.replaceFirst("/", "")));
+        .forEach(filePath -> fileStorage.deleteFile(filePath));
         postRepository.delete(findPost);
     }
 }
