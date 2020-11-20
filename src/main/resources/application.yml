@@ -20,7 +20,7 @@ spring:
   servlet:
     multipart:
       max-file-size: 50MB
-
+      max-request-size: 100MB
 util:
   encode:
     key: 24h659gh5639b8h52658j13ruhbsdflgn
