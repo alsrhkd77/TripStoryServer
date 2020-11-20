@@ -3,10 +3,13 @@ package com.tripstory.tripstory.member;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.member.dto.MemberDTO;
 import com.tripstory.tripstory.member.dto.MemberProfile;
+import com.tripstory.tripstory.member.dto.MemberSearchDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/member")
@@ -55,6 +58,38 @@ public class MemberController {
             String changedProfileImagePath = memberService.changeProfileImage(request.getMemberId(), request.getImage());
             response.setResult("success");
             response.setProfileImagePath(changedProfileImagePath);
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/search/name/{keyword}")
+    public MemberSearchDTO searchByNameKeyword(@PathVariable String keyword) {
+        MemberSearchDTO response = new MemberSearchDTO();
+        try {
+            List<MemberSearchDTO.MemberSearchInfo> members = memberService.searchMemberByName(keyword);
+            response.setMembers(members);
+            response.setCount(members.size());
+            response.setResult("success");
+
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/search/nickname/{keyword}")
+    public MemberSearchDTO searchByNickNameKeyword(@PathVariable String keyword) {
+        MemberSearchDTO response = new MemberSearchDTO();
+        try {
+            List<MemberSearchDTO.MemberSearchInfo> members = memberService.searchMemberByNickName(keyword);
+            response.setMembers(members);
+            response.setCount(members.size());
+            response.setResult("success");
+
         } catch (Exception e) {
             response.setResult("failed");
             response.setErrors(e.getMessage());

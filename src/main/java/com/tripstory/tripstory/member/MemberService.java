@@ -1,9 +1,9 @@
 package com.tripstory.tripstory.member;
 
 import com.tripstory.tripstory.follow.FollowRepository;
-import com.tripstory.tripstory.follow.FollowService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.member.dto.MemberProfile;
+import com.tripstory.tripstory.member.dto.MemberSearchDTO;
 import com.tripstory.tripstory.util.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.NoResultException;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class MemberService {
     // 이미지 불러올때 부르는 경로
     @Value("${resources.profile-image.path}")
     private String path;
+
     /**
      * 새로운 고객 추가
      *
@@ -140,14 +142,15 @@ public class MemberService {
 
     /**
      * 회원 이름, 이미지를 받아서 회원의 프로필 사진을 변경함
+     *
      * @param memberId
      * @param image
      */
     @Transactional
     public String changeProfileImage(String memberId, MultipartFile image) {
         Member findMember = memberRepository.findOne(memberId);
-        if(!findMember.isDefaultProfileImage()) {
-            fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/" , ""), location);
+        if (!findMember.isDefaultProfileImage()) {
+            fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/", ""), location);
         }
         try {
             String savedFileName = fileStorage.saveFile(image.getBytes(),
@@ -159,5 +162,27 @@ public class MemberService {
         } catch (IOException e) {
             throw new IllegalStateException("프로필 변경중 오류발생");
         }
+    }
+
+    /**
+     * 키워드로 회원을 검색(이름)해서 존재하는 회원의 일부 정보를 반환
+     * @param keyword  
+     * @return 회원 검색 정보 리스트 반환
+     */
+    public List<MemberSearchDTO.MemberSearchInfo> searchMemberByName(String keyword) {
+        return memberRepository.findByNameKeyword(keyword).stream()
+                .map(Member::toSearchInfo)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 키워드로 회원을 검색(닉네임)해서 존재하는 회원의 일부 정보를 반환
+     * @param keyword
+     * @return 회원 검색 정보 리스트 반환
+     */
+    public List<MemberSearchDTO.MemberSearchInfo> searchMemberByNickName(String keyword) {
+        return memberRepository.findByNickNameKeyword(keyword).stream()
+                .map(Member::toSearchInfo)
+                .collect(Collectors.toList());
     }
 }

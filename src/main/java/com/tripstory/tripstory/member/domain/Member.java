@@ -3,6 +3,7 @@ package com.tripstory.tripstory.member.domain;
 import com.tripstory.tripstory.comment.dto.AuthorProfile;
 import com.tripstory.tripstory.member.dto.MemberInfo;
 import com.tripstory.tripstory.member.dto.MemberProfile;
+import com.tripstory.tripstory.member.dto.MemberSearchDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -93,5 +94,17 @@ public class Member {
      */
     public boolean isDefaultProfileImage() {
         return profileImagePath == "https://storage.googleapis.com/tripstory_image/profile_image/default_profile.png";
+    }
+
+    /**
+     * 회원 정보 검색결과에 나오는 정보만 추려서 반환
+     * @return 회원 검색 결과 정보 객체
+     */
+    public MemberSearchDTO.MemberSearchInfo toSearchInfo() {
+        return MemberSearchDTO.MemberSearchInfo.builder()
+                .name(name)
+                .nickName(nickName)
+                .profileImagePath(profileImagePath)
+                .build();
     }
 }
