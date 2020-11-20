@@ -22,7 +22,7 @@ public class GCPFileStorage implements FileStorage {
      * @param fileName
      * @param contentType
      * @param location
-     * @return 파일에 접근 가능한 공개 URL
+     * @return GCP Storage 에 저장된 object name
      */
     @Override
     public String saveFile(byte[] bytes, String fileName, String contentType, String location) {
@@ -38,7 +38,7 @@ public class GCPFileStorage implements FileStorage {
                     bytes,
                     Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
             );
-            return blobInfo.getBlobId().getName(); // return object name
+            return blobInfo.getName().replace(location, ""); // return object name
 
         } catch (IllegalStateException e) {
             throw new RuntimeException(e);
