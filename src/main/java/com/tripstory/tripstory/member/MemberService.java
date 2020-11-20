@@ -147,7 +147,7 @@ public class MemberService {
     public String changeProfileImage(String memberId, MultipartFile image) {
         Member findMember = memberRepository.findOne(memberId);
         if(!findMember.isDefaultProfileImage()) {
-            fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/" , " "), location);
+            fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/" , ""), location);
         }
         try {
             String savedFileName = fileStorage.saveFile(image.getBytes(),

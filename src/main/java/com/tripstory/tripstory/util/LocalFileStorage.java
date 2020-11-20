@@ -48,6 +48,7 @@ public class LocalFileStorage implements FileStorage {
 
         if (deleteTargetFile.exists()) {
             deleteTargetFile.delete();
+
         } else {
             return 0;
         }
