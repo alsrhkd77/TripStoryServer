@@ -85,6 +85,7 @@ spring:
 
 resources:
   post-image:
+    path: https://storage.googleapis.com/tripstory_image/
     location: tripstory_image/post_image
   profile-image:
     localtion: tripstory_image/profile_image
