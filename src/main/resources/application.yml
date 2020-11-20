@@ -20,6 +20,10 @@ spring:
   servlet:
     multipart:
       max-file-size: 50MB
+
+util:
+  encode:
+    key: 24h659gh5639b8h52658j13ruhbsdflgn
 ---
 
 # dev setting (local pc only)
@@ -81,4 +85,6 @@ spring:
 
 resources:
   post-image:
-    path: https://storage.googleapis.com/tripstory_image/
+    location: tripstory_image/post_image
+  profile-image:
+    localtion: tripstory_image/profile_image

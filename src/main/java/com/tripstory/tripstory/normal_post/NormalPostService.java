@@ -46,7 +46,7 @@ public class NormalPostService {
         if (findMember == null) {
             throw new IllegalStateException("해당 작성자는 존재하지 않습니다.");
         }
-        Post newPost = postService.savePost(findMember, createData.getContent(), PostType.NORMAL);
+        Post newPost = postService.savePost(findMember, createData.getContent(), PostType.NORMAL, createData.getScope());
         postService.saveTags(createData.getTags(), findMember).stream()
                 .forEach(postTag -> newPost.addTag(postTag));
         postService.saveImages(createData.getImages()).stream()

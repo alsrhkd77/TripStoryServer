@@ -29,9 +29,9 @@ public class Member {
     @Column(name = "email", length = 40)
     private String email;
 
-    @Column(name = "profile_image_path", length = 200)
+    @Column(name = "profile_image_path", columnDefinition = "TEXT")
     @Builder.Default
-    private String profileImagePath = "https://i.stack.imgur.com/l60Hf.png";
+    private String profileImagePath = "https://storage.googleapis.com/tripstory_image/profile_image/default_profile.png";
 
     @Column(name = "nick_name", unique = true, length = 30)
     private String nickName;

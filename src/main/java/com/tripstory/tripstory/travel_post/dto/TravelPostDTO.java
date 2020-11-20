@@ -21,7 +21,7 @@ public class TravelPostDTO {
         private List<String> tags;
         private List<MultipartFile> images;
         private List<Long> posts;
-
+        private String scope;
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate travelStart;
 

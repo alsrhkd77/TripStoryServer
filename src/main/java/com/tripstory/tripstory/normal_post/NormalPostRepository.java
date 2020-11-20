@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,5 +38,20 @@ public class NormalPostRepository {
      */
     public NormalPost findOne(Long id) {
         return em.find(NormalPost.class, id);
+    }
+
+    /**
+     * 해당 사용자가 작성한 게시물중 여행에 포함되지 않는 게시물을 조회
+     * @param memberId
+     * @return 여행에 포함되지 않는 일반 게시물 리스트
+     */
+    public List<NormalPost> findByMemberIdNotInTravel(String memberId) {
+        String query = "SELECT n " +
+                "FROM NormalPost n " +
+                "JOIN n.post p ON p.member.memberId = :memberId " +
+                "WHERE n.travel = 'NULL' ";
+        return em.createQuery(query, NormalPost.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
     }
 }

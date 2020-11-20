@@ -18,7 +18,7 @@ public class NormalPostDTO {
         private String content;
         private List<String> tags;
         private List<MultipartFile> images;
-
+        private String scope;
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
         private LocalDate visitStart;
 

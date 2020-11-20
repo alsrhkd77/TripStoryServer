@@ -57,7 +57,7 @@ public class TravelService {
         if (findMember == null) {
             throw new IllegalStateException("해당 작성자는 존재하지 않습니다.");
         }
-        Post newPost = postService.savePost(findMember, createData.getContent(), PostType.TRAVEL);
+        Post newPost = postService.savePost(findMember, createData.getContent(), PostType.TRAVEL, createData.getScope());
         TravelPost newTravelPost = TravelPost.builder()
                 .post(newPost)
                 .travelStart(createData.getTravelStart())

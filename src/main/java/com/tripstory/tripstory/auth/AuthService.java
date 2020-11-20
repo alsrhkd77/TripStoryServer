@@ -3,7 +3,9 @@ package com.tripstory.tripstory.auth;
 import com.tripstory.tripstory.auth.domain.Auth;
 import com.tripstory.tripstory.member.MemberService;
 import com.tripstory.tripstory.member.domain.Member;
+import com.tripstory.tripstory.util.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,10 @@ public class AuthService {
 
     private final AuthRepository authRepository;
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Value("{util.encode.key}")
+    private String encodeKey;
 
     /**
      * 해당 ID 사용중인 회원 여부 확인
@@ -50,6 +56,7 @@ public class AuthService {
      */
     @Transactional
     public String join(String id, String password, String name, String email, String nickName) {
+
         Member newMember = Member.builder()
                 .memberId(id)
                 .name(name)
@@ -59,7 +66,7 @@ public class AuthService {
 
         Auth newAuth = Auth.builder()
                 .member(newMember)
-                .password(password)
+                .password(passwordEncoder.encode(password, encodeKey))
                 .build();
 
         memberService.addNewMember(newMember);
@@ -76,7 +83,7 @@ public class AuthService {
         if (findAuth == null) {
             throw new IllegalStateException("존재하지 않는 계정입니다.");
         }
-        if (findAuth.getMemberId().equals(memberId) && findAuth.getPassword().equals(memberPw)) {
+        if (findAuth.getMemberId().equals(memberId) && findAuth.getPassword().equals(passwordEncoder.encode(memberPw, encodeKey))) {
             return findAuth.getMemberId();
         }
         else {

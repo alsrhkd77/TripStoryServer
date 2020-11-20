@@ -4,6 +4,7 @@ import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.post.domain.Post;
 import com.tripstory.tripstory.post.domain.PostImage;
 import com.tripstory.tripstory.post.domain.PostTag;
+import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.tag.TagService;
 import com.tripstory.tripstory.tag.domain.Tag;
@@ -24,6 +25,8 @@ public class PostService {
     private final TagService tagService;
     private final FileStorage fileStorage;
 
+
+
     /**
      * 게시물의 기본 골격이 되는 작성자와 내용 저장
      *
@@ -31,11 +34,12 @@ public class PostService {
      * @param content
      * @return 생성된 Post 엔티티
      */
-    public Post savePost(Member member, String content, PostType type) {
+    public Post savePost(Member member, String content, PostType type, String scope) {
         Post newPost = Post.builder()
                 .member(member)
                 .content(content)
                 .type(type)
+                .scope(DisclosureScope.valueOf(scope))
                 .build();
         postRepository.save(newPost);
         return newPost;

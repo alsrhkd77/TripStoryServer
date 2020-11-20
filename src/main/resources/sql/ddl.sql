@@ -5,7 +5,7 @@ CREATE TABLE member
     member_id          VARCHAR(255) PRIMARY KEY,
     name               VARCHAR(20) NOT NULL,
     email              VARCHAR(40) NOT NULL,
-    profile_image_path VARCHAR(200) NOT NULL DEFAULT 'https://i.stack.imgur.com/l60Hf.png',
+    profile_image_path text NOT NULL,
     nick_name          VARCHAR(30) NOT NULL UNIQUE
 );
 
@@ -14,7 +14,7 @@ CREATE TABLE member
 CREATE TABLE auth
 (
     member_id VARCHAR(255) PRIMARY KEY,
-    password  VARCHAR(18) NOT NULL,
+    password  VARCHAR(255) NOT NULL,
     FOREIGN KEY (member_id) REFERENCES member (member_id)
         ON DELETE CASCADE
 );
