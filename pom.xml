@@ -34,6 +34,7 @@
     <dependencies>
 
 
+
         <!-- spring web mvc -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -66,12 +67,8 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- mysql driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.21</version>
-        </dependency>
+
+
     </dependencies>
 
 
@@ -86,12 +83,24 @@
                     <version>1.5.6</version>
                 </dependency>
 
+                <!-- mysql driver -->
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>8.0.21</version>
+                </dependency>
             </dependencies>
         </profile>
 
         <profile>
             <id>prod</id>
             <dependencies>
+                <!-- mysql driver -->
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>8.0.21</version>
+                </dependency>
 
                 <!-- gcp dependencies-->
                 <dependency>
@@ -123,9 +132,7 @@
         </plugins>
     </build>
 
-
     <repositories>
-
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -141,7 +148,6 @@
         </repository>
     </repositories>
     <pluginRepositories>
-
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
@@ -156,5 +162,4 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
 </project>
