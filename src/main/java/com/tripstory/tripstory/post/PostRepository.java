@@ -83,7 +83,8 @@ public class PostRepository {
         String query = "SELECT DISTINCT p " +
                 "FROM Post p " +
                 "JOIN  p.postTags t " +
-                "WHERE t.tag.tagName LIKE :keyword";
+                "WHERE t.tag.tagName LIKE :keyword " +
+                "AND p.scope = 'PUBLIC' ";
         return em.createQuery(query, Post.class)
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
