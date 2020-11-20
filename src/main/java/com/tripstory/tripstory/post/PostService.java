@@ -6,6 +6,7 @@ import com.tripstory.tripstory.post.domain.PostImage;
 import com.tripstory.tripstory.post.domain.PostTag;
 import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
+import com.tripstory.tripstory.post.dto.PostSearchItem;
 import com.tripstory.tripstory.tag.TagService;
 import com.tripstory.tripstory.tag.domain.Tag;
 import com.tripstory.tripstory.util.FileStorage;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,10 +31,11 @@ public class PostService {
     // 이미지 저장 경로
     @Value("${resources.post-image.location}")
     private String location;
-    
+
     // 이미지 불러올때 부르는 경로
     @Value("${resources.post-image.path}")
     private String path;
+
     /**
      * 게시물의 기본 골격이 되는 작성자와 내용 저장
      *
@@ -86,6 +89,7 @@ public class PostService {
      * 게시물에 적용되는 태그의 이전 사용여부에 따라 Tag 엔티티를 생성하고
      * 게시물-태그 엔티티를 반환
      * 해당 게시물-태그가 속하는 Post 에 연관관계 설정이 필수
+     *
      * @param tags
      * @param member
      * @return PostTag 엔티티
@@ -115,6 +119,7 @@ public class PostService {
 
     /**
      * 회원이 작성한 게시물 리스트 반환
+     *
      * @param memberId
      * @return Post 엔티티 리스트
      */
@@ -124,6 +129,7 @@ public class PostService {
 
     /**
      * 게시물 ID로 게시물 하나 조회
+     *
      * @param postId
      * @return 조회된 게시물
      */
@@ -133,6 +139,7 @@ public class PostService {
 
     /**
      * 회원 닉네임으로 해당 회원이 작성한 게시물 리스트 반환
+     *
      * @param nickName
      * @return
      */
@@ -148,8 +155,19 @@ public class PostService {
 
         Post findPost = postRepository.findOne(postId);
         findPost.getPostImages().stream()
-        .map(PostImage::getImagePath)
-        .forEach(filePath -> fileStorage.deleteFile(filePath.replace(fileNameDelimiter, ""), location));
+                .map(PostImage::getImagePath)
+                .forEach(filePath -> fileStorage.deleteFile(filePath.replace(fileNameDelimiter, ""), location));
         postRepository.delete(findPost);
+    }
+
+    /**
+     * 태그 키워드로 유사한 태그가 사용된 게시물 검색
+     * @param keyword
+     * @return 검색된 게시물 리스트
+     */
+    public List<PostSearchItem> searchByUsedTag(String keyword) {
+        return postRepository.findByUsedTag(keyword).stream()
+                .map(Post::toSearchItem)
+                .collect(Collectors.toList());
     }
 }

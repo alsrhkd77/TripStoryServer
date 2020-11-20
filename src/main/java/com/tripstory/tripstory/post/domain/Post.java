@@ -7,6 +7,7 @@ import com.tripstory.tripstory.normal_post.domain.NormalPost;
 import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.post.dto.PostDetail;
+import com.tripstory.tripstory.post.dto.PostSearchItem;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.timeline.dto.TimeLineItem;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
@@ -116,6 +117,22 @@ public class Post {
 
     public TimeLineItem toTimeLineItem() {
         return TimeLineItem.builder()
+                .postId(postId)
+                .author(member.getNickName())
+                .content(content)
+                .createdTime(createdTime)
+                .startDate(normalPost != null ? normalPost.getVisitStart() : travelPost.getTravelStart())
+                .endDate(normalPost != null ? normalPost.getVisitEnd() : travelPost.getTravelEnd())
+                .likes(postLikes.size())
+                .type(type)
+                .imagePaths(postImages.stream().map(PostImage::getImagePath).collect(Collectors.toList()))
+                .tags(postTags.stream().map(PostTag::getTagName).collect(Collectors.toList()))
+                .comments(postComments.size())
+                .build();
+    }
+
+    public PostSearchItem toSearchItem() {
+        return PostSearchItem.builder()
                 .postId(postId)
                 .author(member.getNickName())
                 .content(content)

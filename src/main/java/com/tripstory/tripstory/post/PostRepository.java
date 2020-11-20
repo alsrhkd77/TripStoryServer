@@ -73,4 +73,19 @@ public class PostRepository {
                 .setParameter("nickName", nickName)
                 .getResultList();
     }
+
+    /**
+     * 사용된 태그 키워드로 유사한 태그가 사용된 게시물을 전부 가져옴
+     * @param keyword
+     * @return 검색된 게시물 리스트
+     */
+    public List<Post> findByUsedTag(String keyword) {
+        String query = "SELECT DISTINCT p " +
+                "FROM Post p " +
+                "JOIN  p.postTags t " +
+                "WHERE t.tag.tagName LIKE :keyword";
+        return em.createQuery(query, Post.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
+    }
 }
