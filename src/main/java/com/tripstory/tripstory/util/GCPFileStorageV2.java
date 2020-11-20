@@ -1,8 +1,8 @@
 package com.tripstory.tripstory.util;
 
-import com.google.cloud.storage.BlobInfo;
-import com.google.cloud.storage.Storage;
-import com.google.cloud.storage.StorageOptions;
+//import com.google.cloud.storage.BlobInfo;
+//import com.google.cloud.storage.Storage;
+//import com.google.cloud.storage.StorageOptions;
 
 import java.util.UUID;
 
@@ -22,23 +22,23 @@ public class GCPFileStorageV2 implements FileStorageV2 {
      */
     @Override
     public String saveFile(byte[] bytes, String fileName, String contentType, String location) {
-        String bucketName = location.split("/")[0];
-        String folderName = location.split("/")[1];
-        String randomUUID = UUID.randomUUID().toString();
-        String uploadFileName = randomUUID + fileName;
-        try {
-            Storage storage = StorageOptions.getDefaultInstance().getService();
-            BlobInfo blobInfo = storage.create(
-                    BlobInfo.newBuilder(bucketName, folderName + "/" + uploadFileName)
-                            .setContentType(contentType).build(),
-                    bytes,
-                    Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
-            );
-            return storagePath + folderName + "/" + blobInfo.getName(); // Return file url
-        } catch (IllegalStateException e) {
-            throw new RuntimeException(e);
-        }
-//        return null;
+//        String bucketName = location.split("/")[0];
+//        String folderName = location.split("/")[1];
+//        String randomUUID = UUID.randomUUID().toString();
+//        String uploadFileName = randomUUID + fileName;
+//        try {
+//            Storage storage = StorageOptions.getDefaultInstance().getService();
+//            BlobInfo blobInfo = storage.create(
+//                    BlobInfo.newBuilder(bucketName, folderName + "/" + uploadFileName)
+//                            .setContentType(contentType).build(),
+//                    bytes,
+//                    Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
+//            );
+//            return storagePath + folderName + "/" + blobInfo.getName(); // Return file url
+//        } catch (IllegalStateException e) {
+//            throw new RuntimeException(e);
+//        }
+        return null;
     }
 
     /**
