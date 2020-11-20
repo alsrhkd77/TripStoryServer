@@ -49,6 +49,15 @@ public class NormalPostDTO {
         private String result;
         private String errors;
     }
+
+    @Setter
+    @Getter
+    public static class NormalPostNotInTravelResponse {
+        private String result;
+        private String errors;
+        private List<Long> posts;
+    }
+
 }
 
 

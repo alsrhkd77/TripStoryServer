@@ -87,4 +87,17 @@ public class NormalPostController {
         }
         return response;
     }
+
+    @GetMapping("/no-travel/{member-id}")
+    public NormalPostDTO.NormalPostNotInTravelResponse getNormalPostNotInTravel(@PathVariable("member-id") String memberId) {
+        NormalPostDTO.NormalPostNotInTravelResponse response = new NormalPostDTO.NormalPostNotInTravelResponse();
+        try {
+            response.setResult("success");
+            response.setPosts(normalPostService.getNormalPostNotInTravel(memberId));
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
+        }
+        return response;
+    }
 }

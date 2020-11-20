@@ -45,12 +45,12 @@ public class NormalPostRepository {
      * @param memberId
      * @return 여행에 포함되지 않는 일반 게시물 리스트
      */
-    public List<NormalPost> findByMemberIdNotInTravel(String memberId) {
-        String query = "SELECT n " +
+    public List<Long> findByMemberIdNotInTravel(String memberId) {
+        String query = "SELECT n.postId " +
                 "FROM NormalPost n " +
                 "JOIN n.post p ON p.member.memberId = :memberId " +
                 "WHERE n.travel = 'NULL' ";
-        return em.createQuery(query, NormalPost.class)
+        return em.createQuery(query, Long.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }

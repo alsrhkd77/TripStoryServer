@@ -195,4 +195,8 @@ public class NormalPostService {
         }
         postService.deletePost(postId);
     }
+
+    public List<Long> getNormalPostNotInTravel(String memberId) {
+        return normalPostRepository.findByMemberIdNotInTravel(memberId);
+    }
 }
