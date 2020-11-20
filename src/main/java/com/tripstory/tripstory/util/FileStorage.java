@@ -1,8 +1,11 @@
 package com.tripstory.tripstory.util;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 public interface FileStorage {
 
-    String saveFile(byte[] bytes, String fileName, String contentType);
+    String saveFile(byte[] bytes, String fileName, String contentType, String location);
 
-    void deleteFile(String filePath);
+    int deleteFile(String fileName, String location);
 }

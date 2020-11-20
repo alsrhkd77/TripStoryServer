@@ -10,6 +10,7 @@ import com.tripstory.tripstory.tag.TagService;
 import com.tripstory.tripstory.tag.domain.Tag;
 import com.tripstory.tripstory.util.FileStorage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +26,13 @@ public class PostService {
     private final TagService tagService;
     private final FileStorage fileStorage;
 
-
-
+    // 이미지 저장 경로
+    @Value("${resources.post-image.location}")
+    private String location;
+    
+    // 이미지 불러올때 부르는 경로
+    @Value("${resources.post-image.path}")
+    private String path;
     /**
      * 게시물의 기본 골격이 되는 작성자와 내용 저장
      *
@@ -59,11 +65,14 @@ public class PostService {
         }
         for (MultipartFile image : images) {
             try {
+
                 String filePath = fileStorage.saveFile(image.getBytes(),
                         image.getOriginalFilename(),
-                        image.getContentType());
+                        image.getContentType(),
+                        location);
+                String filePathToDBSave = path + "/" + filePath;
                 PostImage postImage = PostImage.builder()
-                        .path(filePath)
+                        .path(filePathToDBSave)
                         .build();
                 postImages.add(postImage);
             } catch (Exception e) {
@@ -134,10 +143,13 @@ public class PostService {
 
     @Transactional
     public void deletePost(Long postId) {
+        // 파일 경로까지 포함된 이름에서 파일 이름만 가져오기 위한 구분자
+        String fileNameDelimiter = path + "/";
+
         Post findPost = postRepository.findOne(postId);
         findPost.getPostImages().stream()
         .map(PostImage::getImagePath)
-        .forEach(filePath -> fileStorage.deleteFile(filePath));
+        .forEach(filePath -> fileStorage.deleteFile(filePath.replace(fileNameDelimiter, ""), location));
         postRepository.delete(findPost);
     }
 }

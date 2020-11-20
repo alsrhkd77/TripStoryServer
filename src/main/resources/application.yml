@@ -52,7 +52,7 @@ resources:
     # for linux
     # location: /home/seun/Project/tripstory-images/post-images/
     path: /post-image
-  profile:
+  profile-image:
     # for window
     location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
     # for linux
@@ -85,7 +85,8 @@ spring:
 
 resources:
   post-image:
-    path: https://storage.googleapis.com/tripstory_image/
     location: tripstory_image/post_image
+    path: https://storage.googleapis.com/tripstory_image/tripstory_image/post_image
   profile-image:
-    localtion: tripstory_image/profile_image
+    location: tripstory_image/profile_image
+    path: https://storage.googleapis.com/tripstory_image/tripstory_image/profile_image
