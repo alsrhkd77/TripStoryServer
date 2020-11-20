@@ -43,7 +43,7 @@ public class NormalPostRepository {
     /**
      * 해당 사용자가 작성한 게시물중 여행에 포함되지 않는 게시물을 조회
      * @param memberId
-     * @return 여행에 포함되지 않는 일반 게시물 리스트
+     * @return 여행에 포함되지 않는 일반 게시물 ID 리스트
      */
     public List<Long> findByMemberIdNotInTravel(String memberId) {
         String query = "SELECT n.postId " +

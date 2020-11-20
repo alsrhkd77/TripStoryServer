@@ -196,6 +196,11 @@ public class NormalPostService {
         postService.deletePost(postId);
     }
 
+    /**
+     * 회원이 작성한 일반 게시물중 여행에 포함되지 않은 게시물 불러옴
+     * @param memberId
+     * @return 여행에 포함되지 않은 일반 게시물 ID 리스트
+     */
     public List<Long> getNormalPostNotInTravel(String memberId) {
         return normalPostRepository.findByMemberIdNotInTravel(memberId);
     }
