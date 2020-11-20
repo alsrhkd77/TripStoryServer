@@ -49,7 +49,7 @@ public class NormalPostRepository {
         String query = "SELECT n.postId " +
                 "FROM NormalPost n " +
                 "JOIN n.post p ON p.member.memberId = :memberId " +
-                "WHERE n.travel = 'NULL' ";
+                "WHERE n.travel IS NULL ";
         return em.createQuery(query, Long.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
