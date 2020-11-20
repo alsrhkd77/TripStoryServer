@@ -2,6 +2,7 @@ package com.tripstory.tripstory.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 public class MemberDTO {
 
@@ -26,5 +27,20 @@ public class MemberDTO {
         private String result;
         private String errors;
         private String changedName;
+    }
+
+    @Setter
+    @Getter
+    public static class ProfileImageChangeRequest {
+        private String memberId;
+        private MultipartFile image;
+    }
+
+    @Setter
+    @Getter
+    public static class ProfileImageChangeResponse {
+        private String result;
+        private String errors;
+        private String profileImagePath;
     }
 }

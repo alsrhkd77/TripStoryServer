@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,6 +36,7 @@ public class Member {
 
     @Column(name = "nick_name", unique = true, length = 30)
     private String nickName;
+
 
     /**
      * 회원 정보 형태로 변경하여 반환
@@ -75,5 +77,21 @@ public class Member {
                 .author(nickName)
                 .profileImagePath(profileImagePath)
                 .build();
+    }
+
+    /**
+     * 프로필 사진 변경
+     * @param profileImagePath
+     */
+    public void changeProfileImage(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
+    }
+
+    /**
+     * 기본 프로필 사진인지 확인
+     * @return 기본이면 true, 변경되었으면 false
+     */
+    public boolean isDefaultProfileImage() {
+        return profileImagePath == "https://storage.googleapis.com/tripstory_image/profile_image/default_profile.png";
     }
 }

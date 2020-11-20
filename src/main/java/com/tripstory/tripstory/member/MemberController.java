@@ -47,4 +47,18 @@ public class MemberController {
     public MemberProfile getMemberProfile(@PathVariable String nickname, @PathVariable("member-id") String memberId) {
         return memberService.getMemberProfile(nickname, memberId);
     }
+
+    @PutMapping("/profile/image")
+    public MemberDTO.ProfileImageChangeResponse changeProfileImage(MemberDTO.ProfileImageChangeRequest request) {
+        MemberDTO.ProfileImageChangeResponse response = new MemberDTO.ProfileImageChangeResponse();
+        try {
+            String changedProfileImagePath = memberService.changeProfileImage(request.getMemberId(), request.getImage());
+            response.setResult("success");
+            response.setProfileImagePath(changedProfileImagePath);
+        } catch (Exception e) {
+            response.setResult("failed");
+            response.setErrors(e.getMessage());
+        }
+        return response;
+    }
 }

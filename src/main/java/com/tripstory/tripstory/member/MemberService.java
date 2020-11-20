@@ -4,11 +4,15 @@ import com.tripstory.tripstory.follow.FollowRepository;
 import com.tripstory.tripstory.follow.FollowService;
 import com.tripstory.tripstory.member.domain.Member;
 import com.tripstory.tripstory.member.dto.MemberProfile;
+import com.tripstory.tripstory.util.FileStorage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.NoResultException;
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +21,15 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
+    private final FileStorage fileStorage;
 
+    // 이미지 저장 경로
+    @Value("${resources.profile-image.location}")
+    private String location;
+
+    // 이미지 불러올때 부르는 경로
+    @Value("${resources.profile-image.path}")
+    private String path;
     /**
      * 새로운 고객 추가
      *
@@ -124,5 +136,28 @@ public class MemberService {
             memberProfile.setFollowings(0);
         }
         return memberProfile;
+    }
+
+    /**
+     * 회원 이름, 이미지를 받아서 회원의 프로필 사진을 변경함
+     * @param memberId
+     * @param image
+     */
+    @Transactional
+    public String changeProfileImage(String memberId, MultipartFile image) {
+        Member findMember = memberRepository.findOne(memberId);
+        if(!findMember.isDefaultProfileImage()) {
+            fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/" , " "), location);
+        }
+        try {
+            String savedFileName = fileStorage.saveFile(image.getBytes(),
+                    image.getOriginalFilename(),
+                    image.getContentType(),
+                    location);
+            findMember.changeProfileImage(path + "/" + savedFileName);
+            return path + "/" + savedFileName;
+        } catch (IOException e) {
+            throw new IllegalStateException("프로필 변경중 오류발생");
+        }
     }
 }

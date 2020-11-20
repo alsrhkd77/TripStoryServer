@@ -23,11 +23,20 @@ public class DevApplicationConfig implements WebMvcConfigurer {
     @Value("${resources.post-image.path}")
     private String postImagePath;
 
+    @Value("${resources.profile-image.location}")
+    private String profileImageLocation;
+
+    @Value("${resources.profile-image.path}")
+    private String profileImagePath;
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(postImagePath + "/**")
                 .addResourceLocations("file:///" + postImageLocation);
+
+        registry.addResourceHandler(profileImagePath + "/**")
+                .addResourceLocations("file:///" + profileImageLocation);
     }
 
     @PostConstruct
