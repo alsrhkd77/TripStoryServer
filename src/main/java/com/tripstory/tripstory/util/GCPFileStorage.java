@@ -39,7 +39,7 @@ public class GCPFileStorage implements FileStorage {
                     Storage.BlobTargetOption.predefinedAcl(Storage.PredefinedAcl.PUBLIC_READ) // Set file permission
             );
 
-            return blobInfo.getName().replace(folderName, ""); // return object name
+            return blobInfo.getName().replace(folderName + "/", ""); // return object name
 
         } catch (IllegalStateException e) {
             throw new RuntimeException(e);
