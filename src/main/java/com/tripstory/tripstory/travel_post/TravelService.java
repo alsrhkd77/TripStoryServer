@@ -13,10 +13,7 @@ import com.tripstory.tripstory.post.domain.enums.DisclosureScope;
 import com.tripstory.tripstory.post.domain.enums.PostType;
 import com.tripstory.tripstory.post.dto.PostThumbnail;
 import com.tripstory.tripstory.travel_post.domain.TravelPost;
-import com.tripstory.tripstory.travel_post.dto.TravelCourseDTO;
-import com.tripstory.tripstory.travel_post.dto.TravelPostDTO;
-import com.tripstory.tripstory.travel_post.dto.TravelPostDetailDTO;
-import com.tripstory.tripstory.travel_post.dto.TravelPostInfo;
+import com.tripstory.tripstory.travel_post.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -216,5 +213,16 @@ public class TravelService {
             throw new IllegalStateException("삭제 권한이 없는 사용자입니다.");
         }
         postService.deletePost(postId);
+    }
+
+    /**
+     * 위.경도 좌표및 검색 레벨로 해당위치에서 작성된 여행 게시물 조회
+     * @param lat
+     * @param lng
+     * @param level
+     * @return 조회된 여행 게시물 ID, 중심좌표 객체 리스트
+     */
+    public List<TravelSearchItem> getTravelNearBy(Double lat, Double lng, Double level) {
+        return travelRepository.findByLocation(lat, lng, level);
     }
 }

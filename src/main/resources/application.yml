@@ -39,8 +39,14 @@ spring:
   datasource:
     # mysql
     username: root
-    password: mysql
-    url: jdbc:mysql://localhost:13306/tripstory
+    # for window
+    # password: mysql
+    # for linux
+    password: 1234
+    # for window
+    # url: jdbc:mysql://localhost:13306/tripstory
+    # for linux ubuntu
+    url: jdbc:mysql://localhost:3306/tripstory
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
 
@@ -48,15 +54,15 @@ spring:
 resources:
   post-image:
     # for window
-    location: C:/Users/jeonseun/Desktop/TripStory_Images/Post_Images/
+    # location: C:/Users/jeonseun/Desktop/TripStory_Images/Post_Images/
     # for linux
-    # location: /home/seun/Project/tripstory-images/post-images/
+    location: /home/seun/Project/tripstory-images/post-images/
     path: /post-image
   profile-image:
     # for window
-    location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
+    # location: C:/Users/jeonseun/Desktop/TripStory_Images/Profile_Images/
     # for linux
-    # location: /home/seun/Project/tripstory-images/profile-images/
+    location: /home/seun/Project/tripstory-images/profile-images/
     path: /profile-image
 
 
