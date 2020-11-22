@@ -27,7 +27,7 @@ public class ProdApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://115.139.1.231:3000")
+                .allowedOrigins("http://a73806f907e0.ngrok.io")
                 .allowedMethods(HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.DELETE.name(),
