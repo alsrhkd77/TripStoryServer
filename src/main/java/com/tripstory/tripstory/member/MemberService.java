@@ -152,6 +152,9 @@ public class MemberService {
         if (!findMember.isDefaultProfileImage()) {
             fileStorage.deleteFile(findMember.getProfileImagePath().replace(path + "/", ""), location);
         }
+        if (image == null) {
+            return findMember.setDefaultProfileImage();
+        }
         try {
             String savedFileName = fileStorage.saveFile(image.getBytes(),
                     image.getOriginalFilename(),

@@ -97,6 +97,15 @@ public class Member {
     }
 
     /**
+     * 기본 프로필 이미지로 변경
+     * @return 기본 프로필 이미지 경로
+     */
+    public String setDefaultProfileImage() {
+        this.profileImagePath =  "https://storage.googleapis.com/tripstory_image/profile_image/default_profile.png";
+        return "https://storage.googleapis.com/tripstory_image/profile_image/default_profile.png";
+    }
+
+    /**
      * 회원 정보 검색결과에 나오는 정보만 추려서 반환
      * @return 회원 검색 결과 정보 객체
      */
